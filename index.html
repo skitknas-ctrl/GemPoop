@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#191715">
+<title>GemPoop</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #191715; overflow: hidden; touch-action: none;
+    -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #f5e6c8; }
+  #wrap { position: fixed; inset: 0; box-sizing: border-box;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
+  #view { position: relative; width: 100%; height: 100%; overflow: hidden; }
+  #stage { position: absolute; left: 0; top: 0; height: 720px; transform-origin: 0 0; overflow: hidden; background: #191715; }
+
+  .side { position: absolute; top: 0; height: 720px; overflow: hidden; }
+  .zone { position: absolute; inset: 0; touch-action: none; cursor: ns-resize; }
+  .print { position: absolute; pointer-events: none; }
+  .mline { position: absolute; left: 0; right: 0; height: 0; border-top: 2px dashed #f5e6c8; pointer-events: none; }
+  .mring { position: absolute; width: 72px; height: 72px; box-sizing: border-box; border: 3px solid #f5e6c8;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .hud { position: absolute; top: 48px; display: flex; flex-direction: column; gap: 18px; pointer-events: none; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo b { font-family: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif; font-weight: 900;
+    font-size: 46px; line-height: 1; letter-spacing: 0.5px; }
+  .lbl { font-size: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #b8ad9c; }
+  .num { font-size: 40px; font-weight: 900; line-height: 1; }
+  .hint { position: absolute; bottom: 40px; display: flex; align-items: center; gap: 10px; font-size: 16px;
+    font-weight: 600; color: #9a907f; pointer-events: none; line-height: 1.3; }
+  .gear { pointer-events: auto; width: 56px; height: 56px; border-radius: 50%; border: 2px solid #3d3832;
+    background: #2a2723; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+  .gear:focus-visible, .btn:focus-visible { outline: 3px solid #f5e6c8; outline-offset: 3px; }
+
+  #field { position: absolute; top: 0; width: 720px; height: 720px; overflow: hidden; background: #1d4434;
+    box-shadow: 0 0 0 4px #0e0d0c; }
+  .abs { position: absolute; }
+  .gem { position: absolute; left: 0; top: 0; width: 30px; height: 30px; pointer-events: none; will-change: transform; }
+  .tongue { position: absolute; height: 8px; border-radius: 4px; background: #e65a7f; transform-origin: 0 50%;
+    pointer-events: none; display: none; }
+  .tongue i { position: absolute; right: -7px; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: #f27c9a; }
+  .reach { position: absolute; box-sizing: border-box; border-radius: 50%; border: 2px dashed; opacity: 0.6; pointer-events: none; }
+  .frog { position: absolute; top: 128px; width: 64px; height: 52px; transform-origin: 50% 100%; }
+
+  #settings { position: absolute; top: 0; width: 720px; height: 720px; background: rgba(10, 8, 6, 0.6);
+    display: none; align-items: center; justify-content: center; }
+  #settings.open { display: flex; }
+  #settings section { width: 460px; box-sizing: border-box; padding: 32px; border-radius: 18px; background: #f6eedc;
+    color: #2a1d12; display: flex; flex-direction: column; gap: 22px; box-shadow: 0 0 0 4px #6b3f1d; }
+  #settings h2 { margin: 0; font-family: "Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif; font-weight: 900;
+    font-size: 36px; line-height: 1; }
+  .row { display: flex; flex-direction: column; gap: 6px; }
+  .row .top { display: flex; justify-content: space-between; align-items: baseline; font-size: 18px; font-weight: 800; }
+  .row .top span { color: #6b3f1d; }
+  .row small { font-size: 14px; font-weight: 600; color: #6b5a48; }
+  .row input[type=range] { width: 100%; accent-color: #6b3f1d; height: 28px; margin: 0; }
+  .check { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
+  .check input { width: 22px; height: 22px; accent-color: #6b3f1d; margin: 0; }
+  .btns { display: flex; gap: 12px; justify-content: flex-end; }
+  .btn { min-height: 48px; padding: 0 22px; border-radius: 12px; border: 2px solid #6b3f1d; background: transparent;
+    color: #6b3f1d; font: inherit; font-size: 17px; font-weight: 800; cursor: pointer; }
+  .btn.primary { background: #6b3f1d; color: #fff; padding: 0 26px; }
+
+  #rotate { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; text-align: center;
+    background: #191715; font-size: 22px; font-weight: 800; padding: 32px; box-sizing: border-box; }
+  @media (orientation: portrait) { #rotate { display: flex; } }
+</style>
+</head>
+<body>
+<div id="wrap"><div id="view"><div id="stage">
+
+  <!-- vänster tumyta -->
+  <div class="side" id="sideL">
+    <div class="zone" id="zoneL"><div id="printsL"></div>
+      <div class="mline" id="lineL"></div>
+      <div class="mring" id="ringL"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
+    </div>
+    <div class="hud" style="left: 40px">
+      <div class="logo">
+        <svg aria-hidden="true" width="40" height="40" viewBox="0 0 30 30"><polygon points="8,2 22,2 28,8 28,22 22,28 8,28 2,22 2,8" fill="#138a43" stroke="#06451f" stroke-width="1.5"/><polygon points="10,7 20,7 23,10 23,20 20,23 10,23 7,20 7,10" fill="#2fb563"/><polygon points="12,11 18,11 19,12 19,18 18,19 12,19 11,18 11,12" fill="#6fd894"/></svg>
+        <b>GemPoop</b>
+      </div>
+      <div><div class="lbl">Fångade</div><div class="num" id="caught">0</div></div>
+    </div>
+    <div class="hint" id="hintL" style="left: 40px">
+      <svg aria-hidden="true" width="16" height="22" viewBox="0 0 26 34" fill="none" stroke="#9a907f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg>
+      <span>Vänster tumme – lyfter paddelns vänstra ände</span>
+    </div>
+  </div>
+
+  <!-- höger tumyta -->
+  <div class="side" id="sideR">
+    <div class="zone" id="zoneR"><div id="printsR"></div>
+      <div class="mline" id="lineR"></div>
+      <div class="mring" id="ringR"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
+    </div>
+    <div class="hud" style="right: 40px; align-items: flex-end">
+      <button class="gear" id="gear" aria-label="Inställningar">
+        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5e6c8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <div style="text-align: right"><div class="lbl">Missade</div><div class="num" id="missed">0</div></div>
+    </div>
+    <div class="hint" id="hintR" style="right: 40px; justify-content: flex-end; text-align: right">
+      <span>Höger tumme – lyfter paddelns högra ände</span>
+      <svg aria-hidden="true" width="16" height="22" viewBox="0 0 26 34" fill="none" stroke="#9a907f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg>
+    </div>
+  </div>
+
+  <!-- spelplan 720×720 -->
+  <div id="field">
+    <!-- djungel -->
+    <svg aria-hidden="true" class="abs" style="left:0;top:0" width="720" height="576" viewBox="0 0 720 576">
+      <defs><path id="leaf" d="M0 0 C25 -18 70 -22 100 0 C70 22 25 18 0 0 Z"/></defs>
+      <g fill="#163628">
+        <use href="#leaf" transform="translate(-14 30) rotate(18) scale(1.5)"/>
+        <use href="#leaf" transform="translate(-24 190) rotate(32) scale(1.7)"/>
+        <use href="#leaf" transform="translate(734 24) rotate(162) scale(1.5)"/>
+        <use href="#leaf" transform="translate(744 200) rotate(148) scale(1.7)"/>
+      </g>
+      <g fill="#22543e">
+        <use href="#leaf" transform="translate(-6 104) rotate(-8) scale(1.25)"/>
+        <use href="#leaf" transform="translate(726 110) rotate(188) scale(1.25)"/>
+        <use href="#leaf" transform="translate(-10 330) rotate(-20) scale(1.1)"/>
+        <use href="#leaf" transform="translate(730 340) rotate(200) scale(1.1)"/>
+      </g>
+      <g fill="none" stroke="#2a6449" stroke-width="3" stroke-linecap="round">
+        <path d="M110 0 C98 26 124 46 108 76 C98 94 116 104 112 118"/>
+        <path d="M432 0 C424 18 440 30 430 46"/>
+        <path d="M612 0 C624 30 600 52 616 84 C624 100 610 110 614 124"/>
+      </g>
+      <g fill="#2a6449">
+        <use href="#leaf" transform="translate(108 76) rotate(40) scale(0.18)"/>
+        <use href="#leaf" transform="translate(112 118) rotate(130) scale(0.16)"/>
+        <use href="#leaf" transform="translate(616 84) rotate(140) scale(0.18)"/>
+        <use href="#leaf" transform="translate(614 124) rotate(50) scale(0.16)"/>
+      </g>
+    </svg>
+
+    <!-- packlår: 55 % av höjden (y 176–576) -->
+    <div aria-hidden="true" class="abs" id="crate" style="left:24px; top:176px; width:672px; height:400px; background:#2b180c; border-radius:3px; overflow:hidden">
+      <div class="abs" style="left:0; top:0; width:672px; height:14px; background:#c99a62; border-bottom:3px solid #6b4220"></div>
+      <div class="abs" style="left:0; top:21px; width:672px; display:flex; flex-direction:column; gap:5px">
+        <div style="position:relative; height:58px; background:#b27b45">
+          <div class="abs" style="left:60px; top:14px; width:320px; height:2px; background:#8c5a2c; opacity:.7"></div>
+          <div class="abs" style="left:230px; top:36px; width:380px; height:2px; background:#8c5a2c; opacity:.5"></div>
+          <div class="abs" style="left:470px; top:18px; width:24px; height:14px; box-sizing:border-box; border:3px solid #7a4a22; border-radius:50%"></div>
+        </div>
+        <div style="position:relative; height:58px; background:#a46d3b">
+          <div class="abs" style="left:90px; top:22px; width:460px; height:2px; background:#7e4f26; opacity:.7"></div>
+          <div class="abs" style="left:40px; top:42px; width:200px; height:2px; background:#7e4f26; opacity:.5"></div>
+          <div class="abs" style="left:160px; top:10px; width:18px; height:12px; box-sizing:border-box; border:3px solid #6e4220; border-radius:50%"></div>
+        </div>
+        <div style="position:relative; height:58px; background:#bb8550">
+          <div class="abs" style="left:50px; top:12px; width:540px; height:2px; background:#8c5a2c; opacity:.5"></div>
+          <div class="abs" style="left:300px; top:40px; width:300px; height:2px; background:#8c5a2c; opacity:.6"></div>
+        </div>
+        <div style="position:relative; height:58px; background:#a8713f">
+          <div class="abs" style="left:70px; top:30px; width:260px; height:2px; background:#7e4f26; opacity:.6"></div>
+          <div class="abs" style="left:380px; top:16px; width:230px; height:2px; background:#7e4f26; opacity:.6"></div>
+          <svg class="abs" style="left:300px; top:0" width="80" height="58" viewBox="0 0 80 58"><path d="M10 0 L20 14 L13 24 L28 38 L22 58" fill="none" stroke="#3a2210" stroke-width="2"/></svg>
+        </div>
+        <div style="position:relative; height:58px; background:#b47d47">
+          <div class="abs" style="left:110px; top:20px; width:420px; height:2px; background:#8c5a2c; opacity:.6"></div>
+          <div class="abs" style="left:520px; top:30px; width:20px; height:13px; box-sizing:border-box; border:3px solid #7a4a22; border-radius:50%"></div>
+        </div>
+        <div style="position:relative; height:58px; background:#9e683a">
+          <div class="abs" style="left:60px; top:26px; width:500px; height:2px; background:#774a24; opacity:.6"></div>
+          <svg class="abs" style="left:554px; top:0" width="70" height="58" viewBox="0 0 70 58"><polygon points="70,20 34,30 46,58 70,58" fill="#2b180c"/></svg>
+        </div>
+      </div>
+      <div class="abs" style="left:0; top:150px; width:672px; display:flex; flex-direction:column; align-items:center; gap:4px; font-family:'Stardos Stencil', Impact, 'Arial Black', sans-serif; color:#3b2213; opacity:.55">
+        <div style="font-size:54px; line-height:1; letter-spacing:6px">GEMPOOP &amp; CO.</div>
+        <div style="font-size:22px; letter-spacing:5px">ÄDELSTENAR · ÖMTÅLIGT</div>
+      </div>
+      <div class="abs" style="left:0; top:17px; width:48px; height:383px; box-sizing:border-box; background:#9c6634; border-right:3px solid #6b4220"></div>
+      <div class="abs" style="right:0; top:17px; width:48px; height:383px; box-sizing:border-box; background:#9c6634; border-left:3px solid #6b4220"></div>
+      <div id="nails"></div>
+    </div>
+
+    <!-- svart botten: 20 % -->
+    <div class="abs" style="left:0; top:576px; width:720px; height:144px; background:#000"></div>
+    <svg aria-hidden="true" class="abs" style="left:330px; top:650px" width="60" height="80" viewBox="0 0 60 80"><polygon points="24,0 36,0 52,70 8,70" fill="#2a2a2a"/><rect x="0" y="66" width="60" height="8" rx="3" fill="#3a3a3a"/></svg>
+    <div class="abs" id="paddle" style="left:108px; top:642px; width:504px; height:16px; box-sizing:border-box; border-radius:8px; background:#efe9dc; border:2px solid #9c968a"></div>
+    <div class="abs" style="left:348px; top:638px; width:24px; height:24px; box-sizing:border-box; border-radius:50%; background:#3a3a3a; border:3px solid #8a857c"></div>
+
+    <div id="monkeys"></div>
+    <div id="reaches"></div>
+    <div id="frogs"></div>
+    <div id="tongues"></div>
+    <div id="gems"></div>
+  </div>
+
+  <!-- inställningar -->
+  <div id="settings">
+    <section aria-label="Inställningar">
+      <h2>Inställningar</h2>
+      <div class="row">
+        <div class="top"><label for="freq">Frekvens</label><span id="freqLbl">1 st/s</span></div>
+        <input id="freq" type="range" min="0.25" max="3" step="0.25" value="1">
+        <small>Hur många ädelstenar som ploppar ut per sekund</small>
+      </div>
+      <div class="row">
+        <div class="top"><label for="reach">Tungans räckvidd</label><span id="reachLbl">12 %</span></div>
+        <input id="reach" type="range" min="4" max="25" step="1" value="12">
+        <small>I procent av spelplanens bredd, mätt från grodans mun</small>
+      </div>
+      <label class="check"><input id="showReach" type="checkbox" checked> Visa räckvidden som streckad ring</label>
+      <div class="btns">
+        <button class="btn" id="restart">Starta om</button>
+        <button class="btn primary" id="resume">Fortsätt</button>
+      </div>
+    </section>
+  </div>
+
+</div></div></div>
+<div id="rotate">Vrid telefonen till liggande läge för att spela GemPoop.</div>
+
+<script>
+"use strict";
+(function () {
+  // ---- Konstanter (spelplanens koordinater: 720 × 720) ----
+  var GP = {
+    S: 720, G: 1200, E: 0.98, RG: 13,
+    PY: 650, PX: 360, HALF: 252, MAXA: 14,          // paddel: 70 % bred, högst 14° lutning
+    CRATE_TOP: 180, CRATE_L: 24, CRATE_R: 696,      // packlårens ovansida
+    ANUS_Y: 58, MOUTH_Y: 159, LAND_FADE: 2.6, GULP: 0.35,
+    T_OUT: 0.08, T_IN: 0.16, POP: 0.28, MIN_SIDE: 150
+  };
+  var $ = function (id) { return document.getElementById(id); };
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+  // ---- Grafik ----
+  var GEM_INNER = [
+    '<polygon points="15,1 29,15 15,29 1,15" fill="#1f4fd1" stroke="#0b2370" stroke-width="1.5"/><polygon points="15,7 23,15 15,23 7,15" fill="#4a82f2"/><path d="M15 1 L15 7 M29 15 L23 15 M15 29 L15 23 M1 15 L7 15" stroke="#9cc0ff" stroke-width="1"/><polygon points="15,7 19,11 11,11" fill="#d6e6ff"/>',
+    '<circle cx="15" cy="15" r="13.5" fill="#f0b70a" stroke="#7a5600" stroke-width="1.5"/><polygon points="15,6 21.4,8.6 24,15 21.4,21.4 15,24 8.6,21.4 6,15 8.6,8.6" fill="#ffd94d"/><path d="M15 1.5 L15 6 M24.5 5.5 L21.4 8.6 M28.5 15 L24 15 M24.5 24.5 L21.4 21.4 M15 28.5 L15 24 M5.5 24.5 L8.6 21.4 M1.5 15 L6 15 M5.5 5.5 L8.6 8.6" stroke="#fff1b0" stroke-width="1"/><ellipse cx="12" cy="10.5" rx="3.5" ry="2" fill="#fffbe6"/>',
+    '<polygon points="8,2 22,2 28,8 28,22 22,28 8,28 2,22 2,8" fill="#138a43" stroke="#06451f" stroke-width="1.5"/><polygon points="10,7 20,7 23,10 23,20 20,23 10,23 7,20 7,10" fill="#2fb563"/><polygon points="12,11 18,11 19,12 19,18 18,19 12,19 11,18 11,12" fill="#6fd894"/><path d="M8 2 L10 7 M22 2 L20 7 M28 8 L23 10 M28 22 L23 20 M22 28 L20 23 M8 28 L10 23 M2 22 L7 20 M2 8 L7 10" stroke="#a9f0c2" stroke-width="1"/>'
+  ];
+  var GEM_SVG = GEM_INNER.map(function (g) { return '<svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30">' + g + '</svg>'; });
+
+  var MONK = [ // schimpans, orangutang, gorilla, babian
+    { fur: '#4b3427', furDark: '#2a1b12', skin: '#d6a27a', cheek: '#e3b08c', cheekDark: '#9a6648', ring: '#7a2e3e', shaggy: 0, silver: 0, longTail: 1, shortTail: 0 },
+    { fur: '#c2622c', furDark: '#7a3510', skin: '#e6b48c', cheek: '#edc09a', cheekDark: '#a8714c', ring: '#7a2e3e', shaggy: 1, silver: 0, longTail: 1, shortTail: 0 },
+    { fur: '#34343a', furDark: '#151519', skin: '#6d6870', cheek: '#857f88', cheekDark: '#4a454d', ring: '#5e2433', shaggy: 0, silver: 1, longTail: 0, shortTail: 0 },
+    { fur: '#9b8a5c', furDark: '#5e5032', skin: '#c9a98a', cheek: '#e0475b', cheekDark: '#8e1f30', ring: '#a02035', shaggy: 0, silver: 0, longTail: 0, shortTail: 1 }
+  ];
+  function monkeySvg(m, left) {
+    return '<svg aria-hidden="true" class="abs" style="top:0;left:' + left + 'px;overflow:visible" width="140" height="180" viewBox="0 0 140 180">' +
+      '<path d="M58 96 L54 166 M82 96 L86 166" stroke="' + m.fur + '" stroke-width="13" stroke-linecap="round" fill="none"/>' +
+      '<ellipse cx="53" cy="172" rx="9" ry="6" fill="' + m.skin + '"/><ellipse cx="87" cy="172" rx="9" ry="6" fill="' + m.skin + '"/>' +
+      '<circle cx="70" cy="138" r="24" fill="' + m.fur + '"/>' +
+      '<ellipse cx="46" cy="140" rx="6" ry="7" fill="' + m.skin + '"/><ellipse cx="94" cy="140" rx="6" ry="7" fill="' + m.skin + '"/>' +
+      '<ellipse cx="70" cy="141" rx="16" ry="15" fill="' + m.skin + '"/>' +
+      '<circle cx="63" cy="147" r="4.4" fill="#fff"/><circle cx="77" cy="147" r="4.4" fill="#fff"/>' +
+      '<circle cx="63" cy="146.5" r="2.3" fill="#1a1a1a"/><circle cx="77" cy="146.5" r="2.3" fill="#1a1a1a"/>' +
+      '<path d="M57 154 Q63 158 69 154 M71 154 Q77 158 83 154" stroke="' + m.furDark + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="67" cy="139" r="1.4" fill="' + m.furDark + '"/><circle cx="73" cy="139" r="1.4" fill="' + m.furDark + '"/>' +
+      '<path d="M61 132 Q70 124 79 132" stroke="#3a1d14" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M40 72 L30 164 M100 72 L110 164" stroke="' + m.fur + '" stroke-width="26" stroke-linecap="round" fill="none"/>' +
+      '<ellipse cx="26" cy="172" rx="16" ry="8" fill="' + m.skin + '"/><ellipse cx="114" cy="172" rx="16" ry="8" fill="' + m.skin + '"/>' +
+      '<path opacity="' + m.shaggy + '" d="M20 72 L12 90 M24 86 L17 104 M17 112 L11 128 M120 72 L128 90 M116 86 L123 104 M123 112 L129 128" stroke="' + m.fur + '" stroke-width="4" stroke-linecap="round" fill="none"/>' +
+      '<ellipse cx="70" cy="60" rx="50" ry="36" fill="' + m.fur + '"/>' +
+      '<ellipse cx="70" cy="31" rx="38" ry="10" fill="#a3a3ab" opacity="' + m.silver + '"/>' +
+      '<ellipse cx="51" cy="63" rx="22" ry="25" fill="' + m.cheek + '"/><ellipse cx="89" cy="63" rx="22" ry="25" fill="' + m.cheek + '"/>' +
+      '<ellipse cx="43" cy="53" rx="8" ry="5" fill="#fff" opacity="0.2"/><ellipse cx="97" cy="53" rx="8" ry="5" fill="#fff" opacity="0.2"/>' +
+      '<path d="M70 38 L70 49 M70 67 L70 82" stroke="' + m.cheekDark + '" stroke-width="2" stroke-linecap="round"/>' +
+      '<g class="anus" transform="translate(70 58)">' +
+        '<ellipse cx="0" cy="0" rx="10" ry="9" fill="' + m.ring + '"/>' +
+        '<path d="M0 -9 L0 -5 M7 -6 L4 -3 M10 0 L6 0 M7 6 L4 3 M0 9 L0 5 M-7 6 L-4 3 M-10 0 L-6 0 M-7 -6 L-4 -3" stroke="' + m.cheekDark + '" stroke-width="1.4" stroke-linecap="round"/>' +
+        '<ellipse cx="0" cy="0" rx="4.5" ry="4" fill="#22080d"/>' +
+      '</g>' +
+      '<path opacity="' + m.longTail + '" d="M70 28 C68 8 96 -2 104 12 C110 24 96 30 92 20" stroke="' + m.fur + '" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<path opacity="' + m.shortTail + '" d="M70 28 C66 16 58 10 50 12" stroke="' + m.fur + '" stroke-width="8" fill="none" stroke-linecap="round"/>' +
+      '</svg>';
+  }
+
+  var FROGC = [
+    { body: '#2f6fe0', dark: '#163a8c', belly: '#b9d0ff' },
+    { body: '#f0c21b', dark: '#7d5f00', belly: '#fff2b3' },
+    { body: '#2fa64a', dark: '#135a24', belly: '#c3efca' }
+  ];
+  function frogSvg(c, ci) {
+    return '<svg aria-hidden="true" width="64" height="52" viewBox="0 0 64 52">' +
+      '<ellipse cx="12" cy="44" rx="10" ry="6" fill="' + c.dark + '"/><ellipse cx="52" cy="44" rx="10" ry="6" fill="' + c.dark + '"/>' +
+      '<ellipse cx="32" cy="34" rx="22" ry="16" fill="' + c.body + '"/>' +
+      '<ellipse cx="32" cy="40" rx="13" ry="9" fill="' + c.belly + '"/>' +
+      '<circle cx="19" cy="16" r="10" fill="' + c.body + '"/><circle cx="45" cy="16" r="10" fill="' + c.body + '"/>' +
+      '<circle cx="19" cy="15" r="6.5" fill="#fff"/><circle cx="45" cy="15" r="6.5" fill="#fff"/>' +
+      '<circle class="pl" cx="19" cy="15" r="3.2" fill="#111"/><circle class="pr" cx="45" cy="15" r="3.2" fill="#111"/>' +
+      '<path d="M18 29 Q32 36 46 29" stroke="' + c.dark + '" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<ellipse class="mo" cx="32" cy="31" rx="8" ry="5" fill="#5a1426" opacity="0"/>' +
+      '<ellipse cx="24" cy="49" rx="6" ry="3" fill="' + c.dark + '"/><ellipse cx="40" cy="49" rx="6" ry="3" fill="' + c.dark + '"/>' +
+      '<g transform="translate(26.5 35.5) scale(0.37)">' + GEM_INNER[ci] + '</g>' +
+      '</svg>';
+  }
+
+  var PRINT_PATH = '<path d="M42 56 a3 4 0 0 1 6 0 a6 8 0 0 1 -12 0 a9 12 0 0 1 18 0 a12 16 0 0 1 -24 0 a15 20 0 0 1 30 0 a18 24 0 0 1 -36 0 a21 28 0 0 1 42 0 a24 32 0 0 1 -48 0 a27 36 0 0 1 54 0"/><path d="M8 96 Q45 116 82 96 M14 102 Q45 118 76 102"/>';
+  function prints(w, seed) {
+    function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    var dashes = ['22 3 14 2 30 3', '16 2 26 3 10 2', '34 3 12 2 20 3'];
+    var html = '', i, n = Math.round(20 * w / 420);
+    function one(l, t, r, s, o, d) {
+      return '<svg aria-hidden="true" class="print" width="90" height="110" viewBox="0 0 90 110" fill="none" stroke="#e6dccb" stroke-width="2" stroke-linecap="round" stroke-dasharray="' + d + '" style="left:' + l + 'px;top:' + t + 'px;opacity:' + o + ';transform:rotate(' + r + 'deg) scale(' + s + ')">' + PRINT_PATH + '</svg>';
+    }
+    for (i = 0; i < n; i++) html += one(Math.round(rnd() * (w - 40) - 30), Math.round(rnd() * 700 - 40), Math.round(rnd() * 360), (0.7 + rnd() * 0.7).toFixed(2), (0.07 + rnd() * 0.13).toFixed(2), dashes[i % 3]);
+    for (i = 0; i < 10; i++) html += one(Math.round(w / 2 - 100 + rnd() * 120), Math.round(200 + rnd() * 300), Math.round(rnd() * 360), (0.8 + rnd() * 0.5).toFixed(2), (0.16 + rnd() * 0.14).toFixed(2), dashes[i % 3]);
+    return html;
+  }
+
+  // ---- Bygg den statiska scenen ----
+  (function () {
+    var h = '';
+    for (var i = 0; i < 6; i++) {
+      var top = 21 + i * 63;
+      [20, 644].forEach(function (x) {
+        h += '<div class="abs" style="left:' + x + 'px;top:' + (top + 12) + 'px;width:8px;height:8px;border-radius:50%;background:#6a645c;box-shadow:0 0 0 2px #2f2c29"></div>';
+        h += '<div class="abs" style="left:' + x + 'px;top:' + (top + 38) + 'px;width:8px;height:8px;border-radius:50%;background:#6a645c;box-shadow:0 0 0 2px #2f2c29"></div>';
+      });
+    }
+    $('nails').innerHTML = h;
+  })();
+
+  var monkeysEl = $('monkeys');
+  var sim = {
+    gems: [], spawnT: 0.8, caught: 0, missed: 0,
+    yL: 0.5, yR: 0.5, aL: false, aR: false, angle: 0, flash: 0,
+    freq: 1, reach: 12, showReach: true, open: false,
+    monkeys: [], frogs: []
+  };
+  MONK.forEach(function (m, i) {
+    var x = GP.S * (0.2 + 0.2 * i);
+    monkeysEl.insertAdjacentHTML('beforeend', monkeySvg(m, x - 70));
+    sim.monkeys.push({ x: x, pop: 0, el: monkeysEl.lastChild.querySelector('.anus') });
+  });
+  [0, 1, 2].forEach(function (ci) {
+    var x = GP.S * (0.3 + 0.2 * ci), c = FROGC[ci];
+    var frog = document.createElement('div');
+    frog.className = 'frog'; frog.style.left = (x - 32) + 'px';
+    frog.innerHTML = frogSvg(c, ci);
+    $('frogs').appendChild(frog);
+    var ring = document.createElement('div');
+    ring.className = 'reach'; ring.style.borderColor = c.belly;
+    $('reaches').appendChild(ring);
+    var tongue = document.createElement('div');
+    tongue.className = 'tongue'; tongue.innerHTML = '<i></i>';
+    tongue.style.left = x + 'px'; tongue.style.top = (GP.MOUTH_Y - 4) + 'px';
+    $('tongues').appendChild(tongue);
+    sim.frogs.push({ c: ci, x: x, my: GP.MOUTH_Y, tongue: null, gulp: 0, el: frog, ring: ring, tEl: tongue,
+      pl: frog.querySelector('.pl'), pr: frog.querySelector('.pr'), mo: frog.querySelector('.mo') });
+  });
+
+  // ---- Inställningar (sparas lokalt) ----
+  try {
+    var saved = JSON.parse(localStorage.getItem('gempoop-settings') || 'null');
+    if (saved) {
+      if (saved.freq) sim.freq = clamp(+saved.freq, 0.25, 3);
+      if (saved.reach) sim.reach = clamp(+saved.reach, 4, 25);
+      if (typeof saved.showReach === 'boolean') sim.showReach = saved.showReach;
+    }
+  } catch (e) {}
+  function save() {
+    try { localStorage.setItem('gempoop-settings', JSON.stringify({ freq: sim.freq, reach: sim.reach, showReach: sim.showReach })); } catch (e) {}
+  }
+  function syncSettings() {
+    $('freq').value = sim.freq; $('reach').value = sim.reach; $('showReach').checked = sim.showReach;
+    $('freqLbl').textContent = String(sim.freq).replace('.', ',') + ' st/s';
+    $('reachLbl').textContent = sim.reach + ' %';
+    var R = sim.reach / 100 * GP.S;
+    sim.frogs.forEach(function (f) {
+      f.ring.style.left = (f.x - R) + 'px'; f.ring.style.top = (f.my - R) + 'px';
+      f.ring.style.width = f.ring.style.height = (2 * R) + 'px';
+      f.ring.style.display = (sim.showReach || sim.open) ? 'block' : 'none';
+    });
+  }
+  function setOpen(o) { sim.open = o; $('settings').classList.toggle('open', o); syncSettings(); if (o) $('resume').focus(); }
+  $('gear').addEventListener('click', function () { setOpen(true); });
+  $('resume').addEventListener('click', function () { setOpen(false); });
+  $('restart').addEventListener('click', function () {
+    sim.gems.forEach(function (g) { g.el.remove(); });
+    sim.gems = []; sim.caught = 0; sim.missed = 0; sim.spawnT = 0.8;
+    sim.frogs.forEach(function (f) { f.tongue = null; f.gulp = 0; });
+    setOpen(false);
+  });
+  $('freq').addEventListener('input', function (e) { sim.freq = parseFloat(e.target.value) || 1; save(); syncSettings(); });
+  $('reach').addEventListener('input', function (e) { sim.reach = parseFloat(e.target.value) || 12; save(); syncSettings(); });
+  $('showReach').addEventListener('change', function (e) { sim.showReach = !!e.target.checked; save(); syncSettings(); });
+  syncSettings();
+
+  // ---- Tummarna: varje sida styr sin ände av paddeln ----
+  function bindZone(el, side) {
+    var pid = null;
+    function set(e) {
+      var r = el.getBoundingClientRect();
+      if (r.height) sim['y' + side] = clamp((e.clientY - r.top) / r.height, 0, 1);
+    }
+    el.addEventListener('pointerdown', function (e) {
+      pid = e.pointerId;
+      try { el.setPointerCapture(pid); } catch (err) {}
+      sim['a' + side] = true; set(e); e.preventDefault();
+    });
+    el.addEventListener('pointermove', function (e) { if (e.pointerId === pid) set(e); });
+    function end(e) { if (e.pointerId === pid) { pid = null; sim['a' + side] = false; } }
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+  }
+  bindZone($('zoneL'), 'L');
+  bindZone($('zoneR'), 'R');
+
+  // ---- Layout: kvadraten fyller höjden, tumytorna får resten ----
+  var stage = $('stage'), view = $('view');
+  var lastSide = -1;
+  function layout() {
+    var vw = view.clientWidth, vh = view.clientHeight;
+    if (!vw || !vh) return;
+    var sc = vh / 720, wl = vw / sc;
+    if (wl < 720 + 2 * GP.MIN_SIDE) { wl = 720 + 2 * GP.MIN_SIDE; sc = vw / wl; }
+    var side = Math.floor((wl - 720) / 2);
+    wl = 720 + 2 * side;
+    stage.style.width = wl + 'px';
+    stage.style.transform = 'translate(' + ((vw - wl * sc) / 2) + 'px,' + ((vh - 720 * sc) / 2) + 'px) scale(' + sc + ')';
+    $('sideL').style.left = '0px'; $('sideL').style.width = side + 'px';
+    $('field').style.left = side + 'px';
+    $('settings').style.left = side + 'px';
+    $('sideR').style.left = (side + 720) + 'px'; $('sideR').style.width = side + 'px';
+    $('ringL').style.left = $('ringR').style.left = (side / 2 - 36) + 'px';
+    $('hintL').style.maxWidth = $('hintR').style.maxWidth = (side - 80) + 'px';
+    if (side !== lastSide) {
+      lastSide = side;
+      $('printsL').innerHTML = prints(side, 7);
+      $('printsR').innerHTML = prints(side, 1234567);
+    }
+  }
+  window.addEventListener('resize', layout);
+  window.addEventListener('orientationchange', function () { setTimeout(layout, 120); });
+  layout();
+
+  // ---- Fysik ----
+  function spawn() {
+    var mi = Math.floor(Math.random() * 4), c = Math.floor(Math.random() * 3);
+    var m = sim.monkeys[mi];
+    m.pop = GP.POP;
+    var el = document.createElement('div');
+    el.className = 'gem'; el.innerHTML = GEM_SVG[c];
+    $('gems').appendChild(el);
+    sim.gems.push({ c: c, x: m.x + (Math.random() - 0.5) * 4, y: GP.ANUS_Y,
+      vx: (Math.random() - 0.5) * 50, vy: 40 + Math.random() * 60,
+      rot: 0, spin: (Math.random() - 0.5) * 4, bounced: false, state: 'fly', age: 0, t: 0, el: el });
+  }
+
+  function step(dt) {
+    var s = sim, interval = 1 / s.freq;
+    var diff = clamp((s.yR - s.yL) / 0.5, -1, 1);
+    s.angle += (GP.MAXA * diff - s.angle) * Math.min(1, dt * 18);
+    s.flash = Math.max(0, s.flash - dt);
+
+    if (s.spawnT > interval) s.spawnT = interval;
+    s.spawnT -= dt;
+    if (s.spawnT <= 0) { s.spawnT += interval; spawn(); }
+    s.monkeys.forEach(function (m) { m.pop = Math.max(0, m.pop - dt); });
+
+    var R = s.reach / 100 * GP.S;
+    var a = s.angle * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a);
+
+    for (var i = 0; i < s.gems.length; i++) {
+      var g = s.gems[i];
+      g.age += dt;
+      if (g.state === 'fly') {
+        var sub = 3, h = dt / sub;
+        for (var k = 0; k < sub; k++) {
+          var prevY = g.y;
+          g.vy += GP.G * h;            // ökande fallhastighet / avtagande stigning
+          g.x += g.vx * h;
+          g.y += g.vy * h;
+          g.rot += g.spin * h;
+          // studs mot sned paddel, normal n = (sin a, −cos a)
+          var px = g.x - GP.PX, py = g.y - GP.PY;
+          var along = px * ca + py * sa;
+          var dist = px * sa - py * ca;
+          var vn = g.vx * sa - g.vy * ca;
+          if (Math.abs(along) <= GP.HALF + 4 && dist < GP.RG && dist > -GP.RG * 2.5 && vn < 0) {
+            var j = (1 + GP.E) * vn;
+            g.vx -= j * sa; g.vy += j * ca;
+            var push = GP.RG - dist;
+            g.x += sa * push; g.y -= ca * push;
+            g.bounced = true; g.spin = g.vx / 60; s.flash = 0.12;
+          }
+          // landar på packlårens ovansida
+          if (g.bounced && g.vy > 0 && prevY + GP.RG <= GP.CRATE_TOP && g.y + GP.RG > GP.CRATE_TOP && g.x > GP.CRATE_L && g.x < GP.CRATE_R) {
+            g.y = GP.CRATE_TOP - GP.RG; g.state = 'landed'; g.t = 0; s.missed++;
+            break;
+          }
+        }
+        // inom räckhåll för grodan med samma färg?
+        if (g.state === 'fly' && g.bounced) {
+          var f = s.frogs[g.c];
+          if (!f.tongue && Math.hypot(g.x - f.x, g.y - f.my) < R) {
+            f.tongue = { gem: g, phase: 'out', t: 0, sx: g.x, sy: g.y, tx: f.x, ty: f.my };
+            g.state = 'caught';
+          }
+        }
+        if (g.state === 'fly' && (g.y > GP.S + 40 || g.x < -40 || g.x > GP.S + 40)) { g.dead = true; s.missed++; }
+      } else if (g.state === 'landed') {
+        g.t += dt;
+        if (g.t > GP.LAND_FADE) g.dead = true;
+      }
+    }
+
+    s.frogs.forEach(function (f) {
+      var tg = f.tongue;
+      if (tg) {
+        tg.t += dt;
+        if (tg.phase === 'out') {
+          var u = Math.min(1, tg.t / GP.T_OUT);
+          tg.tx = f.x + (tg.sx - f.x) * u; tg.ty = f.my + (tg.sy - f.my) * u;
+          if (tg.t >= GP.T_OUT) { tg.phase = 'in'; tg.t = 0; }
+        } else {
+          var w = Math.max(0, 1 - tg.t / GP.T_IN);
+          tg.tx = f.x + (tg.sx - f.x) * w; tg.ty = f.my + (tg.sy - f.my) * w;
+          tg.gem.x = tg.tx; tg.gem.y = tg.ty;
+          if (tg.t >= GP.T_IN) { tg.gem.dead = true; f.tongue = null; f.gulp = GP.GULP; s.caught++; }
+        }
+      }
+      f.gulp = Math.max(0, f.gulp - dt);
+    });
+
+    s.gems = s.gems.filter(function (g) { if (g.dead) g.el.remove(); return !g.dead; });
+  }
+
+  // ---- Rita ----
+  var shownCaught = -1, shownMissed = -1;
+  function draw() {
+    var s = sim;
+    $('paddle').style.transform = 'rotate(' + s.angle.toFixed(2) + 'deg)';
+    $('paddle').style.boxShadow = '0 0 ' + (s.flash / 0.12 * 18).toFixed(1) + 'px #fff2c4';
+    s.monkeys.forEach(function (m) {
+      var p = m.pop > 0 ? Math.sin((m.pop / GP.POP) * Math.PI) : 0;
+      m.el.setAttribute('transform', 'translate(70 58) scale(' + (1 + 0.6 * p).toFixed(3) + ')');
+    });
+    s.frogs.forEach(function (f) {
+      var best = null, bd = 1e9;
+      s.gems.forEach(function (g) {
+        if (g.c !== f.c || g.state === 'landed') return;
+        var d = Math.hypot(g.x - f.x, g.y - f.my);
+        if (d < bd) { bd = d; best = g; }
+      });
+      var ex = 0, ey = 0;
+      if (best && bd > 1) { ex = (best.x - f.x) / bd * 2.4; ey = (best.y - f.my) / bd * 2.4; }
+      f.pl.setAttribute('cx', (19 + ex).toFixed(2)); f.pl.setAttribute('cy', (15 + ey).toFixed(2));
+      f.pr.setAttribute('cx', (45 + ex).toFixed(2)); f.pr.setAttribute('cy', (15 + ey).toFixed(2));
+      var gl = f.gulp > 0 ? Math.sin((f.gulp / GP.GULP) * Math.PI) : 0;
+      f.el.style.transform = 'scale(' + (1 + 0.1 * gl).toFixed(3) + ',' + (1 - 0.12 * gl).toFixed(3) + ')';
+      var tg = f.tongue;
+      f.mo.setAttribute('opacity', tg ? 1 : 0);
+      if (tg) {
+        var dx = tg.tx - f.x, dy = tg.ty - f.my;
+        f.tEl.style.display = 'block';
+        f.tEl.style.width = Math.hypot(dx, dy).toFixed(1) + 'px';
+        f.tEl.style.transform = 'rotate(' + Math.atan2(dy, dx).toFixed(4) + 'rad)';
+      } else f.tEl.style.display = 'none';
+    });
+    s.gems.forEach(function (g) {
+      var o = 1, sc = Math.min(1, 0.35 + (g.age / 0.14) * 0.65), sink = 0;
+      if (g.state === 'landed') { var k = Math.min(1, g.t / GP.LAND_FADE); o = 1 - k; sc = 1 - 0.3 * k; sink = 8 * k; }
+      g.el.style.opacity = o.toFixed(3);
+      g.el.style.transform = 'translate(' + (g.x - 15).toFixed(1) + 'px,' + (g.y - 15 + sink).toFixed(1) + 'px) rotate(' + g.rot.toFixed(3) + 'rad) scale(' + sc.toFixed(3) + ')';
+    });
+    ['L', 'R'].forEach(function (side) {
+      var y = s['y' + side] * 720, op = s['a' + side] ? 0.95 : 0.4;
+      var line = $('line' + side), ring = $('ring' + side);
+      line.style.top = (y - 1) + 'px'; ring.style.top = (y - 36) + 'px';
+      line.style.opacity = ring.style.opacity = op;
+    });
+    if (shownCaught !== s.caught) { shownCaught = s.caught; $('caught').textContent = s.caught; }
+    if (shownMissed !== s.missed) { shownMissed = s.missed; $('missed').textContent = s.missed; }
+  }
+
+  var last = null;
+  function loop(ts) {
+    requestAnimationFrame(loop);
+    if (last == null) { last = ts; return; }
+    var dt = Math.min(0.05, (ts - last) / 1000);
+    last = ts;
+    if (!sim.open && !document.hidden) step(dt);
+    draw();
+  }
+  document.addEventListener('visibilitychange', function () { last = null; });
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
