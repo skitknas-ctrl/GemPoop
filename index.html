@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
@@ -20,12 +20,14 @@
   .mline { position: absolute; left: 0; right: 0; height: 0; border-top: 2px dashed #f5e6c8; pointer-events: none; }
   .mring { position: absolute; width: 72px; height: 72px; box-sizing: border-box; border: 3px solid #f5e6c8;
     border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-  .hud { position: absolute; top: 48px; display: flex; flex-direction: column; gap: 18px; pointer-events: none; }
+  .hud { position: absolute; top: 48px; display: flex; flex-direction: column; gap: 16px; pointer-events: none; }
   .logo { display: flex; align-items: center; gap: 12px; }
   .logo b { font-family: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif; font-weight: 900;
-    font-size: 46px; line-height: 1; letter-spacing: 0.5px; }
-  .lbl { font-size: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #b8ad9c; }
-  .num { font-size: 40px; font-weight: 900; line-height: 1; }
+    font-size: 44px; line-height: 1; letter-spacing: 0.5px; }
+  .stats { display: flex; gap: 24px; }
+  .lbl { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #b8ad9c; }
+  .num { font-size: 36px; font-weight: 900; line-height: 1.05; }
+  .num.small { font-size: 26px; }
   .hint { position: absolute; bottom: 40px; display: flex; align-items: center; gap: 10px; font-size: 16px;
     font-weight: 600; color: #9a907f; pointer-events: none; line-height: 1.3; }
   .gear { pointer-events: auto; width: 56px; height: 56px; border-radius: 50%; border: 2px solid #3d3832;
@@ -39,16 +41,34 @@
   .tongue { position: absolute; height: 8px; border-radius: 4px; background: #e65a7f; transform-origin: 0 50%;
     pointer-events: none; display: none; }
   .tongue i { position: absolute; right: -7px; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: #f27c9a; }
+  .piece { position: absolute; left: 0; top: 0; width: 22px; height: 8px; border-radius: 4px; background: #e65a7f; pointer-events: none; }
   .reach { position: absolute; box-sizing: border-box; border-radius: 50%; border: 2px dashed; opacity: 0.6; pointer-events: none; }
   .frog { position: absolute; top: 128px; width: 64px; height: 52px; transform-origin: 50% 100%; }
+  .float { position: absolute; left: 0; top: 0; font-weight: 900; font-size: 26px; pointer-events: none; white-space: nowrap;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.55); }
+  #banner { position: absolute; left: 0; top: 300px; width: 720px; text-align: center; pointer-events: none; opacity: 0; }
+  #banner b { display: block; font-family: "Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif; font-weight: 900;
+    font-size: 72px; line-height: 1; color: #fff7e6; text-shadow: 0 4px 0 #3b2213; }
+  #banner span { display: block; margin-top: 10px; font-size: 22px; font-weight: 800; color: #ffd0d8; text-shadow: 0 2px 0 #3b2213; }
 
-  #settings { position: absolute; top: 0; width: 720px; height: 720px; background: rgba(10, 8, 6, 0.6);
+  .overlay { position: absolute; top: 0; width: 720px; height: 720px; background: rgba(10, 8, 6, 0.62);
     display: none; align-items: center; justify-content: center; }
-  #settings.open { display: flex; }
-  #settings section { width: 460px; box-sizing: border-box; padding: 32px; border-radius: 18px; background: #f6eedc;
-    color: #2a1d12; display: flex; flex-direction: column; gap: 22px; box-shadow: 0 0 0 4px #6b3f1d; }
-  #settings h2 { margin: 0; font-family: "Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif; font-weight: 900;
-    font-size: 36px; line-height: 1; }
+  .overlay.open { display: flex; }
+  .panel { width: 520px; max-height: 660px; overflow: auto; box-sizing: border-box; padding: 28px 30px; border-radius: 18px;
+    background: #f6eedc; color: #2a1d12; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 0 0 4px #6b3f1d; }
+  .panel.wide { width: 620px; }
+  .panel h2 { margin: 0; font-family: "Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif; font-weight: 900;
+    font-size: 38px; line-height: 1; }
+  .panel p { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.45; color: #4a3826; }
+  .panel .warn { color: #9b1029; font-weight: 800; }
+  .tally { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; font-size: 18px; font-weight: 700; }
+  .tally .v { text-align: right; font-weight: 900; }
+  .tally .tot { border-top: 2px solid #d9c9a8; padding-top: 8px; font-size: 22px; }
+  .shop { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .card { border: 2px solid #d9c9a8; border-radius: 14px; padding: 12px 10px; display: flex; flex-direction: column;
+    align-items: center; gap: 6px; background: #fbf6ea; }
+  .card .name { font-weight: 900; font-size: 16px; }
+  .card .reachv { font-size: 14px; font-weight: 700; color: #6b5a48; }
   .row { display: flex; flex-direction: column; gap: 6px; }
   .row .top { display: flex; justify-content: space-between; align-items: baseline; font-size: 18px; font-weight: 800; }
   .row .top span { color: #6b3f1d; }
@@ -56,10 +76,12 @@
   .row input[type=range] { width: 100%; accent-color: #6b3f1d; height: 28px; margin: 0; }
   .check { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
   .check input { width: 22px; height: 22px; accent-color: #6b3f1d; margin: 0; }
-  .btns { display: flex; gap: 12px; justify-content: flex-end; }
+  .btns { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
   .btn { min-height: 48px; padding: 0 22px; border-radius: 12px; border: 2px solid #6b3f1d; background: transparent;
     color: #6b3f1d; font: inherit; font-size: 17px; font-weight: 800; cursor: pointer; }
   .btn.primary { background: #6b3f1d; color: #fff; padding: 0 26px; }
+  .btn.buy { min-height: 44px; width: 100%; padding: 0 8px; font-size: 15px; }
+  .btn:disabled { opacity: 0.4; cursor: default; }
 
   #rotate { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; text-align: center;
     background: #191715; font-size: 22px; font-weight: 800; padding: 32px; box-sizing: border-box; }
@@ -69,7 +91,7 @@
 <body>
 <div id="wrap"><div id="view"><div id="stage">
 
-  <!-- vänster tumyta -->
+  <!-- left thumb area -->
   <div class="side" id="sideL">
     <div class="zone" id="zoneL"><div id="printsL"></div>
       <div class="mline" id="lineL"></div>
@@ -80,35 +102,42 @@
         <svg aria-hidden="true" width="40" height="40" viewBox="0 0 30 30"><polygon points="8,2 22,2 28,8 28,22 22,28 8,28 2,22 2,8" fill="#138a43" stroke="#06451f" stroke-width="1.5"/><polygon points="10,7 20,7 23,10 23,20 20,23 10,23 7,20 7,10" fill="#2fb563"/><polygon points="12,11 18,11 19,12 19,18 18,19 12,19 11,18 11,12" fill="#6fd894"/></svg>
         <b>GemPoop</b>
       </div>
-      <div><div class="lbl">Fångade</div><div class="num" id="caught">0</div></div>
+      <div class="stats">
+        <div><div class="lbl">Score</div><div class="num" id="score">0</div></div>
+        <div><div class="lbl">Level</div><div class="num" id="level">1</div></div>
+      </div>
     </div>
     <div class="hint" id="hintL" style="left: 40px">
       <svg aria-hidden="true" width="16" height="22" viewBox="0 0 26 34" fill="none" stroke="#9a907f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg>
-      <span>Vänster tumme – lyfter paddelns vänstra ände</span>
+      <span>Left thumb raises the left end of the paddle</span>
     </div>
   </div>
 
-  <!-- höger tumyta -->
+  <!-- right thumb area -->
   <div class="side" id="sideR">
     <div class="zone" id="zoneR"><div id="printsR"></div>
       <div class="mline" id="lineR"></div>
       <div class="mring" id="ringR"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
     </div>
     <div class="hud" style="right: 40px; align-items: flex-end">
-      <button class="gear" id="gear" aria-label="Inställningar">
+      <button class="gear" id="gear" aria-label="Settings">
         <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5e6c8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
-      <div style="text-align: right"><div class="lbl">Missade</div><div class="num" id="missed">0</div></div>
+      <div class="stats" style="text-align: right">
+        <div><div class="lbl">Caught</div><div class="num small" id="caught">0</div></div>
+        <div><div class="lbl">Missed</div><div class="num small" id="missed">0</div></div>
+        <div><div class="lbl">Left</div><div class="num small" id="left">20</div></div>
+      </div>
     </div>
     <div class="hint" id="hintR" style="right: 40px; justify-content: flex-end; text-align: right">
-      <span>Höger tumme – lyfter paddelns högra ände</span>
+      <span>Right thumb raises the right end of the paddle</span>
       <svg aria-hidden="true" width="16" height="22" viewBox="0 0 26 34" fill="none" stroke="#9a907f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg>
     </div>
   </div>
 
-  <!-- spelplan 720×720 -->
+  <!-- playfield 720×720 -->
   <div id="field">
-    <!-- djungel -->
+    <!-- jungle -->
     <svg aria-hidden="true" class="abs" style="left:0;top:0" width="720" height="576" viewBox="0 0 720 576">
       <defs><path id="leaf" d="M0 0 C25 -18 70 -22 100 0 C70 22 25 18 0 0 Z"/></defs>
       <g fill="#163628">
@@ -136,7 +165,7 @@
       </g>
     </svg>
 
-    <!-- packlår: 55 % av höjden (y 176–576) -->
+    <!-- crate: 55 % of the height (y 176–576) -->
     <div aria-hidden="true" class="abs" id="crate" style="left:24px; top:176px; width:672px; height:400px; background:#2b180c; border-radius:3px; overflow:hidden">
       <div class="abs" style="left:0; top:0; width:672px; height:14px; background:#c99a62; border-bottom:3px solid #6b4220"></div>
       <div class="abs" style="left:0; top:21px; width:672px; display:flex; flex-direction:column; gap:5px">
@@ -170,14 +199,14 @@
       </div>
       <div class="abs" style="left:0; top:150px; width:672px; display:flex; flex-direction:column; align-items:center; gap:4px; font-family:'Stardos Stencil', Impact, 'Arial Black', sans-serif; color:#3b2213; opacity:.55">
         <div style="font-size:54px; line-height:1; letter-spacing:6px">GEMPOOP &amp; CO.</div>
-        <div style="font-size:22px; letter-spacing:5px">ÄDELSTENAR · ÖMTÅLIGT</div>
+        <div style="font-size:22px; letter-spacing:5px">GEMSTONES · FRAGILE</div>
       </div>
       <div class="abs" style="left:0; top:17px; width:48px; height:383px; box-sizing:border-box; background:#9c6634; border-right:3px solid #6b4220"></div>
       <div class="abs" style="right:0; top:17px; width:48px; height:383px; box-sizing:border-box; background:#9c6634; border-left:3px solid #6b4220"></div>
       <div id="nails"></div>
     </div>
 
-    <!-- svart botten: 20 % -->
+    <!-- black bottom: 20 % -->
     <div class="abs" style="left:0; top:576px; width:720px; height:144px; background:#000"></div>
     <svg aria-hidden="true" class="abs" style="left:330px; top:650px" width="60" height="80" viewBox="0 0 60 80"><polygon points="24,0 36,0 52,70 8,70" fill="#2a2a2a"/><rect x="0" y="66" width="60" height="8" rx="3" fill="#3a3a3a"/></svg>
     <div class="abs" id="paddle" style="left:108px; top:642px; width:504px; height:16px; box-sizing:border-box; border-radius:8px; background:#efe9dc; border:2px solid #9c968a"></div>
@@ -188,56 +217,72 @@
     <div id="frogs"></div>
     <div id="tongues"></div>
     <div id="gems"></div>
+    <div id="fx"></div>
+    <div id="banner"><b id="bannerTitle">Level 1</b><span id="bannerSub"></span></div>
   </div>
 
-  <!-- inställningar -->
-  <div id="settings">
-    <section aria-label="Inställningar">
-      <h2>Inställningar</h2>
+  <!-- start / level complete / game over -->
+  <div class="overlay" id="screen"><div class="panel" id="screenPanel"></div></div>
+
+  <!-- settings -->
+  <div class="overlay" id="settings">
+    <section class="panel" aria-label="Settings">
+      <h2>Settings</h2>
       <div class="row">
-        <div class="top"><label for="freq">Frekvens</label><span id="freqLbl">1 st/s</span></div>
-        <input id="freq" type="range" min="0.25" max="3" step="0.25" value="1">
-        <small>Hur många ädelstenar som ploppar ut per sekund</small>
+        <div class="top"><label for="rate">Starting gem rate</label><span id="rateLbl">0.8 gems/s</span></div>
+        <input id="rate" type="range" min="0.5" max="2" step="0.1" value="0.8">
+        <small>Gems per second on level 1. Every level adds 0.2.</small>
       </div>
       <div class="row">
-        <div class="top"><label for="reach">Tungans räckvidd</label><span id="reachLbl">12 %</span></div>
-        <input id="reach" type="range" min="4" max="25" step="1" value="12">
-        <small>I procent av spelplanens bredd, mätt från grodans mun</small>
+        <div class="top"><label for="base">Base tongue reach</label><span id="baseLbl">10 %</span></div>
+        <input id="base" type="range" min="5" max="20" step="1" value="10">
+        <small>Percent of the playfield width. Red gems snip tongues back to this length.</small>
       </div>
-      <label class="check"><input id="showReach" type="checkbox" checked> Visa räckvidden som streckad ring</label>
+      <label class="check"><input id="showReach" type="checkbox" checked> Show tongue reach as dashed rings</label>
+      <p style="font-size:14px">Rate and base reach changes apply when you start a new game.</p>
       <div class="btns">
-        <button class="btn" id="restart">Starta om</button>
-        <button class="btn primary" id="resume">Fortsätt</button>
+        <button class="btn" id="newGame">New game</button>
+        <button class="btn primary" id="resume">Resume</button>
       </div>
     </section>
   </div>
 
 </div></div></div>
-<div id="rotate">Vrid telefonen till liggande läge för att spela GemPoop.</div>
+<div id="rotate">Turn your phone sideways to play GemPoop.</div>
 
 <script>
 "use strict";
 (function () {
-  // ---- Konstanter (spelplanens koordinater: 720 × 720) ----
+  // ---- Constants (playfield coordinates: 720 × 720) ----
   var GP = {
     S: 720, G: 1200, E: 0.98, RG: 13,
-    PY: 650, PX: 360, HALF: 252, MAXA: 14,          // paddel: 70 % bred, högst 14° lutning
-    CRATE_TOP: 180, CRATE_L: 24, CRATE_R: 696,      // packlårens ovansida
+    PY: 650, PX: 360, HALF: 252, MAXA: 14,          // paddle: 70 % wide, max 14° tilt
+    CRATE_TOP: 180, CRATE_L: 24, CRATE_R: 696,      // top of the crate
     ANUS_Y: 58, MOUTH_Y: 159, LAND_FADE: 2.6, GULP: 0.35,
-    T_OUT: 0.08, T_IN: 0.16, POP: 0.28, MIN_SIDE: 150
+    T_OUT: 0.08, T_IN: 0.16, POP: 0.28, PUSH: 1.0,  // PUSH: 1 s from first glimpse to plop
+    MIN_SIDE: 150,
+    PER_LEVEL: 20, RATE_STEP: 0.2, RATE_MAX: 3.5,
+    RED_FROM: 4, MAX_REACH: 40, BANNER: 1.6
   };
+  var RED = 3;
+  var FROG_NAMES = ['Blue frog', 'Yellow frog', 'Green frog'];
   var $ = function (id) { return document.getElementById(id); };
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function rateFor(level) { return Math.min(GP.RATE_MAX, s.startRate + GP.RATE_STEP * (level - 1)); }
+  function redChance(level) { return level < GP.RED_FROM ? 0 : Math.min(0.45, 0.08 + 0.05 * (level - GP.RED_FROM)); }
+  function upgradeCost(k) { return Math.round(3 * Math.pow(1.4, k)); }
+  function fmt1(n) { return (Math.round(n * 10) / 10).toString(); }
 
-  // ---- Grafik ----
+  // ---- Graphics ----
   var GEM_INNER = [
     '<polygon points="15,1 29,15 15,29 1,15" fill="#1f4fd1" stroke="#0b2370" stroke-width="1.5"/><polygon points="15,7 23,15 15,23 7,15" fill="#4a82f2"/><path d="M15 1 L15 7 M29 15 L23 15 M15 29 L15 23 M1 15 L7 15" stroke="#9cc0ff" stroke-width="1"/><polygon points="15,7 19,11 11,11" fill="#d6e6ff"/>',
     '<circle cx="15" cy="15" r="13.5" fill="#f0b70a" stroke="#7a5600" stroke-width="1.5"/><polygon points="15,6 21.4,8.6 24,15 21.4,21.4 15,24 8.6,21.4 6,15 8.6,8.6" fill="#ffd94d"/><path d="M15 1.5 L15 6 M24.5 5.5 L21.4 8.6 M28.5 15 L24 15 M24.5 24.5 L21.4 21.4 M15 28.5 L15 24 M5.5 24.5 L8.6 21.4 M1.5 15 L6 15 M5.5 5.5 L8.6 8.6" stroke="#fff1b0" stroke-width="1"/><ellipse cx="12" cy="10.5" rx="3.5" ry="2" fill="#fffbe6"/>',
-    '<polygon points="8,2 22,2 28,8 28,22 22,28 8,28 2,22 2,8" fill="#138a43" stroke="#06451f" stroke-width="1.5"/><polygon points="10,7 20,7 23,10 23,20 20,23 10,23 7,20 7,10" fill="#2fb563"/><polygon points="12,11 18,11 19,12 19,18 18,19 12,19 11,18 11,12" fill="#6fd894"/><path d="M8 2 L10 7 M22 2 L20 7 M28 8 L23 10 M28 22 L23 20 M22 28 L20 23 M8 28 L10 23 M2 22 L7 20 M2 8 L7 10" stroke="#a9f0c2" stroke-width="1"/>'
+    '<polygon points="8,2 22,2 28,8 28,22 22,28 8,28 2,22 2,8" fill="#138a43" stroke="#06451f" stroke-width="1.5"/><polygon points="10,7 20,7 23,10 23,20 20,23 10,23 7,20 7,10" fill="#2fb563"/><polygon points="12,11 18,11 19,12 19,18 18,19 12,19 11,18 11,12" fill="#6fd894"/><path d="M8 2 L10 7 M22 2 L20 7 M28 8 L23 10 M28 22 L23 20 M22 28 L20 23 M8 28 L10 23 M2 22 L7 20 M2 8 L7 10" stroke="#a9f0c2" stroke-width="1"/>',
+    '<polygon points="15,2 28.5,26 1.5,26" fill="#c81e3a" stroke="#5c0716" stroke-width="1.5" stroke-linejoin="round"/><polygon points="15,9.5 22,22 8,22" fill="#ef4a63"/><path d="M15 2 L15 9.5 M28.5 26 L22 22 M1.5 26 L8 22" stroke="#ffb3c0" stroke-width="1"/><polygon points="15,9.5 18,15 12,15" fill="#ffe0e6"/>'
   ];
   var GEM_SVG = GEM_INNER.map(function (g) { return '<svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30">' + g + '</svg>'; });
 
-  var MONK = [ // schimpans, orangutang, gorilla, babian
+  var MONK = [ // chimpanzee, orangutan, gorilla, baboon
     { fur: '#4b3427', furDark: '#2a1b12', skin: '#d6a27a', cheek: '#e3b08c', cheekDark: '#9a6648', ring: '#7a2e3e', shaggy: 0, silver: 0, longTail: 1, shortTail: 0 },
     { fur: '#c2622c', furDark: '#7a3510', skin: '#e6b48c', cheek: '#edc09a', cheekDark: '#a8714c', ring: '#7a2e3e', shaggy: 1, silver: 0, longTail: 1, shortTail: 0 },
     { fur: '#34343a', furDark: '#151519', skin: '#6d6870', cheek: '#857f88', cheekDark: '#4a454d', ring: '#5e2433', shaggy: 0, silver: 1, longTail: 0, shortTail: 0 },
@@ -298,38 +343,44 @@
     function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
     var dashes = ['22 3 14 2 30 3', '16 2 26 3 10 2', '34 3 12 2 20 3'];
     var html = '', i, n = Math.round(20 * w / 420);
-    function one(l, t, r, s, o, d) {
-      return '<svg aria-hidden="true" class="print" width="90" height="110" viewBox="0 0 90 110" fill="none" stroke="#e6dccb" stroke-width="2" stroke-linecap="round" stroke-dasharray="' + d + '" style="left:' + l + 'px;top:' + t + 'px;opacity:' + o + ';transform:rotate(' + r + 'deg) scale(' + s + ')">' + PRINT_PATH + '</svg>';
+    function one(l, t, r, sc, o, d) {
+      return '<svg aria-hidden="true" class="print" width="90" height="110" viewBox="0 0 90 110" fill="none" stroke="#e6dccb" stroke-width="2" stroke-linecap="round" stroke-dasharray="' + d + '" style="left:' + l + 'px;top:' + t + 'px;opacity:' + o + ';transform:rotate(' + r + 'deg) scale(' + sc + ')">' + PRINT_PATH + '</svg>';
     }
     for (i = 0; i < n; i++) html += one(Math.round(rnd() * (w - 40) - 30), Math.round(rnd() * 700 - 40), Math.round(rnd() * 360), (0.7 + rnd() * 0.7).toFixed(2), (0.07 + rnd() * 0.13).toFixed(2), dashes[i % 3]);
     for (i = 0; i < 10; i++) html += one(Math.round(w / 2 - 100 + rnd() * 120), Math.round(200 + rnd() * 300), Math.round(rnd() * 360), (0.8 + rnd() * 0.5).toFixed(2), (0.16 + rnd() * 0.14).toFixed(2), dashes[i % 3]);
     return html;
   }
 
-  // ---- Bygg den statiska scenen ----
+  // ---- Build the static scene ----
   (function () {
     var h = '';
     for (var i = 0; i < 6; i++) {
       var top = 21 + i * 63;
       [20, 644].forEach(function (x) {
-        h += '<div class="abs" style="left:' + x + 'px;top:' + (top + 12) + 'px;width:8px;height:8px;border-radius:50%;background:#6a645c;box-shadow:0 0 0 2px #2f2c29"></div>';
-        h += '<div class="abs" style="left:' + x + 'px;top:' + (top + 38) + 'px;width:8px;height:8px;border-radius:50%;background:#6a645c;box-shadow:0 0 0 2px #2f2c29"></div>';
+        [12, 38].forEach(function (dy) {
+          h += '<div class="abs" style="left:' + x + 'px;top:' + (top + dy) + 'px;width:8px;height:8px;border-radius:50%;background:#6a645c;box-shadow:0 0 0 2px #2f2c29"></div>';
+        });
       });
     }
     $('nails').innerHTML = h;
   })();
 
-  var monkeysEl = $('monkeys');
-  var sim = {
-    gems: [], spawnT: 0.8, caught: 0, missed: 0,
+  var s = {
+    state: 'start',            // start | play | shop | over
+    paused: false,
+    level: 1, score: 0, best: 0, bestLevel: 0,
+    caughtL: 0, missedL: 0, spawned: 0, endT: 0, bannerT: 0,
+    gems: [], fx: [], spawnT: 0,
     yL: 0.5, yR: 0.5, aL: false, aR: false, angle: 0, flash: 0,
-    freq: 1, reach: 12, showReach: true, open: false,
+    startRate: 0.8, baseReach: 10, showReach: true,
     monkeys: [], frogs: []
   };
+
+  var monkeysEl = $('monkeys');
   MONK.forEach(function (m, i) {
     var x = GP.S * (0.2 + 0.2 * i);
     monkeysEl.insertAdjacentHTML('beforeend', monkeySvg(m, x - 70));
-    sim.monkeys.push({ x: x, pop: 0, el: monkeysEl.lastChild.querySelector('.anus') });
+    s.monkeys.push({ x: x, pop: 0, busy: null, el: monkeysEl.lastChild.querySelector('.anus') });
   });
   [0, 1, 2].forEach(function (ci) {
     var x = GP.S * (0.3 + 0.2 * ci), c = FROGC[ci];
@@ -344,68 +395,183 @@
     tongue.className = 'tongue'; tongue.innerHTML = '<i></i>';
     tongue.style.left = x + 'px'; tongue.style.top = (GP.MOUTH_Y - 4) + 'px';
     $('tongues').appendChild(tongue);
-    sim.frogs.push({ c: ci, x: x, my: GP.MOUTH_Y, tongue: null, gulp: 0, el: frog, ring: ring, tEl: tongue,
+    s.frogs.push({ c: ci, x: x, my: GP.MOUTH_Y, reach: 10, ups: 0, tongue: null, gulp: 0, hurt: 0,
+      el: frog, ring: ring, tEl: tongue,
       pl: frog.querySelector('.pl'), pr: frog.querySelector('.pr'), mo: frog.querySelector('.mo') });
   });
 
-  // ---- Inställningar (sparas lokalt) ----
+  // ---- Saved settings and best score ----
   try {
-    var saved = JSON.parse(localStorage.getItem('gempoop-settings') || 'null');
+    var saved = JSON.parse(localStorage.getItem('gempoop-v2') || 'null');
     if (saved) {
-      if (saved.freq) sim.freq = clamp(+saved.freq, 0.25, 3);
-      if (saved.reach) sim.reach = clamp(+saved.reach, 4, 25);
-      if (typeof saved.showReach === 'boolean') sim.showReach = saved.showReach;
+      if (saved.startRate) s.startRate = clamp(+saved.startRate, 0.5, 2);
+      if (saved.baseReach) s.baseReach = clamp(+saved.baseReach, 5, 20);
+      if (typeof saved.showReach === 'boolean') s.showReach = saved.showReach;
+      s.best = +saved.best || 0; s.bestLevel = +saved.bestLevel || 0;
     }
   } catch (e) {}
   function save() {
-    try { localStorage.setItem('gempoop-settings', JSON.stringify({ freq: sim.freq, reach: sim.reach, showReach: sim.showReach })); } catch (e) {}
+    try {
+      localStorage.setItem('gempoop-v2', JSON.stringify({ startRate: s.startRate, baseReach: s.baseReach,
+        showReach: s.showReach, best: s.best, bestLevel: s.bestLevel }));
+    } catch (e) {}
   }
-  function syncSettings() {
-    $('freq').value = sim.freq; $('reach').value = sim.reach; $('showReach').checked = sim.showReach;
-    $('freqLbl').textContent = String(sim.freq).replace('.', ',') + ' st/s';
-    $('reachLbl').textContent = sim.reach + ' %';
-    var R = sim.reach / 100 * GP.S;
-    sim.frogs.forEach(function (f) {
+  s.frogs.forEach(function (f) { f.reach = s.baseReach; });
+
+  function syncRings() {
+    s.frogs.forEach(function (f) {
+      var R = f.reach / 100 * GP.S;
       f.ring.style.left = (f.x - R) + 'px'; f.ring.style.top = (f.my - R) + 'px';
       f.ring.style.width = f.ring.style.height = (2 * R) + 'px';
-      f.ring.style.display = (sim.showReach || sim.open) ? 'block' : 'none';
+      f.ring.style.display = (s.showReach || s.paused || s.state === 'shop') ? 'block' : 'none';
     });
   }
-  function setOpen(o) { sim.open = o; $('settings').classList.toggle('open', o); syncSettings(); if (o) $('resume').focus(); }
-  $('gear').addEventListener('click', function () { setOpen(true); });
-  $('resume').addEventListener('click', function () { setOpen(false); });
-  $('restart').addEventListener('click', function () {
-    sim.gems.forEach(function (g) { g.el.remove(); });
-    sim.gems = []; sim.caught = 0; sim.missed = 0; sim.spawnT = 0.8;
-    sim.frogs.forEach(function (f) { f.tongue = null; f.gulp = 0; });
-    setOpen(false);
-  });
-  $('freq').addEventListener('input', function (e) { sim.freq = parseFloat(e.target.value) || 1; save(); syncSettings(); });
-  $('reach').addEventListener('input', function (e) { sim.reach = parseFloat(e.target.value) || 12; save(); syncSettings(); });
-  $('showReach').addEventListener('change', function (e) { sim.showReach = !!e.target.checked; save(); syncSettings(); });
-  syncSettings();
+  function syncSettings() {
+    $('rate').value = s.startRate; $('base').value = s.baseReach; $('showReach').checked = s.showReach;
+    $('rateLbl').textContent = fmt1(s.startRate) + ' gems/s';
+    $('baseLbl').textContent = s.baseReach + ' %';
+    syncRings();
+  }
+  function setPaused(p) {
+    s.paused = p; $('settings').classList.toggle('open', p); syncSettings();
+    if (p) $('resume').focus();
+  }
+  $('gear').addEventListener('click', function () { setPaused(true); });
+  $('resume').addEventListener('click', function () { setPaused(false); });
+  $('newGame').addEventListener('click', function () { setPaused(false); newGame(); });
+  $('rate').addEventListener('input', function (e) { s.startRate = parseFloat(e.target.value) || 0.8; save(); syncSettings(); });
+  $('base').addEventListener('input', function (e) { s.baseReach = parseFloat(e.target.value) || 10; save(); syncSettings(); });
+  $('showReach').addEventListener('change', function (e) { s.showReach = !!e.target.checked; save(); syncSettings(); });
 
-  // ---- Tummarna: varje sida styr sin ände av paddeln ----
+  // ---- Screens: start, level complete + tongue shop, game over ----
+  var screen = $('screen'), panel = $('screenPanel');
+  function showScreen(html) { panel.innerHTML = html; screen.classList.add('open'); syncRings();
+    var b = panel.querySelector('.primary'); if (b) b.focus(); }
+  function hideScreen() { screen.classList.remove('open'); syncRings(); }
+
+  function renderStart() {
+    showScreen(
+      '<h2>GemPoop</h2>' +
+      '<p>Put one thumb on each fingerprint pad. Hold one thumb higher than the other to tilt the paddle.</p>' +
+      '<p>Bounce every gem up to the frog of the same colour. Missed gems are subtracted from your catch after each level, and you can spend your score on longer tongues.</p>' +
+      '<p class="warn">From level ' + GP.RED_FROM + ', red gems appear. If a frog catches one, its tongue is snipped back to base length. The game ends if your score drops below zero.</p>' +
+      (s.best > 0 ? '<p>Best score: <b>' + s.best + '</b> · Best level: <b>' + s.bestLevel + '</b></p>' : '') +
+      '<div class="btns"><button class="btn primary" data-act="play">Play</button></div>');
+  }
+
+  function renderShop(net) {
+    var next = s.level + 1;
+    var cards = s.frogs.map(function (f, i) {
+      var cost = upgradeCost(f.ups), maxed = f.reach >= GP.MAX_REACH;
+      return '<div class="card"><svg aria-hidden="true" width="64" height="52" viewBox="0 0 64 52">' + frogSvg(FROGC[i], i).replace(/^<svg[^>]*>|<\/svg>$/g, '') + '</svg>' +
+        '<div class="name">' + FROG_NAMES[i] + '</div>' +
+        '<div class="reachv">Reach ' + f.reach + ' %</div>' +
+        '<button class="btn buy" data-buy="' + i + '"' + ((maxed || s.score < cost) ? ' disabled' : '') + '>' +
+        (maxed ? 'Max reach' : '+1 % · ' + cost + ' pts') + '</button></div>';
+    }).join('');
+    var redNote = '';
+    if (next === GP.RED_FROM) redNote = '<p class="warn">Red gems start appearing on level ' + next + '. Keep them away from the frogs: a caught red gem snips the tongue back to ' + s.baseReach + ' %.</p>';
+    else if (next > GP.RED_FROM) redNote = '<p class="warn">Red gem chance on level ' + next + ': ' + Math.round(redChance(next) * 100) + ' %</p>';
+    showScreen(
+      '<h2>Level ' + s.level + ' complete</h2>' +
+      '<div class="tally">' +
+        '<span>Caught</span><span class="v">+' + s.caughtL + '</span>' +
+        '<span>Missed</span><span class="v">−' + s.missedL + '</span>' +
+        '<span>Level result</span><span class="v">' + (net >= 0 ? '+' : '−') + Math.abs(net) + '</span>' +
+        '<span class="tot">Score</span><span class="v tot">' + s.score + '</span>' +
+      '</div>' +
+      '<p><b>Tongue shop.</b> Buy reach for each frog separately. Every extra percent costs more than the last.</p>' +
+      '<div class="shop">' + cards + '</div>' + redNote +
+      '<div class="btns"><button class="btn primary" data-act="next">Start level ' + next + ' · ' + fmt1(rateFor(next)) + ' gems/s</button></div>');
+    panel.parentNode.querySelector('.panel').classList.add('wide');
+  }
+
+  function renderOver(net) {
+    showScreen(
+      '<h2>Game over</h2>' +
+      '<div class="tally">' +
+        '<span>Level ' + s.level + ' result</span><span class="v">' + (net >= 0 ? '+' : '−') + Math.abs(net) + '</span>' +
+        '<span class="tot">Final score</span><span class="v tot">' + s.score + '</span>' +
+      '</div>' +
+      '<p>Your score dropped below zero on level ' + s.level + '.</p>' +
+      '<p>Best score: <b>' + s.best + '</b> · Best level: <b>' + s.bestLevel + '</b></p>' +
+      '<div class="btns"><button class="btn primary" data-act="again">Play again</button></div>');
+  }
+
+  panel.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b || b.disabled) return;
+    var act = b.getAttribute('data-act'), buy = b.getAttribute('data-buy');
+    if (buy !== null) {
+      var f = s.frogs[+buy], cost = upgradeCost(f.ups);
+      if (s.score >= cost && f.reach < GP.MAX_REACH) {
+        s.score -= cost; f.ups++; f.reach++;
+        renderShop(s.lastNet); syncRings();
+      }
+      return;
+    }
+    if (act === 'play' || act === 'again') newGame();
+    else if (act === 'next') { s.level++; startLevel(); }
+  });
+
+  function clearField() {
+    s.gems.forEach(function (g) { g.el.remove(); });
+    s.fx.forEach(function (p) { p.el.remove(); });
+    s.gems = []; s.fx = [];
+    s.monkeys.forEach(function (m) { m.busy = null; m.pop = 0; });
+    s.frogs.forEach(function (f) { f.tongue = null; f.gulp = 0; f.hurt = 0; });
+  }
+  function newGame() {
+    clearField();
+    s.level = 1; s.score = 0;
+    s.frogs.forEach(function (f) { f.reach = s.baseReach; f.ups = 0; });
+    startLevel();
+  }
+  function startLevel() {
+    clearField();
+    s.caughtL = 0; s.missedL = 0; s.spawned = 0; s.endT = 0;
+    s.bannerT = GP.BANNER; s.spawnT = GP.BANNER;
+    $('bannerTitle').textContent = 'Level ' + s.level;
+    $('bannerSub').textContent = s.level === GP.RED_FROM ? 'Watch out for red gems!' : (s.level > GP.RED_FROM ? 'Red gems: ' + Math.round(redChance(s.level) * 100) + ' %' : '');
+    s.state = 'play';
+    panel.classList.remove('wide');
+    hideScreen();
+  }
+  function endLevel() {
+    clearField();
+    var net = s.caughtL - s.missedL;
+    s.score += net; s.lastNet = net;
+    if (s.score < 0) {
+      s.state = 'over';
+      s.bestLevel = Math.max(s.bestLevel, s.level);
+      save(); renderOver(net);
+    } else {
+      s.state = 'shop';
+      s.best = Math.max(s.best, s.score); s.bestLevel = Math.max(s.bestLevel, s.level);
+      save(); renderShop(net);
+    }
+  }
+
+  // ---- Thumbs: each side drives its end of the paddle ----
   function bindZone(el, side) {
     var pid = null;
     function set(e) {
       var r = el.getBoundingClientRect();
-      if (r.height) sim['y' + side] = clamp((e.clientY - r.top) / r.height, 0, 1);
+      if (r.height) s['y' + side] = clamp((e.clientY - r.top) / r.height, 0, 1);
     }
     el.addEventListener('pointerdown', function (e) {
       pid = e.pointerId;
       try { el.setPointerCapture(pid); } catch (err) {}
-      sim['a' + side] = true; set(e); e.preventDefault();
+      s['a' + side] = true; set(e); e.preventDefault();
     });
     el.addEventListener('pointermove', function (e) { if (e.pointerId === pid) set(e); });
-    function end(e) { if (e.pointerId === pid) { pid = null; sim['a' + side] = false; } }
+    function end(e) { if (e.pointerId === pid) { pid = null; s['a' + side] = false; } }
     el.addEventListener('pointerup', end);
     el.addEventListener('pointercancel', end);
   }
   bindZone($('zoneL'), 'L');
   bindZone($('zoneR'), 'R');
 
-  // ---- Layout: kvadraten fyller höjden, tumytorna får resten ----
+  // ---- Layout: the square fills the height, the thumb pads get the rest ----
   var stage = $('stage'), view = $('view');
   var lastSide = -1;
   function layout() {
@@ -420,6 +586,7 @@
     $('sideL').style.left = '0px'; $('sideL').style.width = side + 'px';
     $('field').style.left = side + 'px';
     $('settings').style.left = side + 'px';
+    $('screen').style.left = side + 'px';
     $('sideR').style.left = (side + 720) + 'px'; $('sideR').style.width = side + 'px';
     $('ringL').style.left = $('ringR').style.left = (side / 2 - 36) + 'px';
     $('hintL').style.maxWidth = $('hintR').style.maxWidth = (side - 80) + 'px';
@@ -433,45 +600,83 @@
   window.addEventListener('orientationchange', function () { setTimeout(layout, 120); });
   layout();
 
-  // ---- Fysik ----
-  function spawn() {
-    var mi = Math.floor(Math.random() * 4), c = Math.floor(Math.random() * 3);
-    var m = sim.monkeys[mi];
-    m.pop = GP.POP;
+  // ---- Effects: floating text and snipped tongue pieces ----
+  function floatText(x, y, text, color) {
+    var el = document.createElement('div');
+    el.className = 'float'; el.textContent = text; el.style.color = color;
+    $('fx').appendChild(el);
+    s.fx.push({ kind: 'text', x: x, y: y, t: 0, life: 0.9, el: el });
+  }
+  function tonguePiece(x, y, vx) {
+    var el = document.createElement('div');
+    el.className = 'piece';
+    $('fx').appendChild(el);
+    s.fx.push({ kind: 'piece', x: x, y: y, vx: vx, vy: -120, rot: 0, t: 0, life: 1.4, el: el });
+  }
+
+  // ---- Physics ----
+  function beginGem() {
+    var free = s.monkeys.filter(function (m) { return !m.busy; });
+    if (!free.length) return false;
+    var m = free[Math.floor(Math.random() * free.length)];
+    var c = Math.random() < redChance(s.level) ? RED : Math.floor(Math.random() * 3);
     var el = document.createElement('div');
     el.className = 'gem'; el.innerHTML = GEM_SVG[c];
     $('gems').appendChild(el);
-    sim.gems.push({ c: c, x: m.x + (Math.random() - 0.5) * 4, y: GP.ANUS_Y,
-      vx: (Math.random() - 0.5) * 50, vy: 40 + Math.random() * 60,
-      rot: 0, spin: (Math.random() - 0.5) * 4, bounced: false, state: 'fly', age: 0, t: 0, el: el });
+    var g = { c: c, red: c === RED, m: m, x: m.x, y: GP.ANUS_Y, vx: 0, vy: 0, rot: 0, spin: 0,
+      bounced: false, spent: false, state: 'emerging', age: 0, t: 0, el: el };
+    m.busy = g;
+    s.gems.push(g);
+    s.spawned++;
+    return true;
+  }
+  function plop(g) {
+    var m = g.m;
+    m.busy = null; m.pop = GP.POP;
+    g.state = 'fly'; g.age = 0;
+    g.x = m.x + (Math.random() - 0.5) * 4; g.y = GP.ANUS_Y;
+    g.vx = (Math.random() - 0.5) * 50; g.vy = 40 + Math.random() * 60;
+    g.spin = (Math.random() - 0.5) * 4;
+  }
+  function missed(g, x, y) {
+    if (g.red) return;              // red gems never count against you
+    s.missedL++;
+    floatText(x, y, '−1', '#ff9aa8');
   }
 
   function step(dt) {
-    var s = sim, interval = 1 / s.freq;
+    var interval = 1 / rateFor(s.level);
     var diff = clamp((s.yR - s.yL) / 0.5, -1, 1);
     s.angle += (GP.MAXA * diff - s.angle) * Math.min(1, dt * 18);
     s.flash = Math.max(0, s.flash - dt);
+    s.bannerT = Math.max(0, s.bannerT - dt);
 
-    if (s.spawnT > interval) s.spawnT = interval;
-    s.spawnT -= dt;
-    if (s.spawnT <= 0) { s.spawnT += interval; spawn(); }
+    if (s.spawned < GP.PER_LEVEL) {
+      if (s.spawnT > interval + GP.BANNER) s.spawnT = interval;
+      s.spawnT -= dt;
+      if (s.spawnT <= 0) { if (beginGem()) s.spawnT += interval; else s.spawnT = 0.05; }
+    }
     s.monkeys.forEach(function (m) { m.pop = Math.max(0, m.pop - dt); });
 
-    var R = s.reach / 100 * GP.S;
     var a = s.angle * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a);
 
     for (var i = 0; i < s.gems.length; i++) {
       var g = s.gems[i];
       g.age += dt;
+      if (g.state === 'emerging') {
+        g.t += dt;
+        if (g.t >= GP.PUSH) plop(g);
+        continue;
+      }
       if (g.state === 'fly') {
         var sub = 3, h = dt / sub;
         for (var k = 0; k < sub; k++) {
           var prevY = g.y;
-          g.vy += GP.G * h;            // ökande fallhastighet / avtagande stigning
+          g.vy += GP.G * h;            // falls faster and faster, rises slower and slower
           g.x += g.vx * h;
           g.y += g.vy * h;
           g.rot += g.spin * h;
-          // studs mot sned paddel, normal n = (sin a, −cos a)
+          // bounce on the tilted paddle, normal n = (sin a, −cos a)
           var px = g.x - GP.PX, py = g.y - GP.PY;
           var along = px * ca + py * sa;
           var dist = px * sa - py * ca;
@@ -483,21 +688,36 @@
             g.x += sa * push; g.y -= ca * push;
             g.bounced = true; g.spin = g.vx / 60; s.flash = 0.12;
           }
-          // landar på packlårens ovansida
+          // lands on top of the crate
           if (g.bounced && g.vy > 0 && prevY + GP.RG <= GP.CRATE_TOP && g.y + GP.RG > GP.CRATE_TOP && g.x > GP.CRATE_L && g.x < GP.CRATE_R) {
-            g.y = GP.CRATE_TOP - GP.RG; g.state = 'landed'; g.t = 0; s.missed++;
+            g.y = GP.CRATE_TOP - GP.RG; g.state = 'landed'; g.t = 0;
+            missed(g, g.x - 12, g.y - 40);
             break;
           }
         }
-        // inom räckhåll för grodan med samma färg?
-        if (g.state === 'fly' && g.bounced) {
-          var f = s.frogs[g.c];
-          if (!f.tongue && Math.hypot(g.x - f.x, g.y - f.my) < R) {
-            f.tongue = { gem: g, phase: 'out', t: 0, sx: g.x, sy: g.y, tx: f.x, ty: f.my };
-            g.state = 'caught';
+        // within reach of a frog?
+        if (g.state === 'fly' && g.bounced && !g.spent) {
+          var target = null;
+          if (g.red) {
+            var bd = 1e9;
+            s.frogs.forEach(function (f) {
+              if (f.tongue) return;
+              var d = Math.hypot(g.x - f.x, g.y - f.my);
+              if (d < f.reach / 100 * GP.S && d < bd) { bd = d; target = f; }
+            });
+          } else {
+            var f0 = s.frogs[g.c];
+            if (!f0.tongue && Math.hypot(g.x - f0.x, g.y - f0.my) < f0.reach / 100 * GP.S) target = f0;
+          }
+          if (target) {
+            target.tongue = { gem: g, phase: 'out', t: 0, sx: g.x, sy: g.y, tx: target.x, ty: target.my, red: g.red };
+            g.state = 'snared';
           }
         }
-        if (g.state === 'fly' && (g.y > GP.S + 40 || g.x < -40 || g.x > GP.S + 40)) { g.dead = true; s.missed++; }
+        if (g.state === 'fly' && (g.y > GP.S + 40 || g.x < -40 || g.x > GP.S + 40)) {
+          g.dead = true;
+          missed(g, clamp(g.x, 30, 680), 680);
+        }
       } else if (g.state === 'landed') {
         g.t += dt;
         if (g.t > GP.LAND_FADE) g.dead = true;
@@ -511,34 +731,73 @@
         if (tg.phase === 'out') {
           var u = Math.min(1, tg.t / GP.T_OUT);
           tg.tx = f.x + (tg.sx - f.x) * u; tg.ty = f.my + (tg.sy - f.my) * u;
-          if (tg.t >= GP.T_OUT) { tg.phase = 'in'; tg.t = 0; }
+          if (tg.t >= GP.T_OUT) {
+            if (tg.red) {
+              // the red gem snips the tongue back to its original length
+              var g = tg.gem;
+              g.state = 'fly'; g.spent = true; g.vx *= 0.4; g.vy = Math.max(60, g.vy * 0.3);
+              tonguePiece(tg.tx, tg.ty, (tg.tx - f.x) * 1.5);
+              f.tongue = null; f.hurt = 0.7;
+              var lost = f.reach - s.baseReach;
+              f.reach = s.baseReach; f.ups = 0;
+              floatText(f.x - 30, f.my - 70, lost > 0 ? 'SNIP! −' + lost + ' %' : 'SNIP!', '#ff6b80');
+              syncRings();
+            } else { tg.phase = 'in'; tg.t = 0; }
+          }
         } else {
           var w = Math.max(0, 1 - tg.t / GP.T_IN);
           tg.tx = f.x + (tg.sx - f.x) * w; tg.ty = f.my + (tg.sy - f.my) * w;
           tg.gem.x = tg.tx; tg.gem.y = tg.ty;
-          if (tg.t >= GP.T_IN) { tg.gem.dead = true; f.tongue = null; f.gulp = GP.GULP; s.caught++; }
+          if (tg.t >= GP.T_IN) {
+            tg.gem.dead = true; f.tongue = null; f.gulp = GP.GULP; s.caughtL++;
+            floatText(f.x - 12, f.my - 70, '+1', '#b6f5c8');
+          }
         }
       }
       f.gulp = Math.max(0, f.gulp - dt);
+      f.hurt = Math.max(0, f.hurt - dt);
     });
 
     s.gems = s.gems.filter(function (g) { if (g.dead) g.el.remove(); return !g.dead; });
+
+    // level over when every gem has been resolved
+    if (s.spawned >= GP.PER_LEVEL && !s.gems.some(function (g) { return g.state !== 'landed'; }) &&
+        s.frogs.every(function (f) { return !f.tongue; })) {
+      s.endT += dt;
+      if (s.endT > 1.0) endLevel();
+    }
   }
 
-  // ---- Rita ----
-  var shownCaught = -1, shownMissed = -1;
+  function stepFx(dt) {
+    s.fx.forEach(function (p) {
+      p.t += dt;
+      if (p.kind === 'piece') { p.vy += GP.G * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.rot += 8 * dt; }
+      else p.y -= 40 * dt;
+      if (p.t > p.life) p.dead = true;
+    });
+    s.fx = s.fx.filter(function (p) { if (p.dead) p.el.remove(); return !p.dead; });
+  }
+
+  // ---- Draw ----
+  var shown = {};
+  function setText(id, v) { if (shown[id] !== v) { shown[id] = v; $(id).textContent = v; } }
   function draw() {
-    var s = sim;
     $('paddle').style.transform = 'rotate(' + s.angle.toFixed(2) + 'deg)';
     $('paddle').style.boxShadow = '0 0 ' + (s.flash / 0.12 * 18).toFixed(1) + 'px #fff2c4';
     s.monkeys.forEach(function (m) {
-      var p = m.pop > 0 ? Math.sin((m.pop / GP.POP) * Math.PI) : 0;
-      m.el.setAttribute('transform', 'translate(70 58) scale(' + (1 + 0.6 * p).toFixed(3) + ')');
+      var sc;
+      if (m.busy) {
+        var e = m.busy.t / GP.PUSH, ee = e * e * (3 - 2 * e);
+        sc = 1 + 0.6 * ee + 0.05 * ee * Math.sin(m.busy.t * 38);   // straining, widening
+      } else {
+        sc = 1 + 0.6 * (m.pop / GP.POP);                             // snaps back after the plop
+      }
+      m.el.setAttribute('transform', 'translate(70 58) scale(' + sc.toFixed(3) + ')');
     });
     s.frogs.forEach(function (f) {
       var best = null, bd = 1e9;
       s.gems.forEach(function (g) {
-        if (g.c !== f.c || g.state === 'landed') return;
+        if (g.c !== f.c || g.state === 'landed' || g.state === 'emerging') return;
         var d = Math.hypot(g.x - f.x, g.y - f.my);
         if (d < bd) { bd = d; best = g; }
       });
@@ -547,9 +806,10 @@
       f.pl.setAttribute('cx', (19 + ex).toFixed(2)); f.pl.setAttribute('cy', (15 + ey).toFixed(2));
       f.pr.setAttribute('cx', (45 + ex).toFixed(2)); f.pr.setAttribute('cy', (15 + ey).toFixed(2));
       var gl = f.gulp > 0 ? Math.sin((f.gulp / GP.GULP) * Math.PI) : 0;
-      f.el.style.transform = 'scale(' + (1 + 0.1 * gl).toFixed(3) + ',' + (1 - 0.12 * gl).toFixed(3) + ')';
+      var shake = f.hurt > 0 ? Math.sin(f.hurt * 70) * 4 * (f.hurt / 0.7) : 0;
+      f.el.style.transform = 'translateX(' + shake.toFixed(2) + 'px) scale(' + (1 + 0.1 * gl).toFixed(3) + ',' + (1 - 0.12 * gl).toFixed(3) + ')';
       var tg = f.tongue;
-      f.mo.setAttribute('opacity', tg ? 1 : 0);
+      f.mo.setAttribute('opacity', (tg || f.hurt > 0) ? 1 : 0);
       if (tg) {
         var dx = tg.tx - f.x, dy = tg.ty - f.my;
         f.tEl.style.display = 'block';
@@ -558,19 +818,39 @@
       } else f.tEl.style.display = 'none';
     });
     s.gems.forEach(function (g) {
-      var o = 1, sc = Math.min(1, 0.35 + (g.age / 0.14) * 0.65), sink = 0;
-      if (g.state === 'landed') { var k = Math.min(1, g.t / GP.LAND_FADE); o = 1 - k; sc = 1 - 0.3 * k; sink = 8 * k; }
+      var o = 1, sc = 1, sink = 0, x = g.x, y = g.y, rot = g.rot;
+      if (g.state === 'emerging') {
+        // can just be glimpsed in the anus, then pushes out over one second
+        var e = g.t / GP.PUSH;
+        sc = 0.25 + 0.4 * e * e; o = 0.5 + 0.5 * e;
+        rot = Math.sin(g.t * 9) * 0.15 * e;
+        x = g.m.x; y = GP.ANUS_Y;
+      } else if (g.state === 'landed') {
+        var k = Math.min(1, g.t / GP.LAND_FADE); o = 1 - k; sc = 1 - 0.3 * k; sink = 8 * k;
+      } else {
+        sc = Math.min(1, 0.6 + (g.age / 0.12) * 0.4);
+      }
       g.el.style.opacity = o.toFixed(3);
-      g.el.style.transform = 'translate(' + (g.x - 15).toFixed(1) + 'px,' + (g.y - 15 + sink).toFixed(1) + 'px) rotate(' + g.rot.toFixed(3) + 'rad) scale(' + sc.toFixed(3) + ')';
+      g.el.style.transform = 'translate(' + (x - 15).toFixed(1) + 'px,' + (y - 15 + sink).toFixed(1) + 'px) rotate(' + rot.toFixed(3) + 'rad) scale(' + sc.toFixed(3) + ')';
     });
+    s.fx.forEach(function (p) {
+      var o = 1 - Math.pow(p.t / p.life, 2);
+      p.el.style.opacity = o.toFixed(3);
+      p.el.style.transform = 'translate(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px)' + (p.kind === 'piece' ? ' rotate(' + p.rot.toFixed(2) + 'rad)' : '');
+    });
+    var bo = s.state === 'play' ? Math.min(1, s.bannerT / 0.4) : 0;
+    $('banner').style.opacity = bo.toFixed(3);
     ['L', 'R'].forEach(function (side) {
       var y = s['y' + side] * 720, op = s['a' + side] ? 0.95 : 0.4;
       var line = $('line' + side), ring = $('ring' + side);
       line.style.top = (y - 1) + 'px'; ring.style.top = (y - 36) + 'px';
       line.style.opacity = ring.style.opacity = op;
     });
-    if (shownCaught !== s.caught) { shownCaught = s.caught; $('caught').textContent = s.caught; }
-    if (shownMissed !== s.missed) { shownMissed = s.missed; $('missed').textContent = s.missed; }
+    setText('score', String(s.score));
+    setText('level', String(s.level));
+    setText('caught', String(s.caughtL));
+    setText('missed', String(s.missedL));
+    setText('left', String(Math.max(0, GP.PER_LEVEL - s.spawned)));
   }
 
   var last = null;
@@ -579,10 +859,16 @@
     if (last == null) { last = ts; return; }
     var dt = Math.min(0.05, (ts - last) / 1000);
     last = ts;
-    if (!sim.open && !document.hidden) step(dt);
+    if (!s.paused && !document.hidden) {
+      if (s.state === 'play') step(dt);
+      stepFx(dt);
+    }
     draw();
   }
   document.addEventListener('visibilitychange', function () { last = null; });
+
+  syncSettings();
+  renderStart();
   requestAnimationFrame(loop);
 })();
 </script>
