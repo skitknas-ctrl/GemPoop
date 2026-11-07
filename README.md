@@ -33,7 +33,7 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 
 ## Nivåer, poäng och butik
 
-- Varje nivå har 20 ädelstenar. Nivå 1 ger 0,4 stenar per sekund, och varje ny nivå lägger till 0,2 (högst 3,5).
+- Varje nivå har 30 ädelstenar. Nivå 1 ger 0,4 stenar per sekund, och varje ny nivå lägger till 0,1 (högst 3,5).
 - Efter varje nivå dras de missade stenarna av från de fångade, och resultatet läggs till poängen.
 - Hamnar poängen under noll är spelet slut.
 - Mellan nivåerna kan poäng köpa längre tunga, en procent i taget och för varje groda för sig.
