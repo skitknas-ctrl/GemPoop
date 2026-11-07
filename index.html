@@ -137,80 +137,79 @@
 
   <!-- playfield 720×720 -->
   <div id="field">
-    <!-- jungle -->
+    <!-- jungle (daylight, clearly lighter than every monkey) -->
     <svg aria-hidden="true" class="abs" style="left:0;top:0" width="720" height="576" viewBox="0 0 720 576">
-      <defs><path id="leaf" d="M0 0 C25 -18 70 -22 100 0 C70 22 25 18 0 0 Z"/></defs>
-      <g fill="#163628">
-        <use href="#leaf" transform="translate(-14 30) rotate(18) scale(1.5)"/>
-        <use href="#leaf" transform="translate(-24 190) rotate(32) scale(1.7)"/>
-        <use href="#leaf" transform="translate(734 24) rotate(162) scale(1.5)"/>
-        <use href="#leaf" transform="translate(744 200) rotate(148) scale(1.7)"/>
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8fcf2"/><stop offset="1" stop-color="#e6f2de"/></linearGradient>
+        <g id="leafV"><path d="M0 0 C25 -18 70 -22 100 0 C70 22 25 18 0 0 Z" stroke="none"/><path d="M6 0 Q50 -2 94 0 M28 -1 L40 -9 M28 1 L40 9 M52 -1 L64 -9 M52 1 L64 9 M74 -1 L84 -6 M74 1 L84 6" fill="none" stroke-width="1.6" stroke-linecap="round"/></g>
+      </defs>
+      <rect width="720" height="576" fill="url(#sky)"/>
+      <g fill="#ffffff" opacity="0.6">
+        <polygon points="240,0 320,0 190,576 70,576"/>
+        <polygon points="430,0 462,0 420,576 340,576"/>
+        <polygon points="560,0 640,0 712,576 610,576"/>
       </g>
-      <g fill="#22543e">
-        <use href="#leaf" transform="translate(-6 104) rotate(-8) scale(1.25)"/>
-        <use href="#leaf" transform="translate(726 110) rotate(188) scale(1.25)"/>
-        <use href="#leaf" transform="translate(-10 330) rotate(-20) scale(1.1)"/>
-        <use href="#leaf" transform="translate(730 340) rotate(200) scale(1.1)"/>
+      <path fill="#dcedd5" d="M0 140 C50 116 100 136 150 124 C210 110 250 138 310 128 C370 118 410 140 470 126 C530 112 590 138 650 124 C685 116 705 122 720 118 V576 H0 Z"/>
+      <g fill="#d2e6ca">
+        <rect x="34" y="0" width="22" height="576" rx="6"/>
+        <rect x="668" y="0" width="20" height="576" rx="6"/>
       </g>
-      <g fill="none" stroke="#2a6449" stroke-width="3" stroke-linecap="round">
+      <g stroke="#c4dcbb" stroke-width="2" fill="none" stroke-linecap="round">
+        <path d="M40 60 q6 10 0 20 M48 200 q6 10 0 20 M676 90 q6 10 0 20 M680 260 q6 10 0 20"/>
+      </g>
+      <g fill="#c5e1bf" stroke="#a9cfa2">
+        <use href="#leafV" transform="translate(-14 30) rotate(18) scale(1.5)"/>
+        <use href="#leafV" transform="translate(-24 190) rotate(32) scale(1.7)"/>
+        <use href="#leafV" transform="translate(734 24) rotate(162) scale(1.5)"/>
+        <use href="#leafV" transform="translate(744 200) rotate(148) scale(1.7)"/>
+      </g>
+      <g fill="#b2d8aa" stroke="#8fc187">
+        <use href="#leafV" transform="translate(-6 104) rotate(-8) scale(1.25)"/>
+        <use href="#leafV" transform="translate(726 110) rotate(188) scale(1.25)"/>
+        <use href="#leafV" transform="translate(-10 330) rotate(-20) scale(1.1)"/>
+        <use href="#leafV" transform="translate(730 340) rotate(200) scale(1.1)"/>
+      </g>
+      <g fill="none" stroke="#9fcc99" stroke-width="3.5" stroke-linecap="round">
         <path d="M110 0 C98 26 124 46 108 76 C98 94 116 104 112 118"/>
         <path d="M432 0 C424 18 440 30 430 46"/>
         <path d="M612 0 C624 30 600 52 616 84 C624 100 610 110 614 124"/>
       </g>
-      <g fill="#2a6449">
-        <use href="#leaf" transform="translate(108 76) rotate(40) scale(0.18)"/>
-        <use href="#leaf" transform="translate(112 118) rotate(130) scale(0.16)"/>
-        <use href="#leaf" transform="translate(616 84) rotate(140) scale(0.18)"/>
-        <use href="#leaf" transform="translate(614 124) rotate(50) scale(0.16)"/>
+      <g fill="#a9d4a2" stroke="#86bb7f">
+        <use href="#leafV" transform="translate(108 76) rotate(40) scale(0.2)"/>
+        <use href="#leafV" transform="translate(112 118) rotate(130) scale(0.18)"/>
+        <use href="#leafV" transform="translate(616 84) rotate(140) scale(0.2)"/>
+        <use href="#leafV" transform="translate(614 124) rotate(50) scale(0.18)"/>
+        <use href="#leafV" transform="translate(430 46) rotate(70) scale(0.16)"/>
+      </g>
+      <g>
+        <circle cx="106" cy="40" r="4" fill="#f4a3c0"/><circle cx="106" cy="40" r="1.6" fill="#ffd95a"/>
+        <circle cx="618" cy="46" r="4" fill="#f4a3c0"/><circle cx="618" cy="46" r="1.6" fill="#ffd95a"/>
+        <circle cx="20" cy="260" r="4" fill="#f4a3c0"/><circle cx="20" cy="260" r="1.6" fill="#ffd95a"/>
+        <circle cx="704" cy="300" r="4" fill="#f4a3c0"/><circle cx="704" cy="300" r="1.6" fill="#ffd95a"/>
       </g>
     </svg>
 
-    <!-- crate: 55 % of the height (y 176–576) -->
-    <div aria-hidden="true" class="abs" id="crate" style="left:24px; top:176px; width:672px; height:400px; background:#2b180c; border-radius:3px; overflow:hidden">
-      <div class="abs" style="left:0; top:0; width:672px; height:14px; background:#c99a62; border-bottom:3px solid #6b4220"></div>
-      <div class="abs" style="left:0; top:21px; width:672px; display:flex; flex-direction:column; gap:5px">
-        <div style="position:relative; height:58px; background:#b27b45">
-          <div class="abs" style="left:60px; top:14px; width:320px; height:2px; background:#8c5a2c; opacity:.7"></div>
-          <div class="abs" style="left:230px; top:36px; width:380px; height:2px; background:#8c5a2c; opacity:.5"></div>
-          <div class="abs" style="left:470px; top:18px; width:24px; height:14px; box-sizing:border-box; border:3px solid #7a4a22; border-radius:50%"></div>
-        </div>
-        <div style="position:relative; height:58px; background:#a46d3b">
-          <div class="abs" style="left:90px; top:22px; width:460px; height:2px; background:#7e4f26; opacity:.7"></div>
-          <div class="abs" style="left:40px; top:42px; width:200px; height:2px; background:#7e4f26; opacity:.5"></div>
-          <div class="abs" style="left:160px; top:10px; width:18px; height:12px; box-sizing:border-box; border:3px solid #6e4220; border-radius:50%"></div>
-        </div>
-        <div style="position:relative; height:58px; background:#bb8550">
-          <div class="abs" style="left:50px; top:12px; width:540px; height:2px; background:#8c5a2c; opacity:.5"></div>
-          <div class="abs" style="left:300px; top:40px; width:300px; height:2px; background:#8c5a2c; opacity:.6"></div>
-        </div>
-        <div style="position:relative; height:58px; background:#a8713f">
-          <div class="abs" style="left:70px; top:30px; width:260px; height:2px; background:#7e4f26; opacity:.6"></div>
-          <div class="abs" style="left:380px; top:16px; width:230px; height:2px; background:#7e4f26; opacity:.6"></div>
-          <svg class="abs" style="left:300px; top:0" width="80" height="58" viewBox="0 0 80 58"><path d="M10 0 L20 14 L13 24 L28 38 L22 58" fill="none" stroke="#3a2210" stroke-width="2"/></svg>
-        </div>
-        <div style="position:relative; height:58px; background:#b47d47">
-          <div class="abs" style="left:110px; top:20px; width:420px; height:2px; background:#8c5a2c; opacity:.6"></div>
-          <div class="abs" style="left:520px; top:30px; width:20px; height:13px; box-sizing:border-box; border:3px solid #7a4a22; border-radius:50%"></div>
-        </div>
-        <div style="position:relative; height:58px; background:#9e683a">
-          <div class="abs" style="left:60px; top:26px; width:500px; height:2px; background:#774a24; opacity:.6"></div>
-          <svg class="abs" style="left:554px; top:0" width="70" height="58" viewBox="0 0 70 58"><polygon points="70,20 34,30 46,58 70,58" fill="#2b180c"/></svg>
-        </div>
-      </div>
-      <div class="abs" style="left:0; top:150px; width:672px; display:flex; flex-direction:column; align-items:center; gap:4px; font-family:'Stardos Stencil', Impact, 'Arial Black', sans-serif; color:#3b2213; opacity:.55">
-        <div style="font-size:54px; line-height:1; letter-spacing:6px">GEMPOOP &amp; CO.</div>
-        <div style="font-size:22px; letter-spacing:5px">GEMSTONES · FRAGILE</div>
-      </div>
-      <div class="abs" style="left:0; top:17px; width:48px; height:383px; box-sizing:border-box; background:#9c6634; border-right:3px solid #6b4220"></div>
-      <div class="abs" style="right:0; top:17px; width:48px; height:383px; box-sizing:border-box; background:#9c6634; border-left:3px solid #6b4220"></div>
-      <div id="nails"></div>
-    </div>
+    <!-- crate: 55 % of the height (y 176–576), drawn by buildCrate() -->
+    <div aria-hidden="true" class="abs" id="crate" style="left:24px; top:176px; width:672px; height:400px; border-radius:3px; overflow:hidden"></div>
 
     <!-- black bottom: 20 % -->
     <div class="abs" style="left:0; top:576px; width:720px; height:144px; background:#000"></div>
-    <svg aria-hidden="true" class="abs" style="left:330px; top:650px" width="60" height="80" viewBox="0 0 60 80"><polygon points="24,0 36,0 52,70 8,70" fill="#2a2a2a"/><rect x="0" y="66" width="60" height="8" rx="3" fill="#3a3a3a"/></svg>
-    <div class="abs" id="paddle" style="left:108px; top:642px; width:504px; height:16px; box-sizing:border-box; border-radius:8px; background:#efe9dc; border:2px solid #9c968a"></div>
-    <div class="abs" style="left:348px; top:638px; width:24px; height:24px; box-sizing:border-box; border-radius:50%; background:#3a3a3a; border:3px solid #8a857c"></div>
+    <svg aria-hidden="true" class="abs" style="left:320px; top:650px" width="80" height="70" viewBox="0 0 80 70">
+      <polygon points="33,0 47,0 62,62 18,62" fill="#3a3834" stroke="#55524c" stroke-width="2" stroke-linejoin="round"/>
+      <polygon points="35,4 39,4 30,58 24,58" fill="#6a665f" opacity="0.7"/>
+      <rect x="4" y="58" width="72" height="10" rx="4" fill="#4a4741" stroke="#66625b" stroke-width="2"/>
+      <circle cx="14" cy="63" r="2.2" fill="#a29d93"/><circle cx="66" cy="63" r="2.2" fill="#a29d93"/>
+    </svg>
+    <div class="abs" id="paddle" style="left:108px; top:641px; width:504px; height:18px; box-sizing:border-box; border-radius:9px; background:linear-gradient(#fffdf6 0%, #f1e9d8 45%, #cbc1ab 100%); border:2px solid #5f5a52">
+      <div class="abs" style="left:0; top:0; width:30px; height:14px; border-radius:7px 3px 3px 7px; background:#3f3c37"></div>
+      <div class="abs" style="right:0; top:0; width:30px; height:14px; border-radius:3px 7px 7px 3px; background:#3f3c37"></div>
+      <div class="abs" style="left:34px; right:34px; top:3px; height:2px; border-radius:1px; background:#ffffff; opacity:0.8"></div>
+      <div class="abs" style="left:110px; top:4px; width:6px; height:6px; border-radius:50%; background:#8d877c"></div>
+      <div class="abs" style="right:110px; top:4px; width:6px; height:6px; border-radius:50%; background:#8d877c"></div>
+    </div>
+    <div class="abs" style="left:346px; top:636px; width:28px; height:28px; box-sizing:border-box; border-radius:50%; background:radial-gradient(circle at 35% 35%, #d2ccc1, #5b5852 70%); border:2px solid #23211e">
+      <div class="abs" style="left:8px; top:11px; width:8px; height:2px; background:#2a2825"></div>
+    </div>
 
     <div id="monkeys"></div>
     <div id="reaches"></div>
@@ -275,95 +274,230 @@
   function fmt1(n) { return (Math.round(n * 10) / 10).toString(); }
 
   // ---- Graphics ----
+  var SPARK = '<path d="M23.5 2.5 l1.1 3.1 3.1 1.1 -3.1 1.1 -1.1 3.1 -1.1 -3.1 -3.1 -1.1 3.1 -1.1z" fill="#ffffff"/>';
   var GEM_INNER = [
-    '<polygon points="15,1 29,15 15,29 1,15" fill="#1f4fd1" stroke="#0b2370" stroke-width="1.5"/><polygon points="15,7 23,15 15,23 7,15" fill="#4a82f2"/><path d="M15 1 L15 7 M29 15 L23 15 M15 29 L15 23 M1 15 L7 15" stroke="#9cc0ff" stroke-width="1"/><polygon points="15,7 19,11 11,11" fill="#d6e6ff"/>',
-    '<circle cx="15" cy="15" r="13.5" fill="#f0b70a" stroke="#7a5600" stroke-width="1.5"/><polygon points="15,6 21.4,8.6 24,15 21.4,21.4 15,24 8.6,21.4 6,15 8.6,8.6" fill="#ffd94d"/><path d="M15 1.5 L15 6 M24.5 5.5 L21.4 8.6 M28.5 15 L24 15 M24.5 24.5 L21.4 21.4 M15 28.5 L15 24 M5.5 24.5 L8.6 21.4 M1.5 15 L6 15 M5.5 5.5 L8.6 8.6" stroke="#fff1b0" stroke-width="1"/><ellipse cx="12" cy="10.5" rx="3.5" ry="2" fill="#fffbe6"/>',
-    '<polygon points="8,2 22,2 28,8 28,22 22,28 8,28 2,22 2,8" fill="#138a43" stroke="#06451f" stroke-width="1.5"/><polygon points="10,7 20,7 23,10 23,20 20,23 10,23 7,20 7,10" fill="#2fb563"/><polygon points="12,11 18,11 19,12 19,18 18,19 12,19 11,18 11,12" fill="#6fd894"/><path d="M8 2 L10 7 M22 2 L20 7 M28 8 L23 10 M28 22 L23 20 M22 28 L20 23 M8 28 L10 23 M2 22 L7 20 M2 8 L7 10" stroke="#a9f0c2" stroke-width="1"/>',
-    '<polygon points="15,2 28.5,26 1.5,26" fill="#c81e3a" stroke="#5c0716" stroke-width="1.5" stroke-linejoin="round"/><polygon points="15,9.5 22,22 8,22" fill="#ef4a63"/><path d="M15 2 L15 9.5 M28.5 26 L22 22 M1.5 26 L8 22" stroke="#ffb3c0" stroke-width="1"/><polygon points="15,9.5 18,15 12,15" fill="#ffe0e6"/>'
+    // blue: rhombus
+    '<polygon points="15,1 29,15 15,29 1,15" fill="#1f4fd1" stroke="#0b2370" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<polygon points="15,1 22,8 15,7 8,8" fill="#5b8ff5"/><polygon points="29,15 22,22 23,15 22,8" fill="#2a5be0"/>' +
+    '<polygon points="15,29 8,22 15,23 22,22" fill="#163fa8"/><polygon points="1,15 8,8 7,15 8,22" fill="#3a6eea"/>' +
+    '<polygon points="15,7 23,15 15,23 7,15" fill="#4a82f2"/><polygon points="15,7 23,15 15,15" fill="#6d9cf7"/>' +
+    '<path d="M15 1 L15 7 M29 15 L23 15 M15 29 L15 23 M1 15 L7 15 M8 8 L15 15 L22 22 M22 8 L15 15 L8 22" stroke="#a9c8ff" stroke-width="0.8" opacity="0.8"/>' +
+    '<polygon points="15,7 19,11 11,11" fill="#e3edff"/>' + SPARK,
+    // yellow: round brilliant
+    '<circle cx="15" cy="15" r="13.5" fill="#f0b70a" stroke="#7a5600" stroke-width="1.5"/>' +
+    '<path d="M15 1.5 L21.4 8.6 L28.5 15 L21.4 21.4 L15 28.5 L8.6 21.4 L1.5 15 L8.6 8.6 Z" fill="#f6c82a"/>' +
+    '<polygon points="15,6 21.4,8.6 24,15 21.4,21.4 15,24 8.6,21.4 6,15 8.6,8.6" fill="#ffd94d"/>' +
+    '<polygon points="15,6 21.4,8.6 24,15 15,15" fill="#ffe680"/><polygon points="15,24 8.6,21.4 6,15 15,15" fill="#f2c21c"/>' +
+    '<path d="M15 1.5 L15 6 M24.5 5.5 L21.4 8.6 M28.5 15 L24 15 M24.5 24.5 L21.4 21.4 M15 28.5 L15 24 M5.5 24.5 L8.6 21.4 M1.5 15 L6 15 M5.5 5.5 L8.6 8.6 M15 6 L15 24 M6 15 L24 15" stroke="#fff1b0" stroke-width="0.8" opacity="0.85"/>' +
+    '<ellipse cx="11.5" cy="10" rx="3.5" ry="2" fill="#fffbe6" transform="rotate(-30 11.5 10)"/>' + SPARK,
+    // green: emerald cut
+    '<polygon points="8,2 22,2 28,8 28,22 22,28 8,28 2,22 2,8" fill="#138a43" stroke="#06451f" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<polygon points="8,2 22,2 20,7 10,7" fill="#3cc070"/><polygon points="28,8 28,22 23,20 23,10" fill="#169a4c"/>' +
+    '<polygon points="22,28 8,28 10,23 20,23" fill="#0d6e34"/><polygon points="2,22 2,8 7,10 7,20" fill="#25a95b"/>' +
+    '<polygon points="10,7 20,7 23,10 23,20 20,23 10,23 7,20 7,10" fill="#2fb563"/>' +
+    '<polygon points="12,11 18,11 19,12 19,18 18,19 12,19 11,18 11,12" fill="#6fd894"/>' +
+    '<path d="M8 2 L10 7 M22 2 L20 7 M28 8 L23 10 M28 22 L23 20 M22 28 L20 23 M8 28 L10 23 M2 22 L7 20 M2 8 L7 10" stroke="#a9f0c2" stroke-width="0.8"/>' +
+    '<polygon points="12,11 16,11 12,15" fill="#d8ffe6"/>' + SPARK,
+    // red: trillion
+    '<polygon points="15,2 28.5,26 1.5,26" fill="#c81e3a" stroke="#5c0716" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<polygon points="15,2 22,22 15,17 8,22" fill="#e23752"/><polygon points="28.5,26 22,22 15,17" fill="#a3142c" opacity="0.6"/>' +
+    '<polygon points="15,9.5 22,22 8,22" fill="#ef4a63"/>' +
+    '<path d="M15 2 L15 9.5 M28.5 26 L22 22 M1.5 26 L8 22 M15 9.5 L15 22" stroke="#ffb3c0" stroke-width="0.8"/>' +
+    '<polygon points="15,9.5 18,15 12,15" fill="#ffe0e6"/>' + SPARK
   ];
   var GEM_SVG = GEM_INNER.map(function (g) { return '<svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30">' + g + '</svg>'; });
 
   var MONK = [ // chimpanzee, orangutan, gorilla, baboon
-    { fur: '#4b3427', furDark: '#2a1b12', skin: '#d6a27a', cheek: '#e3b08c', cheekDark: '#9a6648', ring: '#7a2e3e', shaggy: 0, silver: 0, longTail: 1, shortTail: 0 },
-    { fur: '#c2622c', furDark: '#7a3510', skin: '#e6b48c', cheek: '#edc09a', cheekDark: '#a8714c', ring: '#7a2e3e', shaggy: 1, silver: 0, longTail: 1, shortTail: 0 },
-    { fur: '#34343a', furDark: '#151519', skin: '#6d6870', cheek: '#857f88', cheekDark: '#4a454d', ring: '#5e2433', shaggy: 0, silver: 1, longTail: 0, shortTail: 0 },
-    { fur: '#9b8a5c', furDark: '#5e5032', skin: '#c9a98a', cheek: '#e0475b', cheekDark: '#8e1f30', ring: '#a02035', shaggy: 0, silver: 0, longTail: 0, shortTail: 1 }
+    { fur: '#4b3427', furDark: '#2a1b12', out: '#1a0f09', skin: '#d6a27a', skinLight: '#ebc39f', skinDark: '#a8714c', cheek: '#e3b08c', cheekDark: '#9a6648', ring: '#7a2e3e', shaggy: 0, silver: 0, longTail: 1, shortTail: 0 },
+    { fur: '#c2622c', furDark: '#7a3510', out: '#3f1a06', skin: '#e6b48c', skinLight: '#f4d0ae', skinDark: '#b8835c', cheek: '#edc09a', cheekDark: '#a8714c', ring: '#7a2e3e', shaggy: 1, silver: 0, longTail: 1, shortTail: 0 },
+    { fur: '#34343a', furDark: '#151519', out: '#08080a', skin: '#6d6870', skinLight: '#8a8590', skinDark: '#4a454d', cheek: '#857f88', cheekDark: '#4a454d', ring: '#5e2433', shaggy: 0, silver: 1, longTail: 0, shortTail: 0 },
+    { fur: '#9b8a5c', furDark: '#5e5032', out: '#2f2717', skin: '#c9a98a', skinLight: '#dfc4a8', skinDark: '#987a5e', cheek: '#e0475b', cheekDark: '#8e1f30', ring: '#a02035', shaggy: 0, silver: 0, longTail: 0, shortTail: 1 }
   ];
   function monkeySvg(m, left) {
+    var o = m.out;
     return '<svg aria-hidden="true" class="abs" style="top:0;left:' + left + 'px;overflow:visible" width="140" height="180" viewBox="0 0 140 180">' +
-      '<path d="M58 96 L54 166 M82 96 L86 166" stroke="' + m.fur + '" stroke-width="13" stroke-linecap="round" fill="none"/>' +
-      '<ellipse cx="53" cy="172" rx="9" ry="6" fill="' + m.skin + '"/><ellipse cx="87" cy="172" rx="9" ry="6" fill="' + m.skin + '"/>' +
-      '<circle cx="70" cy="138" r="24" fill="' + m.fur + '"/>' +
-      '<ellipse cx="46" cy="140" rx="6" ry="7" fill="' + m.skin + '"/><ellipse cx="94" cy="140" rx="6" ry="7" fill="' + m.skin + '"/>' +
-      '<ellipse cx="70" cy="141" rx="16" ry="15" fill="' + m.skin + '"/>' +
-      '<circle cx="63" cy="147" r="4.4" fill="#fff"/><circle cx="77" cy="147" r="4.4" fill="#fff"/>' +
-      '<circle cx="63" cy="146.5" r="2.3" fill="#1a1a1a"/><circle cx="77" cy="146.5" r="2.3" fill="#1a1a1a"/>' +
-      '<path d="M57 154 Q63 158 69 154 M71 154 Q77 158 83 154" stroke="' + m.furDark + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
-      '<circle cx="67" cy="139" r="1.4" fill="' + m.furDark + '"/><circle cx="73" cy="139" r="1.4" fill="' + m.furDark + '"/>' +
-      '<path d="M61 132 Q70 124 79 132" stroke="#3a1d14" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
-      '<path d="M40 72 L30 164 M100 72 L110 164" stroke="' + m.fur + '" stroke-width="26" stroke-linecap="round" fill="none"/>' +
-      '<ellipse cx="26" cy="172" rx="16" ry="8" fill="' + m.skin + '"/><ellipse cx="114" cy="172" rx="16" ry="8" fill="' + m.skin + '"/>' +
-      '<path opacity="' + m.shaggy + '" d="M20 72 L12 90 M24 86 L17 104 M17 112 L11 128 M120 72 L128 90 M116 86 L123 104 M123 112 L129 128" stroke="' + m.fur + '" stroke-width="4" stroke-linecap="round" fill="none"/>' +
-      '<ellipse cx="70" cy="60" rx="50" ry="36" fill="' + m.fur + '"/>' +
-      '<ellipse cx="70" cy="31" rx="38" ry="10" fill="#a3a3ab" opacity="' + m.silver + '"/>' +
-      '<ellipse cx="51" cy="63" rx="22" ry="25" fill="' + m.cheek + '"/><ellipse cx="89" cy="63" rx="22" ry="25" fill="' + m.cheek + '"/>' +
-      '<ellipse cx="43" cy="53" rx="8" ry="5" fill="#fff" opacity="0.2"/><ellipse cx="97" cy="53" rx="8" ry="5" fill="#fff" opacity="0.2"/>' +
-      '<path d="M70 38 L70 49 M70 67 L70 82" stroke="' + m.cheekDark + '" stroke-width="2" stroke-linecap="round"/>' +
+      '<ellipse cx="70" cy="177" rx="64" ry="5" fill="#000" opacity="0.22"/>' +
+      // arms behind the head, hands on the crate
+      '<path d="M58 96 L54 165 M82 96 L86 165" stroke="' + o + '" stroke-width="16" stroke-linecap="round" fill="none"/>' +
+      '<path d="M58 96 L54 165 M82 96 L86 165" stroke="' + m.fur + '" stroke-width="12" stroke-linecap="round" fill="none"/>' +
+      '<ellipse cx="53" cy="171" rx="10" ry="6" fill="' + m.skin + '" stroke="' + o + '" stroke-width="1.8"/>' +
+      '<ellipse cx="87" cy="171" rx="10" ry="6" fill="' + m.skin + '" stroke="' + o + '" stroke-width="1.8"/>' +
+      '<path d="M47 172 v3 M51 173 v3 M55 173 v3 M85 173 v3 M89 173 v3 M93 172 v3" stroke="' + o + '" stroke-width="1.2" stroke-linecap="round"/>' +
+      // upside-down head peeking between the legs
+      '<circle cx="70" cy="138" r="24" fill="' + m.fur + '" stroke="' + o + '" stroke-width="2.5"/>' +
+      '<path d="M58 157 q4 8 8 3 q4 8 8 0 q4 8 8 -3" fill="' + m.fur + '" stroke="' + o + '" stroke-width="2" stroke-linejoin="round"/>' +
+      '<ellipse cx="45" cy="140" rx="7" ry="8" fill="' + m.skin + '" stroke="' + o + '" stroke-width="2"/><ellipse cx="45" cy="140" rx="3.5" ry="4.5" fill="' + m.skinDark + '"/>' +
+      '<ellipse cx="95" cy="140" rx="7" ry="8" fill="' + m.skin + '" stroke="' + o + '" stroke-width="2"/><ellipse cx="95" cy="140" rx="3.5" ry="4.5" fill="' + m.skinDark + '"/>' +
+      '<ellipse cx="70" cy="141" rx="16.5" ry="15.5" fill="' + m.skin + '" stroke="' + o + '" stroke-width="1.6"/>' +
+      '<ellipse cx="70" cy="133" rx="11" ry="7.5" fill="' + m.skinLight + '"/>' +
+      '<ellipse cx="67" cy="137.5" rx="1.6" ry="1.1" fill="' + o + '"/><ellipse cx="73" cy="137.5" rx="1.6" ry="1.1" fill="' + o + '"/>' +
+      '<path d="M61 131 Q70 122 79 131" stroke="' + o + '" stroke-width="2.4" fill="#7a2a2a" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M64 128.6 Q70 124.6 76 128.6" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="63" cy="147" rx="4.6" ry="5" fill="#fff" stroke="' + o + '" stroke-width="1.2"/><ellipse cx="77" cy="147" rx="4.6" ry="5" fill="#fff" stroke="' + o + '" stroke-width="1.2"/>' +
+      '<circle cx="63" cy="146.4" r="2.5" fill="#1a1a1a"/><circle cx="77" cy="146.4" r="2.5" fill="#1a1a1a"/>' +
+      '<circle cx="62.1" cy="147.4" r="0.9" fill="#fff"/><circle cx="76.1" cy="147.4" r="0.9" fill="#fff"/>' +
+      '<path d="M57 154 Q63 158.5 69 154 M71 154 Q77 158.5 83 154" stroke="' + m.furDark + '" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+      // legs
+      '<path d="M40 72 L30 163 M100 72 L110 163" stroke="' + o + '" stroke-width="30" stroke-linecap="round" fill="none"/>' +
+      '<path d="M40 72 L30 163 M100 72 L110 163" stroke="' + m.fur + '" stroke-width="25" stroke-linecap="round" fill="none"/>' +
+      '<path d="M33 100 l4 6 M30 116 l4 6 M29 132 l4 6 M38 90 l3 5 M104 100 l-4 6 M107 116 l-4 6 M109 132 l-4 6 M102 90 l-3 5" stroke="' + m.furDark + '" stroke-width="1.6" stroke-linecap="round" opacity="0.65"/>' +
+      '<ellipse cx="26" cy="171" rx="17" ry="8" fill="' + m.skin + '" stroke="' + o + '" stroke-width="2"/><path d="M17 169 q9 -3 18 0" stroke="' + m.skinDark + '" stroke-width="1.4" fill="none"/>' +
+      '<ellipse cx="114" cy="171" rx="17" ry="8" fill="' + m.skin + '" stroke="' + o + '" stroke-width="2"/><path d="M105 169 q9 -3 18 0" stroke="' + m.skinDark + '" stroke-width="1.4" fill="none"/>' +
+      '<g opacity="' + m.shaggy + '"><path d="M20 72 L11 92 M24 86 L16 106 M17 112 L10 130 M23 124 L18 140 M120 72 L129 92 M116 86 L124 106 M123 112 L130 130 M117 124 L122 140" stroke="' + o + '" stroke-width="6" stroke-linecap="round" fill="none"/>' +
+      '<path d="M20 72 L11 92 M24 86 L16 106 M17 112 L10 130 M23 124 L18 140 M120 72 L129 92 M116 86 L124 106 M123 112 L130 130 M117 124 L122 140" stroke="' + m.fur + '" stroke-width="3.5" stroke-linecap="round" fill="none"/></g>' +
+      // hips with fur tufts
+      '<path d="M23 47 l-4 -1.5 M21 60 l-4.5 0 M24 75 l-4 2 M117 47 l4 -1.5 M119 60 l4.5 0 M116 75 l4 2 M43 27 l-1.5 -4 M97 27 l1.5 -4" stroke="' + o + '" stroke-width="6.5" stroke-linecap="round"/>' +
+      '<path d="M23 47 l-4 -1.5 M21 60 l-4.5 0 M24 75 l-4 2 M117 47 l4 -1.5 M119 60 l4.5 0 M116 75 l4 2 M43 27 l-1.5 -4 M97 27 l1.5 -4" stroke="' + m.fur + '" stroke-width="4" stroke-linecap="round"/>' +
+      '<ellipse cx="70" cy="60" rx="50" ry="36" fill="' + m.fur + '" stroke="' + o + '" stroke-width="2.5"/>' +
+      '<path d="M30 40 l5 3 M28 70 l6 -1 M110 40 l-5 3 M112 70 l-6 -1 M56 28 l2 5 M84 28 l-2 5" stroke="' + m.furDark + '" stroke-width="1.6" stroke-linecap="round" opacity="0.65"/>' +
+      '<ellipse cx="70" cy="31" rx="38" ry="10" fill="#b3b3bb" opacity="' + m.silver + '"/>' +
+      '<path d="M40 30 q6 -4 12 0 M60 26 q6 -4 12 0 M84 28 q6 -4 12 0" stroke="#e1e1e6" stroke-width="1.5" fill="none" opacity="' + m.silver + '"/>' +
+      // bare buttocks
+      '<ellipse cx="51" cy="63" rx="22" ry="25" fill="' + m.cheek + '" stroke="' + m.cheekDark + '" stroke-width="2"/>' +
+      '<ellipse cx="89" cy="63" rx="22" ry="25" fill="' + m.cheek + '" stroke="' + m.cheekDark + '" stroke-width="2"/>' +
+      '<ellipse cx="54" cy="75" rx="15" ry="10" fill="' + m.cheekDark + '" opacity="0.25"/><ellipse cx="86" cy="75" rx="15" ry="10" fill="' + m.cheekDark + '" opacity="0.25"/>' +
+      '<ellipse cx="43" cy="52" rx="8" ry="5" fill="#fff" opacity="0.3" transform="rotate(-20 43 52)"/><ellipse cx="97" cy="52" rx="8" ry="5" fill="#fff" opacity="0.3" transform="rotate(20 97 52)"/>' +
+      '<path d="M70 37 L70 49 M70 67 L70 84" stroke="' + m.cheekDark + '" stroke-width="2.2" stroke-linecap="round"/>' +
       '<g class="anus" transform="translate(70 58)">' +
+        '<ellipse cx="0" cy="0" rx="10.5" ry="9.5" fill="' + m.cheekDark + '" opacity="0.5"/>' +
         '<ellipse cx="0" cy="0" rx="10" ry="9" fill="' + m.ring + '"/>' +
         '<path d="M0 -9 L0 -5 M7 -6 L4 -3 M10 0 L6 0 M7 6 L4 3 M0 9 L0 5 M-7 6 L-4 3 M-10 0 L-6 0 M-7 -6 L-4 -3" stroke="' + m.cheekDark + '" stroke-width="1.4" stroke-linecap="round"/>' +
         '<ellipse cx="0" cy="0" rx="4.5" ry="4" fill="#22080d"/>' +
+        '<ellipse cx="-3.5" cy="-4.5" rx="3" ry="1.4" fill="#fff" opacity="0.35"/>' +
       '</g>' +
-      '<path opacity="' + m.longTail + '" d="M70 28 C68 8 96 -2 104 12 C110 24 96 30 92 20" stroke="' + m.fur + '" stroke-width="7" fill="none" stroke-linecap="round"/>' +
-      '<path opacity="' + m.shortTail + '" d="M70 28 C66 16 58 10 50 12" stroke="' + m.fur + '" stroke-width="8" fill="none" stroke-linecap="round"/>' +
+      // tail
+      '<g opacity="' + m.longTail + '"><path d="M70 28 C68 8 96 -2 104 12 C110 24 96 30 92 20" stroke="' + o + '" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+      '<path d="M70 28 C68 8 96 -2 104 12 C110 24 96 30 92 20" stroke="' + m.fur + '" stroke-width="6.5" fill="none" stroke-linecap="round"/></g>' +
+      '<g opacity="' + m.shortTail + '"><path d="M70 28 C66 16 58 10 50 12" stroke="' + o + '" stroke-width="11" fill="none" stroke-linecap="round"/>' +
+      '<path d="M70 28 C66 16 58 10 50 12" stroke="' + m.fur + '" stroke-width="7.5" fill="none" stroke-linecap="round"/></g>' +
       '</svg>';
   }
 
   var FROGC = [
-    { body: '#2f6fe0', dark: '#163a8c', belly: '#b9d0ff' },
-    { body: '#f0c21b', dark: '#7d5f00', belly: '#fff2b3' },
-    { body: '#2fa64a', dark: '#135a24', belly: '#c3efca' }
+    { body: '#2f6fe0', dark: '#163a8c', belly: '#b9d0ff', out: '#0c2160', spot: '#1d4fb8' },
+    { body: '#f0c21b', dark: '#9a7400', belly: '#fff2b3', out: '#4d3a00', spot: '#c99a00' },
+    { body: '#2fa64a', dark: '#135a24', belly: '#c3efca', out: '#0a3516', spot: '#1d7d35' }
   ];
   function frogSvg(c, ci) {
-    return '<svg aria-hidden="true" width="64" height="52" viewBox="0 0 64 52">' +
-      '<ellipse cx="12" cy="44" rx="10" ry="6" fill="' + c.dark + '"/><ellipse cx="52" cy="44" rx="10" ry="6" fill="' + c.dark + '"/>' +
-      '<ellipse cx="32" cy="34" rx="22" ry="16" fill="' + c.body + '"/>' +
-      '<ellipse cx="32" cy="40" rx="13" ry="9" fill="' + c.belly + '"/>' +
-      '<circle cx="19" cy="16" r="10" fill="' + c.body + '"/><circle cx="45" cy="16" r="10" fill="' + c.body + '"/>' +
-      '<circle cx="19" cy="15" r="6.5" fill="#fff"/><circle cx="45" cy="15" r="6.5" fill="#fff"/>' +
-      '<circle class="pl" cx="19" cy="15" r="3.2" fill="#111"/><circle class="pr" cx="45" cy="15" r="3.2" fill="#111"/>' +
-      '<path d="M18 29 Q32 36 46 29" stroke="' + c.dark + '" stroke-width="2" fill="none" stroke-linecap="round"/>' +
-      '<ellipse class="mo" cx="32" cy="31" rx="8" ry="5" fill="#5a1426" opacity="0"/>' +
-      '<ellipse cx="24" cy="49" rx="6" ry="3" fill="' + c.dark + '"/><ellipse cx="40" cy="49" rx="6" ry="3" fill="' + c.dark + '"/>' +
+    var o = c.out;
+    return '<svg aria-hidden="true" width="64" height="52" viewBox="0 0 64 52" style="overflow:visible">' +
+      '<ellipse cx="32" cy="51" rx="28" ry="3" fill="#000" opacity="0.2"/>' +
+      '<ellipse cx="11" cy="43" rx="11" ry="7" fill="' + c.dark + '" stroke="' + o + '" stroke-width="1.5"/>' +
+      '<ellipse cx="53" cy="43" rx="11" ry="7" fill="' + c.dark + '" stroke="' + o + '" stroke-width="1.5"/>' +
+      '<circle cx="19" cy="16" r="10.5" fill="' + c.body + '" stroke="' + o + '" stroke-width="2"/>' +
+      '<circle cx="45" cy="16" r="10.5" fill="' + c.body + '" stroke="' + o + '" stroke-width="2"/>' +
+      '<ellipse cx="32" cy="33" rx="23" ry="17" fill="' + c.body + '" stroke="' + o + '" stroke-width="2"/>' +
+      '<ellipse cx="32" cy="22" rx="17" ry="7" fill="' + c.body + '"/>' +
+      '<ellipse cx="13" cy="36" rx="3" ry="2.2" fill="' + c.spot + '"/><ellipse cx="51" cy="35" rx="3.4" ry="2.4" fill="' + c.spot + '"/>' +
+      '<ellipse cx="18" cy="26" rx="2" ry="1.5" fill="' + c.spot + '"/><ellipse cx="47" cy="26" rx="2.2" ry="1.6" fill="' + c.spot + '"/>' +
+      '<ellipse cx="32" cy="40" rx="13.5" ry="9" fill="' + c.belly + '" stroke="' + o + '" stroke-width="0.8" stroke-opacity="0.4"/>' +
+      '<path d="M24 37.5 q8 3 16 0 M25 41.5 q7 3 14 0 M27 45 q5 2 10 0" stroke="' + c.dark + '" stroke-width="0.9" fill="none" opacity="0.35"/>' +
+      '<ellipse cx="22" cy="20" rx="6" ry="2.5" fill="#fff" opacity="0.18"/>' +
+      '<circle cx="19" cy="15" r="7" fill="#fff" stroke="' + o + '" stroke-width="1.2"/>' +
+      '<circle cx="45" cy="15" r="7" fill="#fff" stroke="' + o + '" stroke-width="1.2"/>' +
+      '<g class="pp"><circle cx="19" cy="15" r="3.6" fill="#111"/><circle cx="45" cy="15" r="3.6" fill="#111"/>' +
+      '<circle cx="20.3" cy="13.6" r="1.3" fill="#fff"/><circle cx="46.3" cy="13.6" r="1.3" fill="#fff"/></g>' +
+      '<path d="M12 10.5 q7 -6 14 0 M38 10.5 q7 -6 14 0" stroke="' + o + '" stroke-width="1.6" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="29" cy="24.5" r="0.9" fill="' + o + '"/><circle cx="35" cy="24.5" r="0.9" fill="' + o + '"/>' +
+      '<ellipse cx="13" cy="28" rx="3.5" ry="2" fill="#ff8fa3" opacity="0.45"/><ellipse cx="51" cy="28" rx="3.5" ry="2" fill="#ff8fa3" opacity="0.45"/>' +
+      '<path d="M16 29 Q32 37.5 48 29" stroke="' + o + '" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<ellipse class="mo" cx="32" cy="31" rx="8" ry="5" fill="#5a1426" stroke="' + o + '" stroke-width="1" opacity="0"/>' +
+      '<ellipse cx="23" cy="48.5" rx="7" ry="3.2" fill="' + c.dark + '" stroke="' + o + '" stroke-width="1.2"/>' +
+      '<ellipse cx="41" cy="48.5" rx="7" ry="3.2" fill="' + c.dark + '" stroke="' + o + '" stroke-width="1.2"/>' +
+      '<g fill="' + c.body + '" stroke="' + o + '" stroke-width="0.8"><circle cx="17.5" cy="50" r="1.7"/><circle cx="21.5" cy="51.2" r="1.7"/><circle cx="25.5" cy="51.2" r="1.7"/>' +
+      '<circle cx="38.5" cy="51.2" r="1.7"/><circle cx="42.5" cy="51.2" r="1.7"/><circle cx="46.5" cy="50" r="1.7"/></g>' +
       '<g transform="translate(26.5 35.5) scale(0.37)">' + GEM_INNER[ci] + '</g>' +
       '</svg>';
   }
 
+  var PRINT_LOOP = (function () {
+    var d = '';
+    for (var k = 0; k < 8; k++) {
+      var o = k * 4.2;
+      d += 'M' + (18 + o) + ' 104 C' + (16 + o) + ' ' + (50 + o) + ' ' + (28 + o * 0.6) + ' ' + (24 + o) + ' 45 ' + (24 + o) + ' C' + (62 - o * 0.6) + ' ' + (24 + o) + ' ' + (74 - o) + ' ' + (50 + o) + ' ' + (72 - o) + ' 104 ';
+    }
+    return '<path d="' + d + '"/><path d="M6 100 Q45 118 84 100"/>';
+  })();
   var PRINT_PATH = '<path d="M42 56 a3 4 0 0 1 6 0 a6 8 0 0 1 -12 0 a9 12 0 0 1 18 0 a12 16 0 0 1 -24 0 a15 20 0 0 1 30 0 a18 24 0 0 1 -36 0 a21 28 0 0 1 42 0 a24 32 0 0 1 -48 0 a27 36 0 0 1 54 0"/><path d="M8 96 Q45 116 82 96 M14 102 Q45 118 76 102"/>';
   function prints(w, seed) {
     function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
     var dashes = ['22 3 14 2 30 3', '16 2 26 3 10 2', '34 3 12 2 20 3'];
     var html = '', i, n = Math.round(20 * w / 420);
     function one(l, t, r, sc, o, d) {
-      return '<svg aria-hidden="true" class="print" width="90" height="110" viewBox="0 0 90 110" fill="none" stroke="#e6dccb" stroke-width="2" stroke-linecap="round" stroke-dasharray="' + d + '" style="left:' + l + 'px;top:' + t + 'px;opacity:' + o + ';transform:rotate(' + r + 'deg) scale(' + sc + ')">' + PRINT_PATH + '</svg>';
+      return '<svg aria-hidden="true" class="print" width="90" height="110" viewBox="0 0 90 110" fill="none" stroke="#e6dccb" stroke-width="2" stroke-linecap="round" stroke-dasharray="' + d + '" style="left:' + l + 'px;top:' + t + 'px;opacity:' + o + ';transform:rotate(' + r + 'deg) scale(' + sc + ')">' +
+        '<ellipse cx="45" cy="60" rx="38" ry="48" fill="#e6dccb" stroke="none" opacity="0.08"/>' + (rnd() < 0.5 ? PRINT_PATH : PRINT_LOOP) + '</svg>';
     }
     for (i = 0; i < n; i++) html += one(Math.round(rnd() * (w - 40) - 30), Math.round(rnd() * 700 - 40), Math.round(rnd() * 360), (0.7 + rnd() * 0.7).toFixed(2), (0.07 + rnd() * 0.13).toFixed(2), dashes[i % 3]);
     for (i = 0; i < 10; i++) html += one(Math.round(w / 2 - 100 + rnd() * 120), Math.round(200 + rnd() * 300), Math.round(rnd() * 360), (0.8 + rnd() * 0.5).toFixed(2), (0.16 + rnd() * 0.14).toFixed(2), dashes[i % 3]);
     return html;
   }
 
-  // ---- Build the static scene ----
+  // ---- Build the crate: old weathered boards ----
   (function () {
-    var h = '';
+    var seed = 99;
+    function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    var cols = ['#b27b45', '#a46d3b', '#bb8550', '#a8713f', '#b47d47', '#9e683a'];
+    var h = '<svg width="672" height="400" viewBox="0 0 672 400" style="position:absolute;left:0;top:0">';
+    h += '<rect width="672" height="400" fill="#2b180c"/>';
+    // top surface, seen slightly from above
+    h += '<rect x="0" y="0" width="672" height="15" fill="#d6a86f"/>';
+    h += '<path d="M0 5 H672 M0 10 H672" stroke="#b8864e" stroke-width="1"/>';
+    h += '<path d="M150 0 v15 M318 0 v15 M490 0 v15 M600 0 v15" stroke="#8f5f32" stroke-width="1.5"/>';
+    h += '<rect x="0" y="0" width="672" height="2" fill="#f0cf9c"/>';
+    h += '<rect x="0" y="15" width="672" height="3" fill="#5a3518"/>';
     for (var i = 0; i < 6; i++) {
-      var top = 21 + i * 63;
-      [20, 644].forEach(function (x) {
-        [12, 38].forEach(function (dy) {
-          h += '<div class="abs" style="left:' + x + 'px;top:' + (top + dy) + 'px;width:8px;height:8px;border-radius:50%;background:#6a645c;box-shadow:0 0 0 2px #2f2c29"></div>';
+      var y = 21 + i * 63;
+      h += '<rect x="0" y="' + y + '" width="672" height="58" fill="' + cols[i] + '"/>';
+      for (var k = 0; k < 7; k++) {          // wavy grain
+        var gy = y + 6 + k * 7.5 + rnd() * 3, x = rnd() * 60, end = x + 260 + rnd() * 400, amp = 1 + rnd() * 2.5, up = 1;
+        var d = 'M' + x.toFixed(0) + ' ' + gy.toFixed(1);
+        while (x < end) { x += 36 + rnd() * 20; d += ' Q' + (x - 18).toFixed(0) + ' ' + (gy + amp * up).toFixed(1) + ' ' + x.toFixed(0) + ' ' + gy.toFixed(1); up = -up; }
+        h += '<path d="' + d + '" stroke="#5e3716" stroke-width="' + (0.8 + rnd() * 0.8).toFixed(1) + '" fill="none" opacity="' + (0.15 + rnd() * 0.25).toFixed(2) + '"/>';
+      }
+      if (rnd() < 0.8) {                      // knot
+        var kx = 90 + rnd() * 470, ky = y + 18 + rnd() * 22;
+        h += '<ellipse cx="' + kx.toFixed(0) + '" cy="' + ky.toFixed(0) + '" rx="13" ry="7" fill="none" stroke="#6a3f1c" stroke-width="1.2" opacity="0.6"/>';
+        h += '<ellipse cx="' + kx.toFixed(0) + '" cy="' + ky.toFixed(0) + '" rx="8" ry="4.2" fill="none" stroke="#6a3f1c" stroke-width="1.4" opacity="0.8"/>';
+        h += '<ellipse cx="' + kx.toFixed(0) + '" cy="' + ky.toFixed(0) + '" rx="3.5" ry="2" fill="#4e2c12"/>';
+      }
+      for (var w = 0; w < 3; w++) {           // worn, darker patches
+        h += '<ellipse cx="' + (60 + rnd() * 550).toFixed(0) + '" cy="' + (y + 10 + rnd() * 38).toFixed(0) + '" rx="' + (20 + rnd() * 40).toFixed(0) + '" ry="' + (4 + rnd() * 6).toFixed(0) + '" fill="#4a2a10" opacity="0.08"/>';
+      }
+      h += '<rect x="0" y="' + y + '" width="672" height="2.5" fill="#ffe9c4" opacity="0.28"/>';
+      h += '<rect x="0" y="' + (y + 53) + '" width="672" height="5" fill="#2e1808" opacity="0.35"/>';
+    }
+    // crack and a broken corner
+    h += '<path d="M310 210 L320 224 L313 234 L328 248 L322 268" fill="none" stroke="#2b180c" stroke-width="2.5" stroke-linejoin="round"/>';
+    h += '<path d="M311 211 L321 224 L314 234 L329 248" fill="none" stroke="#e7bf8a" stroke-width="1" opacity="0.5"/>';
+    h += '<polygon points="624,357 590,367 600,400 624,400" fill="#2b180c"/>';
+    h += '<polyline points="624,357 590,367 600,400" fill="none" stroke="#d9a873" stroke-width="1.2" opacity="0.6"/>';
+    // corner battens
+    [0, 624].forEach(function (bx) {
+      h += '<rect x="' + bx + '" y="17" width="48" height="383" fill="#9c6634"/>';
+      for (var k = 0; k < 4; k++) {
+        var gx = bx + 8 + k * 10 + rnd() * 4;
+        h += '<path d="M' + gx.toFixed(0) + ' 20 Q' + (gx + 3).toFixed(0) + ' 120 ' + gx.toFixed(0) + ' 220 T' + gx.toFixed(0) + ' 400" stroke="#5e3716" stroke-width="1" fill="none" opacity="0.3"/>';
+      }
+      h += '<rect x="' + bx + '" y="17" width="3" height="383" fill="#ffe1b0" opacity="0.3"/>';
+      h += '<rect x="' + (bx === 0 ? 45 : 624) + '" y="17" width="3" height="383" fill="#2e1808" opacity="0.5"/>';
+      h += '<rect x="' + (bx === 0 ? 48 : 618) + '" y="17" width="6" height="383" fill="#000" opacity="0.15"/>';
+    });
+    // nails with a glint
+    for (var n = 0; n < 6; n++) {
+      [24, 648].forEach(function (nx) {
+        [33, 59].forEach(function (dy) {
+          var ny = 21 + n * 63 + dy - 21;
+          h += '<circle cx="' + nx + '" cy="' + (ny + 4) + '" r="4.5" fill="#2f2c29"/><circle cx="' + nx + '" cy="' + (ny + 4) + '" r="3.4" fill="#77716a"/>';
+          h += '<circle cx="' + (nx - 1.2) + '" cy="' + (ny + 2.8) + '" r="1.2" fill="#d6d1c8"/>';
+          h += '<path d="M' + (nx + 2) + ' ' + (ny + 8) + ' q2 6 0 12" stroke="#5a2e10" stroke-width="2" fill="none" opacity="0.35"/>';
         });
       });
     }
-    $('nails').innerHTML = h;
+    h += '</svg>';
+    h += '<div class="abs" style="left:0; top:150px; width:672px; display:flex; flex-direction:column; align-items:center; gap:4px; font-family:\'Stardos Stencil\', Impact, \'Arial Black\', sans-serif; color:#3b2213; opacity:.55">' +
+      '<div style="font-size:54px; line-height:1; letter-spacing:6px">GEMPOOP &amp; CO.</div>' +
+      '<div style="font-size:22px; letter-spacing:5px">GEMSTONES · FRAGILE</div></div>';
+    $('crate').innerHTML = h;
   })();
 
   var s = {
@@ -398,7 +532,7 @@
     $('tongues').appendChild(tongue);
     s.frogs.push({ c: ci, x: x, my: GP.MOUTH_Y, reach: 10, ups: 0, tongue: null, gulp: 0, hurt: 0,
       el: frog, ring: ring, tEl: tongue,
-      pl: frog.querySelector('.pl'), pr: frog.querySelector('.pr'), mo: frog.querySelector('.mo') });
+      pp: frog.querySelector('.pp'), mo: frog.querySelector('.mo') });
   });
 
   // ---- Saved settings and best score ----
@@ -586,7 +720,7 @@
     var next = s.level + 1;
     var cards = s.frogs.map(function (f, i) {
       var cost = upgradeCost(f.ups), maxed = f.reach >= GP.MAX_REACH;
-      return '<div class="card"><svg aria-hidden="true" width="64" height="52" viewBox="0 0 64 52">' + frogSvg(FROGC[i], i).replace(/^<svg[^>]*>|<\/svg>$/g, '') + '</svg>' +
+      return '<div class="card">' + frogSvg(FROGC[i], i) +
         '<div class="name">' + FROG_NAMES[i] + '</div>' +
         '<div class="reachv">Reach ' + f.reach + ' %</div>' +
         '<button class="btn buy" data-buy="' + i + '"' + ((maxed || s.score < cost) ? ' disabled' : '') + '>' +
@@ -929,8 +1063,7 @@
       });
       var ex = 0, ey = 0;
       if (best && bd > 1) { ex = (best.x - f.x) / bd * 2.4; ey = (best.y - f.my) / bd * 2.4; }
-      f.pl.setAttribute('cx', (19 + ex).toFixed(2)); f.pl.setAttribute('cy', (15 + ey).toFixed(2));
-      f.pr.setAttribute('cx', (45 + ex).toFixed(2)); f.pr.setAttribute('cy', (15 + ey).toFixed(2));
+      f.pp.setAttribute('transform', 'translate(' + ex.toFixed(2) + ' ' + ey.toFixed(2) + ')');
       var gl = f.gulp > 0 ? Math.sin((f.gulp / GP.GULP) * Math.PI) : 0;
       var shake = f.hurt > 0 ? Math.sin(f.hurt * 70) * 4 * (f.hurt / 0.7) : 0;
       f.el.style.transform = 'translateX(' + shake.toFixed(2) + 'px) scale(' + (1 + 0.1 * gl).toFixed(3) + ',' + (1 - 0.12 * gl).toFixed(3) + ')';
