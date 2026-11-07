@@ -229,16 +229,17 @@
     <section class="panel" aria-label="Settings">
       <h2>Settings</h2>
       <div class="row">
-        <div class="top"><label for="rate">Starting gem rate</label><span id="rateLbl">0.8 gems/s</span></div>
-        <input id="rate" type="range" min="0.5" max="2" step="0.1" value="0.8">
+        <div class="top"><label for="rate">Starting gem rate</label><span id="rateLbl">0.4 gems/s</span></div>
+        <input id="rate" type="range" min="0.2" max="2" step="0.1" value="0.4">
         <small>Gems per second on level 1. Every level adds 0.2.</small>
       </div>
       <div class="row">
-        <div class="top"><label for="base">Base tongue reach</label><span id="baseLbl">10 %</span></div>
-        <input id="base" type="range" min="5" max="20" step="1" value="10">
+        <div class="top"><label for="base">Base tongue reach</label><span id="baseLbl">8 %</span></div>
+        <input id="base" type="range" min="4" max="20" step="1" value="8">
         <small>Percent of the playfield width. Red gems snip tongues back to this length.</small>
       </div>
       <label class="check"><input id="showReach" type="checkbox" checked> Show tongue reach as dashed rings</label>
+      <label class="check"><input id="sound" type="checkbox" checked> Sound effects</label>
       <p style="font-size:14px">Rate and base reach changes apply when you start a new game.</p>
       <div class="btns">
         <button class="btn" id="newGame">New game</button>
@@ -372,7 +373,7 @@
     caughtL: 0, missedL: 0, spawned: 0, endT: 0, bannerT: 0,
     gems: [], fx: [], spawnT: 0,
     yL: 0.5, yR: 0.5, aL: false, aR: false, angle: 0, flash: 0,
-    startRate: 0.8, baseReach: 10, showReach: true,
+    startRate: 0.4, baseReach: 8, showReach: true, sound: true,
     monkeys: [], frogs: []
   };
 
@@ -402,18 +403,24 @@
 
   // ---- Saved settings and best score ----
   try {
-    var saved = JSON.parse(localStorage.getItem('gempoop-v2') || 'null');
+    var saved = JSON.parse(localStorage.getItem('gempoop-v3') || 'null');
     if (saved) {
-      if (saved.startRate) s.startRate = clamp(+saved.startRate, 0.5, 2);
-      if (saved.baseReach) s.baseReach = clamp(+saved.baseReach, 5, 20);
+      if (saved.startRate) s.startRate = clamp(+saved.startRate, 0.2, 2);
+      if (saved.baseReach) s.baseReach = clamp(+saved.baseReach, 4, 20);
+      if (typeof saved.sound === 'boolean') s.sound = saved.sound;
+    } else {
+      // older versions: keep best score and ring choice, but use the new default rate and reach
+      saved = JSON.parse(localStorage.getItem('gempoop-v2') || 'null');
+    }
+    if (saved) {
       if (typeof saved.showReach === 'boolean') s.showReach = saved.showReach;
       s.best = +saved.best || 0; s.bestLevel = +saved.bestLevel || 0;
     }
   } catch (e) {}
   function save() {
     try {
-      localStorage.setItem('gempoop-v2', JSON.stringify({ startRate: s.startRate, baseReach: s.baseReach,
-        showReach: s.showReach, best: s.best, bestLevel: s.bestLevel }));
+      localStorage.setItem('gempoop-v3', JSON.stringify({ startRate: s.startRate, baseReach: s.baseReach,
+        showReach: s.showReach, sound: s.sound, best: s.best, bestLevel: s.bestLevel }));
     } catch (e) {}
   }
   s.frogs.forEach(function (f) { f.reach = s.baseReach; });
@@ -427,7 +434,7 @@
     });
   }
   function syncSettings() {
-    $('rate').value = s.startRate; $('base').value = s.baseReach; $('showReach').checked = s.showReach;
+    $('rate').value = s.startRate; $('base').value = s.baseReach; $('showReach').checked = s.showReach; $('sound').checked = s.sound;
     $('rateLbl').textContent = fmt1(s.startRate) + ' gems/s';
     $('baseLbl').textContent = s.baseReach + ' %';
     syncRings();
@@ -439,9 +446,125 @@
   $('gear').addEventListener('click', function () { setPaused(true); });
   $('resume').addEventListener('click', function () { setPaused(false); });
   $('newGame').addEventListener('click', function () { setPaused(false); newGame(); });
-  $('rate').addEventListener('input', function (e) { s.startRate = parseFloat(e.target.value) || 0.8; save(); syncSettings(); });
-  $('base').addEventListener('input', function (e) { s.baseReach = parseFloat(e.target.value) || 10; save(); syncSettings(); });
+  $('rate').addEventListener('input', function (e) { s.startRate = parseFloat(e.target.value) || 0.4; save(); syncSettings(); });
+  $('base').addEventListener('input', function (e) { s.baseReach = parseFloat(e.target.value) || 8; save(); syncSettings(); });
+  $('sound').addEventListener('change', function (e) { s.sound = !!e.target.checked; save(); syncSettings(); if (s.sound) sfx.unlock(); });
   $('showReach').addEventListener('change', function (e) { s.showReach = !!e.target.checked; save(); syncSettings(); });
+
+
+  // ---- Sound: synthesized with Web Audio, no sound files ----
+  var SFX = (function () {
+    function makeNoise(c) {
+      var len = c.sampleRate, white = c.createBuffer(1, len, c.sampleRate), brown = c.createBuffer(1, len, c.sampleRate);
+      var w = white.getChannelData(0), b = brown.getChannelData(0), last = 0;
+      for (var i = 0; i < len; i++) {
+        var r = Math.random() * 2 - 1;
+        w[i] = r;
+        last = (last + 0.02 * r) / 1.02; b[i] = last * 3.5;
+      }
+      return { white: white, brown: brown };
+    }
+    function src(c, buf) { var n = c.createBufferSource(); n.buffer = buf; n.loop = true; return n; }
+    function env(c, t, peak, attack, hold, release) {
+      var g = c.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(peak, t + attack);
+      g.gain.setValueAtTime(peak, t + attack + hold);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + attack + hold + release);
+      return g;
+    }
+    function blip(c, out, t, f0, f1, dur, vol) {
+      var o = c.createOscillator(); o.type = 'sine';
+      o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+      var g = env(c, t, vol, 0.005, dur * 0.3, dur * 0.7);
+      o.connect(g); g.connect(out); o.start(t); o.stop(t + dur + 0.02);
+    }
+
+    // a fluttering, wet "brrrt" with a little plop at the end
+    function fart(c, out, t, nz) {
+      var dur = 0.25 + Math.random() * 0.4;
+      var base = 55 + Math.random() * 55;
+      var osc = c.createOscillator(); osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(base * (1.2 + Math.random() * 0.4), t);
+      osc.frequency.exponentialRampToValueAtTime(base * 0.7, t + dur);
+      var lfo = c.createOscillator(); lfo.type = 'square';
+      lfo.frequency.setValueAtTime(14 + Math.random() * 18, t);
+      lfo.frequency.linearRampToValueAtTime(7 + Math.random() * 8, t + dur);
+      var pitchWobble = c.createGain(); pitchWobble.gain.value = base * 0.25;
+      lfo.connect(pitchWobble); pitchWobble.connect(osc.frequency);
+      var flutter = c.createGain(); flutter.gain.value = 0.55;
+      var depth = c.createGain(); depth.gain.value = 0.45;
+      lfo.connect(depth); depth.connect(flutter.gain);
+      var wet = src(c, nz.brown), wetBp = c.createBiquadFilter(), wetG = c.createGain();
+      wetBp.type = 'bandpass'; wetBp.frequency.value = 160 + Math.random() * 120; wetBp.Q.value = 1.2;
+      wetG.gain.value = 0.9;
+      var lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 5;
+      lp.frequency.setValueAtTime(900, t); lp.frequency.exponentialRampToValueAtTime(240, t + dur);
+      var e = env(c, t, 0.9, 0.025, dur * 0.55, dur * 0.45);
+      osc.connect(flutter); wet.connect(wetBp); wetBp.connect(wetG); wetG.connect(flutter);
+      flutter.connect(lp); lp.connect(e); e.connect(out);
+      [osc, lfo, wet].forEach(function (n) { n.start(t); n.stop(t + dur + 0.1); });
+      blip(c, out, t + dur * 0.92, 420, 90, 0.07, 0.5);
+    }
+
+    // a wet, sticky slurp as the tongue lashes out and back, then a gulp
+    function slurp(c, out, t, nz) {
+      var n = src(c, nz.white);
+      var bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 7;
+      bp.frequency.setValueAtTime(500, t);
+      bp.frequency.exponentialRampToValueAtTime(2400, t + 0.07);
+      bp.frequency.exponentialRampToValueAtTime(450, t + 0.28);
+      var trem = c.createGain(); trem.gain.value = 0.5;
+      var lfo = c.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = 32;
+      var lfoAmt = c.createGain(); lfoAmt.gain.value = 0.5;
+      lfo.connect(lfoAmt); lfoAmt.connect(trem.gain);
+      var e = env(c, t, 1.4, 0.02, 0.18, 0.12);
+      n.connect(bp); bp.connect(trem); trem.connect(e); e.connect(out);
+      n.start(t); n.stop(t + 0.4); lfo.start(t); lfo.stop(t + 0.4);
+      for (var i = 0; i < 4; i++) {          // sticky little bubbles
+        var bt = t + 0.04 + Math.random() * 0.22;
+        blip(c, out, bt, 700 + Math.random() * 700, 220 + Math.random() * 120, 0.035, 0.22);
+      }
+      blip(c, out, t + 0.27, 300, 75, 0.14, 0.7);   // gulp
+    }
+
+    // two sharp scissor clicks
+    function snip(c, out, t, nz) {
+      [0, 0.07].forEach(function (dt) {
+        var n = src(c, nz.white), hp = c.createBiquadFilter();
+        hp.type = 'highpass'; hp.frequency.value = 3500;
+        var e = env(c, t + dt, 0.9, 0.002, 0.008, 0.03);
+        n.connect(hp); hp.connect(e); e.connect(out);
+        n.start(t + dt); n.stop(t + dt + 0.06);
+        blip(c, out, t + dt, 3200, 2400, 0.04, 0.15);
+      });
+    }
+    return { makeNoise: makeNoise, fart: fart, slurp: slurp, snip: snip };
+  })();
+  window.GemPoopSfx = SFX;   // used by the sound preview tool
+
+  var sfx = (function () {
+    var c = null, out = null, nz = null;
+    function unlock() {
+      if (!c) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        try { c = new AC(); } catch (e) { return null; }
+        var comp = c.createDynamicsCompressor();
+        out = c.createGain(); out.gain.value = 0.8;
+        out.connect(comp); comp.connect(c.destination);
+        nz = SFX.makeNoise(c);
+      }
+      if (c.state === 'suspended') { try { c.resume(); } catch (e) {} }
+      return c;
+    }
+    function play(name) {
+      if (!s.sound || !unlock() || c.state !== 'running') return;
+      try { SFX[name](c, out, c.currentTime + 0.01, nz); } catch (e) {}
+    }
+    return { unlock: unlock, fart: function () { play('fart'); }, slurp: function () { play('slurp'); }, snip: function () { play('snip'); } };
+  })();
+  document.addEventListener('pointerdown', function () { if (s.sound) sfx.unlock(); }, true);
 
   // ---- Screens: start, level complete + tongue shop, game over ----
   var screen = $('screen'), panel = $('screenPanel');
@@ -633,6 +756,7 @@
   function plop(g) {
     var m = g.m;
     m.busy = null; m.pop = GP.POP;
+    sfx.fart();
     g.state = 'fly'; g.age = 0;
     g.x = m.x + (Math.random() - 0.5) * 4; g.y = GP.ANUS_Y;
     g.vx = (Math.random() - 0.5) * 50; g.vy = 40 + Math.random() * 60;
@@ -712,6 +836,7 @@
           if (target) {
             target.tongue = { gem: g, phase: 'out', t: 0, sx: g.x, sy: g.y, tx: target.x, ty: target.my, red: g.red };
             g.state = 'snared';
+            if (!g.red) sfx.slurp();
           }
         }
         if (g.state === 'fly' && (g.y > GP.S + 40 || g.x < -40 || g.x > GP.S + 40)) {
@@ -737,6 +862,7 @@
               var g = tg.gem;
               g.state = 'fly'; g.spent = true; g.vx *= 0.4; g.vy = Math.max(60, g.vy * 0.3);
               tonguePiece(tg.tx, tg.ty, (tg.tx - f.x) * 1.5);
+              sfx.snip();
               f.tongue = null; f.hurt = 0.7;
               var lost = f.reach - s.baseReach;
               f.reach = s.baseReach; f.ups = 0;

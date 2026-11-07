@@ -33,7 +33,7 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 
 ## Nivåer, poäng och butik
 
-- Varje nivå har 20 ädelstenar. Nivå 1 ger 0,8 stenar per sekund, och varje ny nivå lägger till 0,2 (högst 3,5).
+- Varje nivå har 20 ädelstenar. Nivå 1 ger 0,4 stenar per sekund, och varje ny nivå lägger till 0,2 (högst 3,5).
 - Efter varje nivå dras de missade stenarna av från de fångade, och resultatet läggs till poängen.
 - Hamnar poängen under noll är spelet slut.
 - Mellan nivåerna kan poäng köpa längre tunga, en procent i taget och för varje groda för sig.
@@ -45,11 +45,20 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 
 ## Inställningar (kugghjulet)
 
-- **Starting gem rate:** stenar per sekund på nivå 1 (0,5–2).
-- **Base tongue reach:** tungornas ursprungslängd i procent av spelplanens bredd (5–20). Det är hit de röda stenarna klipper tillbaka tungan.
+- **Starting gem rate:** stenar per sekund på nivå 1 (0,2–2, standard 0,4).
+- **Base tongue reach:** tungornas ursprungslängd i procent av spelplanens bredd (4–20, standard 8). Det är hit de röda stenarna klipper tillbaka tungan.
 - **Show tongue reach:** en streckad ring runt varje groda.
+- **Sound effects:** ljud av eller på.
 
 Ändringar av takt och räckvidd gäller från nästa nytt spel.
+
+## Ljud
+
+Ljuden räknas fram i spelet med Web Audio, så det finns inga ljudfiler:
+
+- ett fladdrande, blött prutt när en ädelsten ploppar ut
+- ett sliskigt slurp och en klunk när en groda fångar en sten
+- ett dubbelt saxklipp när en röd sten klipper av en tunga
 
 ## Teknik
 
