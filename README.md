@@ -36,7 +36,8 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 
 1. Målet: en blå sten ploppar ut ur den tredje apan och studsar till den blå grodan, som fångar den.
 2. En grön sten ur samma apa studsar till den gula grodan, som låter bli den ("Frogs are kind …").
-3. De streckade räckviddsringarna växer i steg medan grodornas tungor pendlar ut till ringen.
+3. De streckade räckviddsringarna växer i steg medan grodornas tungor pendlar ut till ringen,
+   från klockan 2 via 6 till 10 (nedre halvan).
 4. Ringarna står på 14 %. En röd sten från den andra apan tas av den gröna grodan. Tungan klipps av
    och faller ner med några bloddroppar, och ringen krymper.
 5. Du börjar med 5 credits och förlorar när de går under noll.
@@ -60,13 +61,15 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 
 ## Ljud
 
-Ljuden räknas fram i spelet med Web Audio, så det finns inga ljudfiler:
+Ljuden är inspelade och ligger i `sounds/`:
 
-- ett fladdrande, blött prutt när en ädelsten ploppar ut
-- ett sliskigt slurp och en klunk när en groda fångar en sten
-- ett dubbelt saxklipp när en röd sten klipper av en tunga
+- `fart_1` … `fart_6`: apornas prutt när en ädelsten ploppar ut
+- `slurp_1` … `slurp_5`: grodornas slurp när de fångar en sten
+- `sax`: när en röd sten klipper av en tunga
 
-(Egna inspelade ljud kommer att ersätta dessa.)
+Spelet väljer en slumpvis variant varje gång, aldrig samma två gånger i rad. Ljuden är inbakade i
+`index.html` så att spelet fortfarande är en enda fil. Efter att ha bytt eller lagt till filer i `sounds/`
+kör man `python3 tools/embed_sounds.py` för att baka in dem igen.
 
 ## Teknik
 
