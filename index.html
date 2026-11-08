@@ -958,12 +958,14 @@
           g.x += g.vx * h;
           g.y += g.vy * h;
           g.rot += g.spin * h;
+          // past the top of the bounce: the gem is lost (no frog may take it, no more bounces)
+          if (g.bounced && !g.lost && g.vy > 0) g.lost = true;
           // bounce on the tilted paddle, normal n = (sin a, −cos a)
           var px = g.x - GP.PX, py = g.y - GP.PY;
           var along = px * ca + py * sa;
           var dist = px * sa - py * ca;
           var vn = g.vx * sa - g.vy * ca;
-          if (Math.abs(along) <= GP.HALF + 4 && dist < GP.RG && dist > -GP.RG * 2.5 && vn < 0) {
+          if (!g.lost && Math.abs(along) <= GP.HALF + 4 && dist < GP.RG && dist > -GP.RG * 2.5 && vn < 0) {
             var j = (1 + GP.E) * vn;
             g.vx -= j * sa; g.vy += j * ca;
             var push = GP.RG - dist;
@@ -978,7 +980,7 @@
           }
         }
         // within reach of a frog?
-        if (g.state === 'fly' && g.bounced && !g.spent) {
+        if (g.state === 'fly' && g.bounced && !g.spent && !g.lost) {
           var target = null;
           if (g.red) {
             var bd = 1e9;
@@ -1123,6 +1125,7 @@
         var k = Math.min(1, g.t / GP.LAND_FADE); o = 1 - k; sc = 1 - 0.3 * k; sink = 8 * k;
       } else {
         sc = Math.min(1, 0.6 + (g.age / 0.12) * 0.4);
+        if (g.lost) o = 0.7;   // a lost gem dims a little
       }
       g.el.style.opacity = o.toFixed(3);
       g.el.style.transform = 'translate(' + (x - 15).toFixed(1) + 'px,' + (y - 15 + sink).toFixed(1) + 'px) rotate(' + rot.toFixed(3) + 'rad) scale(' + sc.toFixed(3) + ')';

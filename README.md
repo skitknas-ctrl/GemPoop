@@ -26,7 +26,9 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 - En ädelsten anas först i en apas anus och pressas sedan fram under en sekund innan den ploppar ut.
   Under tiden får anus kant stenens färg och sprider ett svagt ljus i samma färg.
 - Stenarna faller allt snabbare, studsar mot paddeln och bromsar in på vägen upp i en parabel.
-- Kommer en sten inom räckhåll för grodan med samma färg skjuter grodan ut tungan och sväljer den.
+- Kommer en sten inom räckhåll för grodan med samma färg på väg upp skjuter grodan ut tungan och sväljer den.
+- När en sten har nått sin högsta punkt efter studsen är den förlorad. Den bleknar lite, grodorna tar den inte
+  och paddeln studsar den inte igen. Den landar på lådan, eller faller ner i det svarta om den aldrig kom över lådans kant.
 - Stenar som landar på lådan tonar långsamt bort. Både de och stenar som faller förbi
   paddeln räknas som missade.
 - Färgerna har olika slipform (blå romb, gul rund, grön smaragdslipning, röd trekant) så att
