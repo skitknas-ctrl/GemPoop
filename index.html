@@ -44,6 +44,7 @@
   .piece { position: absolute; left: 0; top: 0; width: 22px; height: 8px; border-radius: 4px; background: #e65a7f; pointer-events: none; }
   .reach { position: absolute; box-sizing: border-box; border-radius: 50%; border: 2px dashed; opacity: 0.6; pointer-events: none; }
   .frog { position: absolute; top: 128px; width: 64px; height: 52px; transform-origin: 50% 100%; }
+  .glow { position: absolute; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; opacity: 0; }
   .float { position: absolute; left: 0; top: 0; font-weight: 900; font-size: 26px; pointer-events: none; white-space: nowrap;
     text-shadow: 0 2px 0 rgba(0,0,0,0.55); }
   #banner { position: absolute; left: 0; top: 300px; width: 720px; text-align: center; pointer-events: none; opacity: 0; }
@@ -212,6 +213,7 @@
     </div>
 
     <div id="monkeys"></div>
+    <div id="glows"></div>
     <div id="reaches"></div>
     <div id="frogs"></div>
     <div id="tongues"></div>
@@ -238,6 +240,11 @@
         <small>Percent of the playfield width. Red gems snip tongues back to this length.</small>
       </div>
       <label class="check"><input id="showReach" type="checkbox" checked> Show tongue reach as dashed rings</label>
+      <div class="row">
+        <div class="top"><label for="glow">Rim glow spread</label><span id="glowLbl">50 %</span></div>
+        <input id="glow" type="range" min="0" max="100" step="5" value="50">
+        <small>How far the coloured light spreads from the rim while a gem is pushing out. 0 turns the glow off.</small>
+      </div>
       <label class="check"><input id="sound" type="checkbox" checked> Sound effects</label>
       <p style="font-size:14px">Rate and base reach changes apply when you start a new game.</p>
       <div class="btns">
@@ -305,6 +312,16 @@
     '<path d="M15 2 L15 9.5 M28.5 26 L22 22 M1.5 26 L8 22 M15 9.5 L15 22" stroke="#ffb3c0" stroke-width="0.8"/>' +
     '<polygon points="15,9.5 18,15 12,15" fill="#ffe0e6"/>' + SPARK
   ];
+  // colour of the rim and its light while a gem of that colour is pushing out
+  var RIM_COLORS = ['#3d7dff', '#ffcf2e', '#2bd36a', '#ff2948'];
+  function hexMix(a, b, k) {
+    var pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16), out = '#';
+    [16, 8, 0].forEach(function (sh) {
+      var ca = (pa >> sh) & 255, cb = (pb >> sh) & 255, c = Math.round(ca + (cb - ca) * k);
+      out += (c < 16 ? '0' : '') + c.toString(16);
+    });
+    return out;
+  }
   var GEM_SVG = GEM_INNER.map(function (g) { return '<svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30">' + g + '</svg>'; });
 
   var MONK = [ // chimpanzee, orangutan, gorilla, baboon
@@ -360,7 +377,7 @@
       '<path d="M70 37 L70 49 M70 67 L70 84" stroke="' + m.cheekDark + '" stroke-width="2.2" stroke-linecap="round"/>' +
       '<g class="anus" transform="translate(70 58)">' +
         '<ellipse cx="0" cy="0" rx="10.5" ry="9.5" fill="' + m.cheekDark + '" opacity="0.5"/>' +
-        '<ellipse cx="0" cy="0" rx="10" ry="9" fill="' + m.ring + '"/>' +
+        '<ellipse class="rim" cx="0" cy="0" rx="10" ry="9" fill="' + m.ring + '"/>' +
         '<path d="M0 -9 L0 -5 M7 -6 L4 -3 M10 0 L6 0 M7 6 L4 3 M0 9 L0 5 M-7 6 L-4 3 M-10 0 L-6 0 M-7 -6 L-4 -3" stroke="' + m.cheekDark + '" stroke-width="1.4" stroke-linecap="round"/>' +
         '<ellipse cx="0" cy="0" rx="4.5" ry="4" fill="#22080d"/>' +
         '<ellipse cx="-3.5" cy="-4.5" rx="3" ry="1.4" fill="#fff" opacity="0.35"/>' +
@@ -507,7 +524,7 @@
     caughtL: 0, missedL: 0, spawned: 0, endT: 0, bannerT: 0,
     gems: [], fx: [], spawnT: 0,
     yL: 0.5, yR: 0.5, aL: false, aR: false, angle: 0, flash: 0,
-    startRate: 0.4, baseReach: 8, showReach: true, sound: true,
+    startRate: 0.4, baseReach: 8, showReach: true, sound: true, glow: 50,
     monkeys: [], frogs: []
   };
 
@@ -515,7 +532,11 @@
   MONK.forEach(function (m, i) {
     var x = GP.S * (0.2 + 0.2 * i);
     monkeysEl.insertAdjacentHTML('beforeend', monkeySvg(m, x - 70));
-    s.monkeys.push({ x: x, pop: 0, busy: null, el: monkeysEl.lastChild.querySelector('.anus') });
+    var svg = monkeysEl.lastChild, glow = document.createElement('div');
+    glow.className = 'glow';
+    $('glows').appendChild(glow);
+    s.monkeys.push({ x: x, pop: 0, busy: null, lastC: 0, el: svg.querySelector('.anus'), rim: svg.querySelector('.rim'),
+      base: m.ring, glow: glow });
   });
   [0, 1, 2].forEach(function (ci) {
     var x = GP.S * (0.3 + 0.2 * ci), c = FROGC[ci];
@@ -542,6 +563,7 @@
       if (saved.startRate) s.startRate = clamp(+saved.startRate, 0.2, 2);
       if (saved.baseReach) s.baseReach = clamp(+saved.baseReach, 4, 20);
       if (typeof saved.sound === 'boolean') s.sound = saved.sound;
+      if (typeof saved.glow === 'number') s.glow = clamp(saved.glow, 0, 100);
     } else {
       // older versions: keep best score and ring choice, but use the new default rate and reach
       saved = JSON.parse(localStorage.getItem('gempoop-v2') || 'null');
@@ -554,7 +576,7 @@
   function save() {
     try {
       localStorage.setItem('gempoop-v3', JSON.stringify({ startRate: s.startRate, baseReach: s.baseReach,
-        showReach: s.showReach, sound: s.sound, best: s.best, bestLevel: s.bestLevel }));
+        showReach: s.showReach, sound: s.sound, glow: s.glow, best: s.best, bestLevel: s.bestLevel }));
     } catch (e) {}
   }
   s.frogs.forEach(function (f) { f.reach = s.baseReach; });
@@ -569,6 +591,7 @@
   }
   function syncSettings() {
     $('rate').value = s.startRate; $('base').value = s.baseReach; $('showReach').checked = s.showReach; $('sound').checked = s.sound;
+    $('glow').value = s.glow; $('glowLbl').textContent = s.glow ? s.glow + ' %' : 'Off';
     $('rateLbl').textContent = fmt1(s.startRate) + ' gems/s';
     $('baseLbl').textContent = s.baseReach + ' %';
     syncRings();
@@ -582,6 +605,7 @@
   $('newGame').addEventListener('click', function () { setPaused(false); newGame(); });
   $('rate').addEventListener('input', function (e) { s.startRate = parseFloat(e.target.value) || 0.4; save(); syncSettings(); });
   $('base').addEventListener('input', function (e) { s.baseReach = parseFloat(e.target.value) || 8; save(); syncSettings(); });
+  $('glow').addEventListener('input', function (e) { s.glow = parseInt(e.target.value, 10) || 0; save(); syncSettings(); });
   $('sound').addEventListener('change', function (e) { s.sound = !!e.target.checked; save(); syncSettings(); if (s.sound) sfx.unlock(); });
   $('showReach').addEventListener('change', function (e) { s.showReach = !!e.target.checked; save(); syncSettings(); });
 
@@ -889,7 +913,7 @@
   }
   function plop(g) {
     var m = g.m;
-    m.busy = null; m.pop = GP.POP;
+    m.busy = null; m.pop = GP.POP; m.lastC = g.c;
     sfx.fart();
     g.state = 'fly'; g.age = 0;
     g.x = m.x + (Math.random() - 0.5) * 4; g.y = GP.ANUS_Y;
@@ -1045,14 +1069,25 @@
     $('paddle').style.transform = 'rotate(' + s.angle.toFixed(2) + 'deg)';
     $('paddle').style.boxShadow = '0 0 ' + (s.flash / 0.12 * 18).toFixed(1) + 'px #fff2c4';
     s.monkeys.forEach(function (m) {
-      var sc;
+      var sc, k, c;
       if (m.busy) {
         var e = m.busy.t / GP.PUSH, ee = e * e * (3 - 2 * e);
         sc = 1 + 0.6 * ee + 0.05 * ee * Math.sin(m.busy.t * 38);   // straining, widening
+        k = Math.min(1, e * 1.4); c = m.busy.c;                    // rim takes on the gem's colour
       } else {
         sc = 1 + 0.6 * (m.pop / GP.POP);                             // snaps back after the plop
+        k = m.pop / GP.POP; c = m.lastC;                             // and fades back
       }
       m.el.setAttribute('transform', 'translate(70 58) scale(' + sc.toFixed(3) + ')');
+      var col = RIM_COLORS[c];
+      m.rim.setAttribute('fill', k > 0.001 ? hexMix(m.base, col, k) : m.base);
+      if (s.glow > 0 && k > 0.001) {
+        var R = (12 + s.glow * 0.6) * (0.6 + 0.4 * sc / 1.6);       // spread grows with the setting and the opening
+        m.glow.style.left = (m.x - R) + 'px'; m.glow.style.top = (GP.ANUS_Y - R) + 'px';
+        m.glow.style.width = m.glow.style.height = (2 * R).toFixed(1) + 'px';
+        m.glow.style.background = 'radial-gradient(circle, ' + col + 'cc 0%, ' + col + '66 30%, ' + col + '00 70%)';
+        m.glow.style.opacity = (k * (0.85 + 0.15 * Math.sin(Date.now() / 60))).toFixed(3);
+      } else m.glow.style.opacity = '0';
     });
     s.frogs.forEach(function (f) {
       var best = null, bd = 1e9;

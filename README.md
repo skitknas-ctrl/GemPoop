@@ -24,6 +24,7 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 - Lägg en tumme på varje fingeravtrycksyta. Paddeln lutar efter hur högt tummarna ligger
   i förhållande till varandra. Håller du vänster tumme högre lyfts paddelns vänstra ände.
 - En ädelsten anas först i en apas anus och pressas sedan fram under en sekund innan den ploppar ut.
+  Under tiden får anus kant stenens färg och sprider ett svagt ljus i samma färg.
 - Stenarna faller allt snabbare, studsar mot paddeln och bromsar in på vägen upp i en parabel.
 - Kommer en sten inom räckhåll för grodan med samma färg skjuter grodan ut tungan och sväljer den.
 - Stenar som landar på lådan tonar långsamt bort. Både de och stenar som faller förbi
@@ -48,6 +49,7 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 - **Starting gem rate:** stenar per sekund på nivå 1 (0,2–2, standard 0,4).
 - **Base tongue reach:** tungornas ursprungslängd i procent av spelplanens bredd (4–20, standard 8). Det är hit de röda stenarna klipper tillbaka tungan.
 - **Show tongue reach:** en streckad ring runt varje groda.
+- **Rim glow spread:** hur långt det färgade ljuset sprids från anus kant när en sten pressas fram (0 = av, standard 50 %).
 - **Sound effects:** ljud av eller på.
 
 Ändringar av takt och räckvidd gäller från nästa nytt spel.
