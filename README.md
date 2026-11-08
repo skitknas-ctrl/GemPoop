@@ -21,8 +21,9 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 ## Så spelar du
 
 - All text i spelet är på engelska.
-- Startskärmen har två knappar, **Tutorial** och **Start**. Medan den visas rör sig två genomskinliga
-  tummar upp och ner i sidopanelerna, så att paddeln hela tiden vinklas fram och tillbaka.
+- Startskärmen har två knappar, **Tutorial** och **Start**. Medan den visas glider två genomskinliga
+  tummar upp och ner i sidopanelerna (snett nerifrån, riktade mot mitten av överkanten), så att paddeln
+  hela tiden vinklas fram och tillbaka. Tutorialens text står i vitt på lådans brädor.
 - Lägg en tumme på varje fingeravtrycksyta. Paddeln lutar efter hur högt tummarna ligger
   i förhållande till varandra. Håller du vänster tumme högre lyfts paddelns vänstra ände.
 - En ädelsten anas först i en apas anus och pressas sedan fram under en sekund innan den ploppar ut.

@@ -42,10 +42,13 @@
     pointer-events: none; display: none; }
   .tongue i { position: absolute; right: -7px; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: #f27c9a; }
   .drop { position: absolute; left: 0; top: 0; width: 7px; height: 10px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; background: #c4102c; pointer-events: none; }
-  .thumb { position: absolute; width: 230px; height: 100px; pointer-events: none; display: none; }
-  .tutcard { position: absolute; left: 32px; right: 32px; top: 200px; display: none; box-sizing: border-box; padding: 18px 20px;
-    border-radius: 16px; background: #f6eedc; color: #2a1d12; box-shadow: 0 0 0 3px #6b3f1d; font-size: 20px; font-weight: 700; line-height: 1.4; }
-  .tutcard .tstep { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #6b3f1d; margin-bottom: 6px; }
+  .thumb { position: absolute; left: 0; top: 0; width: 100px; height: 270px; pointer-events: none; display: none; transform-origin: 50px 4px; }
+  #tutBoard { position: absolute; left: 84px; width: 552px; top: 205px; height: 330px; display: none; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px; text-align: center; color: #ffffff; pointer-events: none; }
+  #tutBoard .tstep { font-size: 16px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; opacity: 0.9;
+    text-shadow: 0 2px 0 #3b2213, 0 0 8px rgba(40, 20, 5, 0.8); }
+  #tutText { font-size: 31px; font-weight: 900; line-height: 1.3;
+    text-shadow: 0 2px 0 #3b2213, 0 3px 0 #3b2213, 0 0 12px rgba(40, 20, 5, 0.85); }
   .tutnav { position: absolute; left: 32px; right: 32px; top: 230px; display: none; flex-direction: column; gap: 48px; }
   .tutnav .btn { background: #f6eedc; }
   .tutnav .btn.primary { background: #6b3f1d; }
@@ -109,7 +112,7 @@
   <!-- left thumb area -->
   <div class="side" id="sideL">
     <div class="zone" id="zoneL"><div id="printsL"></div>
-      <div class="thumb" id="thumbL"><svg aria-hidden="true" width="230" height="100" viewBox="0 0 230 100"><path d="M0 22 L150 22 C196 22 222 34 222 50 C222 66 196 78 150 78 L0 78 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.6" stroke-width="2.5"/><path d="M170 31 C192 31 208 40 208 50 C208 60 192 69 170 69 C161 69 157 60 157 50 C157 40 161 31 170 31 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/><path d="M112 28 q-7 22 0 44 M98 32 q-5 18 0 36" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" fill="none"/></svg></div>
+      <div class="thumb" id="thumbL"><svg aria-hidden="true" width="100" height="270" viewBox="0 0 100 270"><path d="M50 4 C76 4 92 22 92 54 C92 88 87 110 79 128 C73 142 73 160 75 182 C77 210 81 238 83 270 L17 270 C19 238 23 210 25 182 C27 160 25 140 17 120 C9 98 8 72 12 52 C17 24 30 4 50 4 Z" fill="#ffffff" fill-opacity="0.22" stroke="#ffffff" stroke-opacity="0.65" stroke-width="2.5"/><path d="M45 22 C61 17 78 18 82 27 C86 42 85 70 82 85 C78 93 58 94 44 91 C36 89 33 81 33 67 C33 47 36 27 45 22 Z" fill="#ffffff" fill-opacity="0.18" stroke="#ffffff" stroke-opacity="0.7" stroke-width="3.5"/><path d="M30 156 q20 7 40 0 M33 166 q17 5 34 0" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div>
       <div class="mline" id="lineL"></div>
       <div class="mring" id="ringL"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
     </div>
@@ -123,7 +126,6 @@
         <div><div class="lbl">Level</div><div class="num" id="level">1</div></div>
       </div>
     </div>
-    <div class="tutcard" id="tutCard"><div class="tstep" id="tutStep">Tutorial 1 / 5</div><div id="tutText"></div></div>
     <div class="hint" id="hintL" style="left: 40px">
       <svg aria-hidden="true" width="16" height="22" viewBox="0 0 26 34" fill="none" stroke="#9a907f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg>
       <span>Left thumb raises the left end of the paddle</span>
@@ -133,7 +135,7 @@
   <!-- right thumb area -->
   <div class="side" id="sideR">
     <div class="zone" id="zoneR"><div id="printsR"></div>
-      <div class="thumb" id="thumbR" style="transform: scaleX(-1)"><svg aria-hidden="true" width="230" height="100" viewBox="0 0 230 100"><path d="M0 22 L150 22 C196 22 222 34 222 50 C222 66 196 78 150 78 L0 78 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.6" stroke-width="2.5"/><path d="M170 31 C192 31 208 40 208 50 C208 60 192 69 170 69 C161 69 157 60 157 50 C157 40 161 31 170 31 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/><path d="M112 28 q-7 22 0 44 M98 32 q-5 18 0 36" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" fill="none"/></svg></div>
+      <div class="thumb" id="thumbR"><div style="transform: scaleX(-1); width: 100px; height: 270px"><svg aria-hidden="true" width="100" height="270" viewBox="0 0 100 270"><path d="M50 4 C76 4 92 22 92 54 C92 88 87 110 79 128 C73 142 73 160 75 182 C77 210 81 238 83 270 L17 270 C19 238 23 210 25 182 C27 160 25 140 17 120 C9 98 8 72 12 52 C17 24 30 4 50 4 Z" fill="#ffffff" fill-opacity="0.22" stroke="#ffffff" stroke-opacity="0.65" stroke-width="2.5"/><path d="M45 22 C61 17 78 18 82 27 C86 42 85 70 82 85 C78 93 58 94 44 91 C36 89 33 81 33 67 C33 47 36 27 45 22 Z" fill="#ffffff" fill-opacity="0.18" stroke="#ffffff" stroke-opacity="0.7" stroke-width="3.5"/><path d="M30 156 q20 7 40 0 M33 166 q17 5 34 0" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div></div>
       <div class="mline" id="lineR"></div>
       <div class="mring" id="ringR"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
     </div>
@@ -241,6 +243,7 @@
     <div id="gems"></div>
     <div id="fx"></div>
     <div id="banner"><b id="bannerTitle">Level 1</b><span id="bannerSub"></span></div>
+    <div id="tutBoard"><div class="tstep" id="tutStep">Tutorial 1 / 5</div><div id="tutText"></div></div>
   </div>
 
   <!-- start / level complete / game over -->
@@ -518,7 +521,7 @@ window.GEMPOOP_SOUNDS = {"fart": ["T2dnUwACAAAAAAAAAAAmRAAAAAAAALC32aQBHgF2b3Jia
       });
     }
     h += '</svg>';
-    h += '<div class="abs" style="left:0; top:150px; width:672px; display:flex; flex-direction:column; align-items:center; gap:4px; font-family:\'Stardos Stencil\', Impact, \'Arial Black\', sans-serif; color:#3b2213; opacity:.55">' +
+    h += '<div class="abs" style="left:0; top:150px; width:672px; display:flex; flex-direction:column; align-items:center; gap:4px; font-family:\'Stardos Stencil\', Impact, \'Arial Black\', sans-serif; color:#3b2213; opacity:.55" id="stencil">' +
       '<div style="font-size:54px; line-height:1; letter-spacing:6px">GEMPOOP &amp; CO.</div>' +
       '<div style="font-size:22px; letter-spacing:5px">GEMSTONES · FRAGILE</div></div>';
     $('crate').innerHTML = h;
@@ -880,8 +883,6 @@ window.GEMPOOP_SOUNDS = {"fart": ["T2dnUwACAAAAAAAAAAAmRAAAAAAAALC32aQBHgF2b3Jia
     $('screen').style.left = side + 'px';
     $('sideR').style.left = (side + 720) + 'px'; $('sideR').style.width = side + 'px';
     $('ringL').style.left = $('ringR').style.left = (side / 2 - 36) + 'px';
-    $('thumbL').style.left = (side / 2 + 30 - 222) + 'px';
-    $('thumbR').style.left = (side / 2 - 38) + 'px';
     $('hintL').style.maxWidth = $('hintR').style.maxWidth = (side - 80) + 'px';
     if (side !== lastSide) {
       lastSide = side;
@@ -992,11 +993,11 @@ window.GEMPOOP_SOUNDS = {"fart": ["T2dnUwACAAAAAAAAAAAmRAAAAAAAALC32aQBHgF2b3Jia
   function startTutorial() {
     clearField(); resetFrogs(); hideScreen();
     s.state = 'tutorial';
-    $('tutCard').style.display = 'block'; $('tutNav').style.display = 'flex';
+    $('tutBoard').style.display = 'flex'; $('stencil').style.opacity = '0'; $('tutNav').style.display = 'flex';
     tutEnter(1);
   }
   function endTutorial() {
-    $('tutCard').style.display = 'none'; $('tutNav').style.display = 'none';
+    $('tutBoard').style.display = 'none'; $('stencil').style.opacity = '0.55'; $('tutNav').style.display = 'none';
     tut.step = 0; tut.only = -1;
   }
   function tutEnter(n) {
@@ -1273,7 +1274,11 @@ window.GEMPOOP_SOUNDS = {"fart": ["T2dnUwACAAAAAAAAAAAmRAAAAAAAALC32aQBHgF2b3Jia
       line.style.top = (y - 1) + 'px'; ring.style.top = (y - 36) + 'px';
       line.style.opacity = ring.style.opacity = op;
       th.style.display = demoThumbs ? 'block' : 'none';
-      th.style.top = (y - 50).toFixed(1) + 'px';
+      // the tip sits at the thumb's height; the thumb comes in at a slant from below, pointing at the middle of the top edge
+      var tipX = side === 'L' ? lastSide * 0.58 : lastSide * 0.42;
+      var tx = side === 'L' ? lastSide + 360 : -360;
+      var deg = Math.atan2(tx - tipX, y + 400) * 180 / Math.PI;   // aim a bit above the top edge so they stay slanted, like thumbs holding a phone
+      th.style.transform = 'translate(' + (tipX - 50).toFixed(1) + 'px,' + (y - 4).toFixed(1) + 'px) rotate(' + deg.toFixed(1) + 'deg)';
     });
     setText('score', String(s.score));
     setText('level', String(s.level));
