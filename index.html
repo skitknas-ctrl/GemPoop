@@ -41,6 +41,20 @@
   .tongue { position: absolute; height: 8px; border-radius: 4px; background: #e65a7f; transform-origin: 0 50%;
     pointer-events: none; display: none; }
   .tongue i { position: absolute; right: -7px; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: #f27c9a; }
+  .drop { position: absolute; left: 0; top: 0; width: 7px; height: 10px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; background: #c4102c; pointer-events: none; }
+  .thumb { position: absolute; width: 230px; height: 100px; pointer-events: none; display: none; }
+  .tutcard { position: absolute; left: 32px; right: 32px; top: 200px; display: none; box-sizing: border-box; padding: 18px 20px;
+    border-radius: 16px; background: #f6eedc; color: #2a1d12; box-shadow: 0 0 0 3px #6b3f1d; font-size: 20px; font-weight: 700; line-height: 1.4; }
+  .tutcard .tstep { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #6b3f1d; margin-bottom: 6px; }
+  .tutnav { position: absolute; left: 32px; right: 32px; top: 230px; display: none; flex-direction: column; gap: 12px; }
+  .tutnav .btn { background: #f6eedc; }
+  .tutnav .btn.primary { background: #6b3f1d; }
+  .overlay.clear { background: transparent; }
+  .panel.bare { width: auto; background: transparent; box-shadow: none; padding: 0; overflow: visible; }
+  .startBtns { display: flex; gap: 24px; margin-top: 120px; }
+  .btn.big { min-height: 76px; min-width: 210px; font-size: 28px; border-radius: 18px; border-width: 3px; background: #f6eedc;
+    box-shadow: 0 6px 0 #3b2213; }
+  .btn.big.primary { background: #6b3f1d; color: #fff; }
   .piece { position: absolute; left: 0; top: 0; width: 22px; height: 8px; border-radius: 4px; background: #e65a7f; pointer-events: none; }
   .reach { position: absolute; box-sizing: border-box; border-radius: 50%; border: 2px dashed; opacity: 0.6; pointer-events: none; }
   .frog { position: absolute; top: 128px; width: 64px; height: 52px; transform-origin: 50% 100%; }
@@ -95,6 +109,7 @@
   <!-- left thumb area -->
   <div class="side" id="sideL">
     <div class="zone" id="zoneL"><div id="printsL"></div>
+      <div class="thumb" id="thumbL"><svg aria-hidden="true" width="230" height="100" viewBox="0 0 230 100"><path d="M0 22 L150 22 C196 22 222 34 222 50 C222 66 196 78 150 78 L0 78 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.6" stroke-width="2.5"/><path d="M170 31 C192 31 208 40 208 50 C208 60 192 69 170 69 C161 69 157 60 157 50 C157 40 161 31 170 31 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/><path d="M112 28 q-7 22 0 44 M98 32 q-5 18 0 36" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" fill="none"/></svg></div>
       <div class="mline" id="lineL"></div>
       <div class="mring" id="ringL"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
     </div>
@@ -104,10 +119,11 @@
         <b>GemPoop</b>
       </div>
       <div class="stats">
-        <div><div class="lbl">Score</div><div class="num" id="score">0</div></div>
+        <div><div class="lbl">Credits</div><div class="num" id="score">5</div></div>
         <div><div class="lbl">Level</div><div class="num" id="level">1</div></div>
       </div>
     </div>
+    <div class="tutcard" id="tutCard"><div class="tstep" id="tutStep">Tutorial 1 / 5</div><div id="tutText"></div></div>
     <div class="hint" id="hintL" style="left: 40px">
       <svg aria-hidden="true" width="16" height="22" viewBox="0 0 26 34" fill="none" stroke="#9a907f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg>
       <span>Left thumb raises the left end of the paddle</span>
@@ -117,6 +133,7 @@
   <!-- right thumb area -->
   <div class="side" id="sideR">
     <div class="zone" id="zoneR"><div id="printsR"></div>
+      <div class="thumb" id="thumbR" style="transform: scaleX(-1)"><svg aria-hidden="true" width="230" height="100" viewBox="0 0 230 100"><path d="M0 22 L150 22 C196 22 222 34 222 50 C222 66 196 78 150 78 L0 78 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.6" stroke-width="2.5"/><path d="M170 31 C192 31 208 40 208 50 C208 60 192 69 170 69 C161 69 157 60 157 50 C157 40 161 31 170 31 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/><path d="M112 28 q-7 22 0 44 M98 32 q-5 18 0 36" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" fill="none"/></svg></div>
       <div class="mline" id="lineR"></div>
       <div class="mring" id="ringR"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
     </div>
@@ -129,6 +146,10 @@
         <div><div class="lbl">Missed</div><div class="num small" id="missed">0</div></div>
         <div><div class="lbl">Left</div><div class="num small" id="left">30</div></div>
       </div>
+    </div>
+    <div class="tutnav" id="tutNav">
+      <button class="btn primary" id="tutNext">Next</button>
+      <button class="btn" id="tutClose">Close</button>
     </div>
     <div class="hint" id="hintR" style="right: 40px; justify-content: flex-end; text-align: right">
       <span>Right thumb raises the right end of the paddle</span>
@@ -229,24 +250,7 @@
   <div class="overlay" id="settings">
     <section class="panel" aria-label="Settings">
       <h2>Settings</h2>
-      <div class="row">
-        <div class="top"><label for="rate">Starting gem rate</label><span id="rateLbl">0.4 gems/s</span></div>
-        <input id="rate" type="range" min="0.2" max="2" step="0.1" value="0.4">
-        <small>Gems per second on level 1. Every level adds 0.1.</small>
-      </div>
-      <div class="row">
-        <div class="top"><label for="base">Base tongue reach</label><span id="baseLbl">8 %</span></div>
-        <input id="base" type="range" min="4" max="20" step="1" value="8">
-        <small>Percent of the playfield width. Red gems snip tongues back to this length.</small>
-      </div>
-      <label class="check"><input id="showReach" type="checkbox" checked> Show tongue reach as dashed rings</label>
-      <div class="row">
-        <div class="top"><label for="glow">Rim glow spread</label><span id="glowLbl">50 %</span></div>
-        <input id="glow" type="range" min="0" max="100" step="5" value="50">
-        <small>How far the coloured light spreads from the rim while a gem is pushing out. 0 turns the glow off.</small>
-      </div>
       <label class="check"><input id="sound" type="checkbox" checked> Sound effects</label>
-      <p style="font-size:14px">Rate and base reach changes apply when you start a new game.</p>
       <div class="btns">
         <button class="btn" id="newGame">New game</button>
         <button class="btn primary" id="resume">Resume</button>
@@ -269,7 +273,7 @@
     T_OUT: 0.08, T_IN: 0.16, POP: 0.28, PUSH: 1.0,  // PUSH: 1 s from first glimpse to plop
     MIN_SIDE: 150,
     PER_LEVEL: 30, RATE_STEP: 0.1, RATE_MAX: 3.5,
-    RED_FROM: 4, MAX_REACH: 40, BANNER: 1.6
+    RED_FROM: 4, MAX_REACH: 40, BANNER: 1.6, START_CREDITS: 5, VANISH: 0.45
   };
   var RED = 3;
   var FROG_NAMES = ['Blue frog', 'Yellow frog', 'Green frog'];
@@ -327,8 +331,8 @@
   var MONK = [ // chimpanzee, orangutan, gorilla, baboon
     { fur: '#4b3427', furDark: '#2a1b12', out: '#1a0f09', skin: '#d6a27a', skinLight: '#ebc39f', skinDark: '#a8714c', cheek: '#e3b08c', cheekDark: '#9a6648', ring: '#7a2e3e', shaggy: 0, silver: 0, longTail: 1, shortTail: 0 },
     { fur: '#c2622c', furDark: '#7a3510', out: '#3f1a06', skin: '#e6b48c', skinLight: '#f4d0ae', skinDark: '#b8835c', cheek: '#edc09a', cheekDark: '#a8714c', ring: '#7a2e3e', shaggy: 1, silver: 0, longTail: 1, shortTail: 0 },
-    { fur: '#34343a', furDark: '#151519', out: '#08080a', skin: '#6d6870', skinLight: '#8a8590', skinDark: '#4a454d', cheek: '#857f88', cheekDark: '#4a454d', ring: '#5e2433', shaggy: 0, silver: 1, longTail: 0, shortTail: 0 },
-    { fur: '#9b8a5c', furDark: '#5e5032', out: '#2f2717', skin: '#c9a98a', skinLight: '#dfc4a8', skinDark: '#987a5e', cheek: '#e0475b', cheekDark: '#8e1f30', ring: '#a02035', shaggy: 0, silver: 0, longTail: 0, shortTail: 1 }
+    { fur: '#34343a', furDark: '#151519', out: '#08080a', skin: '#6d6870', skinLight: '#8a8590', skinDark: '#4a454d', cheek: '#e3b08c', cheekDark: '#9a6648', ring: '#7a2e3e', shaggy: 0, silver: 1, longTail: 0, shortTail: 0 },
+    { fur: '#9b8a5c', furDark: '#5e5032', out: '#2f2717', skin: '#c9a98a', skinLight: '#dfc4a8', skinDark: '#987a5e', cheek: '#e3b08c', cheekDark: '#9a6648', ring: '#7a2e3e', shaggy: 0, silver: 0, longTail: 0, shortTail: 1 }
   ];
   function monkeySvg(m, left) {
     var o = m.out;
@@ -518,13 +522,13 @@
   })();
 
   var s = {
-    state: 'start',            // start | play | shop | over
+    state: 'start',            // start | tutorial | play | shop | over
     paused: false,
-    level: 1, score: 0, best: 0, bestLevel: 0,
+    level: 1, score: GP.START_CREDITS, best: 0, bestLevel: 0,
     caughtL: 0, missedL: 0, spawned: 0, endT: 0, bannerT: 0,
-    gems: [], fx: [], spawnT: 0,
+    gems: [], fx: [], spawnT: 0, clock: 0,
     yL: 0.5, yR: 0.5, aL: false, aR: false, angle: 0, flash: 0,
-    startRate: 0.4, baseReach: 8, showReach: true, sound: true, glow: 50,
+    startRate: 0.4, baseReach: 8, glow: 50, sound: true,
     monkeys: [], frogs: []
   };
 
@@ -551,64 +555,35 @@
     tongue.className = 'tongue'; tongue.innerHTML = '<i></i>';
     tongue.style.left = x + 'px'; tongue.style.top = (GP.MOUTH_Y - 4) + 'px';
     $('tongues').appendChild(tongue);
-    s.frogs.push({ c: ci, x: x, my: GP.MOUTH_Y, reach: 10, ups: 0, tongue: null, gulp: 0, hurt: 0,
+    s.frogs.push({ c: ci, x: x, my: GP.MOUTH_Y, reach: s.baseReach, shown: s.baseReach, ups: 0, tongue: null, gulp: 0, hurt: 0,
       el: frog, ring: ring, tEl: tongue,
       pp: frog.querySelector('.pp'), mo: frog.querySelector('.mo') });
   });
+  function resetFrogs() {
+    s.frogs.forEach(function (f) { f.reach = f.shown = s.baseReach; f.ups = 0; });
+  }
 
-  // ---- Saved settings and best score ----
+  // ---- Saved sound choice and best result ----
   try {
-    var saved = JSON.parse(localStorage.getItem('gempoop-v3') || 'null');
+    var saved = JSON.parse(localStorage.getItem('gempoop-v3') || 'null') || JSON.parse(localStorage.getItem('gempoop-v2') || 'null');
     if (saved) {
-      if (saved.startRate) s.startRate = clamp(+saved.startRate, 0.2, 2);
-      if (saved.baseReach) s.baseReach = clamp(+saved.baseReach, 4, 20);
       if (typeof saved.sound === 'boolean') s.sound = saved.sound;
-      if (typeof saved.glow === 'number') s.glow = clamp(saved.glow, 0, 100);
-    } else {
-      // older versions: keep best score and ring choice, but use the new default rate and reach
-      saved = JSON.parse(localStorage.getItem('gempoop-v2') || 'null');
-    }
-    if (saved) {
-      if (typeof saved.showReach === 'boolean') s.showReach = saved.showReach;
       s.best = +saved.best || 0; s.bestLevel = +saved.bestLevel || 0;
     }
   } catch (e) {}
   function save() {
-    try {
-      localStorage.setItem('gempoop-v3', JSON.stringify({ startRate: s.startRate, baseReach: s.baseReach,
-        showReach: s.showReach, sound: s.sound, glow: s.glow, best: s.best, bestLevel: s.bestLevel }));
-    } catch (e) {}
+    try { localStorage.setItem('gempoop-v3', JSON.stringify({ sound: s.sound, best: s.best, bestLevel: s.bestLevel })); } catch (e) {}
   }
-  s.frogs.forEach(function (f) { f.reach = s.baseReach; });
 
-  function syncRings() {
-    s.frogs.forEach(function (f) {
-      var R = f.reach / 100 * GP.S;
-      f.ring.style.left = (f.x - R) + 'px'; f.ring.style.top = (f.my - R) + 'px';
-      f.ring.style.width = f.ring.style.height = (2 * R) + 'px';
-      f.ring.style.display = (s.showReach || s.paused || s.state === 'shop') ? 'block' : 'none';
-    });
-  }
-  function syncSettings() {
-    $('rate').value = s.startRate; $('base').value = s.baseReach; $('showReach').checked = s.showReach; $('sound').checked = s.sound;
-    $('glow').value = s.glow; $('glowLbl').textContent = s.glow ? s.glow + ' %' : 'Off';
-    $('rateLbl').textContent = fmt1(s.startRate) + ' gems/s';
-    $('baseLbl').textContent = s.baseReach + ' %';
-    syncRings();
-  }
+  // ---- Settings: sound only ----
   function setPaused(p) {
-    s.paused = p; $('settings').classList.toggle('open', p); syncSettings();
+    s.paused = p; $('settings').classList.toggle('open', p); $('sound').checked = s.sound;
     if (p) $('resume').focus();
   }
   $('gear').addEventListener('click', function () { setPaused(true); });
   $('resume').addEventListener('click', function () { setPaused(false); });
-  $('newGame').addEventListener('click', function () { setPaused(false); newGame(); });
-  $('rate').addEventListener('input', function (e) { s.startRate = parseFloat(e.target.value) || 0.4; save(); syncSettings(); });
-  $('base').addEventListener('input', function (e) { s.baseReach = parseFloat(e.target.value) || 8; save(); syncSettings(); });
-  $('glow').addEventListener('input', function (e) { s.glow = parseInt(e.target.value, 10) || 0; save(); syncSettings(); });
-  $('sound').addEventListener('change', function (e) { s.sound = !!e.target.checked; save(); syncSettings(); if (s.sound) sfx.unlock(); });
-  $('showReach').addEventListener('change', function (e) { s.showReach = !!e.target.checked; save(); syncSettings(); });
-
+  $('newGame').addEventListener('click', function () { setPaused(false); endTutorial(); newGame(); });
+  $('sound').addEventListener('change', function (e) { s.sound = !!e.target.checked; save(); if (s.sound) sfx.unlock(); });
 
   // ---- Sound: synthesized with Web Audio, no sound files ----
   var SFX = (function () {
@@ -726,18 +701,20 @@
 
   // ---- Screens: start, level complete + tongue shop, game over ----
   var screen = $('screen'), panel = $('screenPanel');
-  function showScreen(html) { panel.innerHTML = html; screen.classList.add('open'); syncRings();
-    var b = panel.querySelector('.primary'); if (b) b.focus(); }
-  function hideScreen() { screen.classList.remove('open'); syncRings(); }
+  function showScreen(html, bare) {
+    panel.innerHTML = html;
+    screen.classList.toggle('clear', !!bare); panel.classList.toggle('bare', !!bare);
+    panel.classList.remove('wide');
+    screen.classList.add('open');
+    var b = panel.querySelector('.primary'); if (b) b.focus();
+  }
+  function hideScreen() { screen.classList.remove('open'); }
 
   function renderStart() {
-    showScreen(
-      '<h2>GemPoop</h2>' +
-      '<p>Put one thumb on each fingerprint pad. Hold one thumb higher than the other to tilt the paddle.</p>' +
-      '<p>Bounce every gem up to the frog of the same colour. Missed gems are subtracted from your catch after each level, and you can spend your score on longer tongues.</p>' +
-      '<p class="warn">From level ' + GP.RED_FROM + ', red gems appear. If a frog catches one, its tongue is snipped back to base length. The game ends if your score drops below zero.</p>' +
-      (s.best > 0 ? '<p>Best score: <b>' + s.best + '</b> · Best level: <b>' + s.bestLevel + '</b></p>' : '') +
-      '<div class="btns"><button class="btn primary" data-act="play">Play</button></div>');
+    endTutorial(); clearField(); resetFrogs();
+    s.state = 'start'; s.level = 1; s.score = GP.START_CREDITS; s.caughtL = 0; s.missedL = 0; s.spawned = 0;
+    showScreen('<div class="startBtns"><button class="btn big" data-act="tutorial">Tutorial</button>' +
+      '<button class="btn big primary" data-act="play">Start</button></div>', true);
   }
 
   function renderShop(net) {
@@ -748,10 +725,10 @@
         '<div class="name">' + FROG_NAMES[i] + '</div>' +
         '<div class="reachv">Reach ' + f.reach + ' %</div>' +
         '<button class="btn buy" data-buy="' + i + '"' + ((maxed || s.score < cost) ? ' disabled' : '') + '>' +
-        (maxed ? 'Max reach' : '+1 % · ' + cost + ' pts') + '</button></div>';
+        (maxed ? 'Max reach' : '+1 % · ' + cost + ' credits') + '</button></div>';
     }).join('');
     var redNote = '';
-    if (next === GP.RED_FROM) redNote = '<p class="warn">Red gems start appearing on level ' + next + '. Keep them away from the frogs: a caught red gem snips the tongue back to ' + s.baseReach + ' %.</p>';
+    if (next === GP.RED_FROM) redNote = '<p class="warn">Red gems start appearing on level ' + next + '. Keep them away from the frogs: a caught red gem cuts the tongue back to ' + s.baseReach + ' %.</p>';
     else if (next > GP.RED_FROM) redNote = '<p class="warn">Red gem chance on level ' + next + ': ' + Math.round(redChance(next) * 100) + ' %</p>';
     showScreen(
       '<h2>Level ' + s.level + ' complete</h2>' +
@@ -759,12 +736,12 @@
         '<span>Caught</span><span class="v">+' + s.caughtL + '</span>' +
         '<span>Missed</span><span class="v">−' + s.missedL + '</span>' +
         '<span>Level result</span><span class="v">' + (net >= 0 ? '+' : '−') + Math.abs(net) + '</span>' +
-        '<span class="tot">Score</span><span class="v tot">' + s.score + '</span>' +
+        '<span class="tot">Credits</span><span class="v tot">' + s.score + '</span>' +
       '</div>' +
       '<p><b>Tongue shop.</b> Buy reach for each frog separately. Every extra percent costs more than the last.</p>' +
       '<div class="shop">' + cards + '</div>' + redNote +
       '<div class="btns"><button class="btn primary" data-act="next">Start level ' + next + ' · ' + fmt1(rateFor(next)) + ' gems/s</button></div>');
-    panel.parentNode.querySelector('.panel').classList.add('wide');
+    panel.classList.add('wide');
   }
 
   function renderOver(net) {
@@ -772,11 +749,11 @@
       '<h2>Game over</h2>' +
       '<div class="tally">' +
         '<span>Level ' + s.level + ' result</span><span class="v">' + (net >= 0 ? '+' : '−') + Math.abs(net) + '</span>' +
-        '<span class="tot">Final score</span><span class="v tot">' + s.score + '</span>' +
+        '<span class="tot">Credits</span><span class="v tot">' + s.score + '</span>' +
       '</div>' +
-      '<p>Your score dropped below zero on level ' + s.level + '.</p>' +
-      '<p>Best score: <b>' + s.best + '</b> · Best level: <b>' + s.bestLevel + '</b></p>' +
-      '<div class="btns"><button class="btn primary" data-act="again">Play again</button></div>');
+      '<p>Your credits dropped below zero on level ' + s.level + '.</p>' +
+      '<p>Best: <b>' + s.best + '</b> credits · level <b>' + s.bestLevel + '</b></p>' +
+      '<div class="btns"><button class="btn" data-act="menu">Menu</button><button class="btn primary" data-act="again">Play again</button></div>');
   }
 
   panel.addEventListener('click', function (e) {
@@ -786,12 +763,14 @@
       var f = s.frogs[+buy], cost = upgradeCost(f.ups);
       if (s.score >= cost && f.reach < GP.MAX_REACH) {
         s.score -= cost; f.ups++; f.reach++;
-        renderShop(s.lastNet); syncRings();
+        renderShop(s.lastNet);
       }
       return;
     }
     if (act === 'play' || act === 'again') newGame();
     else if (act === 'next') { s.level++; startLevel(); }
+    else if (act === 'tutorial') startTutorial();
+    else if (act === 'menu') renderStart();
   });
 
   function clearField() {
@@ -802,9 +781,10 @@
     s.frogs.forEach(function (f) { f.tongue = null; f.gulp = 0; f.hurt = 0; });
   }
   function newGame() {
-    clearField();
-    s.level = 1; s.score = 0;
-    s.frogs.forEach(function (f) { f.reach = s.baseReach; f.ups = 0; });
+    endTutorial(); clearField();
+    s.level = 1; s.score = GP.START_CREDITS;
+    s.yL = s.yR = 0.5;
+    resetFrogs();
     startLevel();
   }
   function startLevel() {
@@ -814,7 +794,6 @@
     $('bannerTitle').textContent = 'Level ' + s.level;
     $('bannerSub').textContent = s.level === GP.RED_FROM ? 'Watch out for red gems!' : (s.level > GP.RED_FROM ? 'Red gems: ' + Math.round(redChance(s.level) * 100) + ' %' : '');
     s.state = 'play';
-    panel.classList.remove('wide');
     hideScreen();
   }
   function endLevel() {
@@ -870,6 +849,8 @@
     $('screen').style.left = side + 'px';
     $('sideR').style.left = (side + 720) + 'px'; $('sideR').style.width = side + 'px';
     $('ringL').style.left = $('ringR').style.left = (side / 2 - 36) + 'px';
+    $('thumbL').style.left = (side / 2 + 30 - 222) + 'px';
+    $('thumbR').style.left = (side / 2 - 38) + 'px';
     $('hintL').style.maxWidth = $('hintR').style.maxWidth = (side - 80) + 'px';
     if (side !== lastSide) {
       lastSide = side;
@@ -881,26 +862,26 @@
   window.addEventListener('orientationchange', function () { setTimeout(layout, 120); });
   layout();
 
-  // ---- Effects: floating text and snipped tongue pieces ----
+  // ---- Effects: floating text, snipped tongue pieces and drops of blood ----
   function floatText(x, y, text, color) {
     var el = document.createElement('div');
     el.className = 'float'; el.textContent = text; el.style.color = color;
     $('fx').appendChild(el);
     s.fx.push({ kind: 'text', x: x, y: y, t: 0, life: 0.9, el: el });
   }
-  function tonguePiece(x, y, vx) {
+  function particle(cls, kind, x, y, vx, vy, life) {
     var el = document.createElement('div');
-    el.className = 'piece';
+    el.className = cls;
     $('fx').appendChild(el);
-    s.fx.push({ kind: 'piece', x: x, y: y, vx: vx, vy: -120, rot: 0, t: 0, life: 1.4, el: el });
+    s.fx.push({ kind: kind, x: x, y: y, vx: vx, vy: vy, rot: 0, t: 0, life: life, el: el });
+  }
+  function snipFx(x, y, vx) {
+    particle('piece', 'piece', x, y, vx, -120, 1.4);
+    for (var i = 0; i < 6; i++) particle('drop', 'drop', x + (Math.random() - 0.5) * 10, y, (Math.random() - 0.5) * 160, -60 - Math.random() * 140, 1.2);
   }
 
-  // ---- Physics ----
-  function beginGem() {
-    var free = s.monkeys.filter(function (m) { return !m.busy; });
-    if (!free.length) return false;
-    var m = free[Math.floor(Math.random() * free.length)];
-    var c = Math.random() < redChance(s.level) ? RED : Math.floor(Math.random() * 3);
+  // ---- Gems ----
+  function makeGem(m, c) {
     var el = document.createElement('div');
     el.className = 'gem'; el.innerHTML = GEM_SVG[c];
     $('gems').appendChild(el);
@@ -908,6 +889,13 @@
       bounced: false, spent: false, state: 'emerging', age: 0, t: 0, el: el };
     m.busy = g;
     s.gems.push(g);
+    return g;
+  }
+  function beginGem() {
+    var free = s.monkeys.filter(function (m) { return !m.busy; });
+    if (!free.length) return false;
+    var m = free[Math.floor(Math.random() * free.length)];
+    makeGem(m, Math.random() < redChance(s.level) ? RED : Math.floor(Math.random() * 3));
     s.spawned++;
     return true;
   }
@@ -916,24 +904,107 @@
     m.busy = null; m.pop = GP.POP; m.lastC = g.c;
     sfx.fart();
     g.state = 'fly'; g.age = 0;
+    if (g.tut) { g.x = m.x; g.y = GP.ANUS_Y; g.vx = 0; g.vy = 60; g.spin = 1; return; }
     g.x = m.x + (Math.random() - 0.5) * 4; g.y = GP.ANUS_Y;
     g.vx = (Math.random() - 0.5) * 50; g.vy = 40 + Math.random() * 60;
     g.spin = (Math.random() - 0.5) * 4;
   }
   function missed(g, x, y) {
-    if (g.red) return;              // red gems never count against you
+    if (g.red || s.state !== 'play') return;     // red gems never count against you
     s.missedL++;
-    floatText(x, y, '−1', '#ff9aa8');
+    floatText(x, y, '−1', '#d0243f');
   }
 
-  function step(dt) {
-    var interval = 1 / rateFor(s.level);
-    var diff = clamp((s.yR - s.yL) / 0.5, -1, 1);
-    s.angle += (GP.MAXA * diff - s.angle) * Math.min(1, dt * 18);
-    s.flash = Math.max(0, s.flash - dt);
-    s.bannerT = Math.max(0, s.bannerT - dt);
+  // ---- Tutorial ----
+  var TUT_TEXT = [
+    'The goal of the game is to guide the gems to the frog of the same colour.',
+    'Frogs are kind and never take their friends’ gems.',
+    'With the gems the frogs collect, you can buy them longer tongues.',
+    'But frogs aren’t very smart. They happily grab red gems, even though red gems are sharp and cut off their tongues.',
+    'You start with ' + GP.START_CREDITS + ' credits. You lose the game when your credits drop below zero.'
+  ];
+  var tut = { step: 0, t: 0, fired: {}, yL: 0.5, yR: 0.5, only: -1 };
 
-    if (s.spawned < GP.PER_LEVEL) {
+  // try every paddle angle and keep the one whose bounce comes closest to the target
+  function simulate(x0, deg) {
+    var a = deg * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a);
+    var x = x0, y = GP.ANUS_Y, vx = 0, vy = 60, bounced = false, pts = [], h = 1 / 240;
+    for (var t = 0; t < 4; t += h) {
+      vy += GP.G * h; x += vx * h; y += vy * h;
+      if (bounced && vy > 0) break;
+      var px = x - GP.PX, py = y - GP.PY, along = px * ca + py * sa, dist = px * sa - py * ca, vn = vx * sa - vy * ca;
+      if (Math.abs(along) <= GP.HALF + 4 && dist < GP.RG && dist > -GP.RG * 2.5 && vn < 0) {
+        var j = (1 + GP.E) * vn; vx -= j * sa; vy += j * ca;
+        var push = GP.RG - dist; x += sa * push; y -= ca * push; bounced = true;
+      }
+      if (bounced) pts.push(x, y);
+      if (y > GP.S + 40) break;
+    }
+    return pts;
+  }
+  function aim(x0, tx, ty, avoid) {
+    var best = 0, bestScore = 1e9;
+    for (var deg = -GP.MAXA; deg <= GP.MAXA + 0.001; deg += 0.1) {
+      var pts = simulate(x0, deg); if (!pts.length) continue;
+      var dmin = 1e9, pen = 0;
+      for (var i = 0; i < pts.length; i += 2) {
+        var d = Math.hypot(pts[i] - tx, pts[i + 1] - ty); if (d < dmin) dmin = d;
+        for (var k = 0; k < avoid.length; k++) if (Math.hypot(pts[i] - avoid[k].x, pts[i + 1] - avoid[k].y) < avoid[k].r) pen = 1000;
+      }
+      if (dmin + pen < bestScore) { bestScore = dmin + pen; best = deg; }
+    }
+    var diff = best / GP.MAXA;
+    tut.yL = 0.5 - 0.25 * diff; tut.yR = 0.5 + 0.25 * diff;
+  }
+  function frogZone(i, pct, extra) { var f = s.frogs[i]; return { x: f.x, y: f.my, r: pct / 100 * GP.S + (extra || 0) }; }
+
+  function startTutorial() {
+    clearField(); resetFrogs(); hideScreen();
+    s.state = 'tutorial';
+    $('tutCard').style.display = 'block'; $('tutNav').style.display = 'flex';
+    tutEnter(1);
+  }
+  function endTutorial() {
+    $('tutCard').style.display = 'none'; $('tutNav').style.display = 'none';
+    tut.step = 0; tut.only = -1;
+  }
+  function tutEnter(n) {
+    clearField();
+    tut.step = n; tut.t = 0; tut.fired = {}; tut.only = -1;
+    $('tutStep').textContent = 'Tutorial ' + n + ' / 5';
+    $('tutText').textContent = TUT_TEXT[n - 1];
+    $('tutNext').textContent = n < 5 ? 'Next' : 'Start game';
+    var base = s.baseReach;
+    s.frogs.forEach(function (f) { f.reach = f.shown = (n === 4 ? 14 : base); f.ups = 0; });
+    tut.yL = tut.yR = 0.5;
+    if (n === 1) aim(s.monkeys[2].x, s.frogs[0].x, s.frogs[0].my, []);
+    if (n === 2) aim(s.monkeys[2].x, s.frogs[1].x, s.frogs[1].my - 10, [frogZone(2, base, 12)]);
+    if (n === 4) { tut.only = 2; aim(s.monkeys[1].x, s.frogs[2].x, s.frogs[2].my, [frogZone(0, 14, 8), frogZone(1, 14, 8)]); }
+  }
+  function tutGem(mi, c) { var g = makeGem(s.monkeys[mi], c); g.tut = true; }
+  function tutUpdate(dt) {
+    tut.t += dt;
+    var t = tut.t, F = tut.fired;
+    if (tut.step === 1 || tut.step === 2) {
+      if (t >= 0.6 && !F.a) { F.a = true; tutGem(2, tut.step === 1 ? 0 : 2); }
+      if (t >= 5.2) { tut.t = 0; tut.fired = {}; }
+    } else if (tut.step === 3) {
+      var stepR = [8, 10, 12, 14, 14][Math.floor(t / 0.9) % 5];
+      s.frogs.forEach(function (f) { f.reach = stepR; });
+    } else if (tut.step === 4) {
+      if (t >= 1.0 && !F.a) { F.a = true; tutGem(1, RED); }
+      if (t >= 6.5) { tut.t = 0; tut.fired = {}; s.frogs.forEach(function (f) { f.reach = 14; }); }
+    }
+  }
+  $('tutNext').addEventListener('click', function () {
+    if (tut.step < 5) tutEnter(tut.step + 1); else newGame();
+  });
+  $('tutClose').addEventListener('click', function () { renderStart(); });
+
+  // ---- Physics ----
+  function step(dt) {
+    if (s.state === 'play' && s.spawned < GP.PER_LEVEL) {
+      var interval = 1 / rateFor(s.level);
       if (s.spawnT > interval + GP.BANNER) s.spawnT = interval;
       s.spawnT -= dt;
       if (s.spawnT <= 0) { if (beginGem()) s.spawnT += interval; else s.spawnT = 0.05; }
@@ -953,39 +1024,37 @@
       if (g.state === 'fly') {
         var sub = 3, h = dt / sub;
         for (var k = 0; k < sub; k++) {
-          var prevY = g.y;
           g.vy += GP.G * h;            // falls faster and faster, rises slower and slower
           g.x += g.vx * h;
           g.y += g.vy * h;
           g.rot += g.spin * h;
-          // past the top of the bounce: the gem is lost (no frog may take it, no more bounces)
-          if (g.bounced && !g.lost && g.vy > 0) g.lost = true;
+          // top of the bounce reached: the gem is lost, shrinks and disappears
+          if (g.bounced && g.vy > 0) {
+            g.state = 'vanish'; g.t = 0;
+            missed(g, g.x - 12, g.y - 30);
+            break;
+          }
           // bounce on the tilted paddle, normal n = (sin a, −cos a)
           var px = g.x - GP.PX, py = g.y - GP.PY;
           var along = px * ca + py * sa;
           var dist = px * sa - py * ca;
           var vn = g.vx * sa - g.vy * ca;
-          if (!g.lost && Math.abs(along) <= GP.HALF + 4 && dist < GP.RG && dist > -GP.RG * 2.5 && vn < 0) {
+          if (Math.abs(along) <= GP.HALF + 4 && dist < GP.RG && dist > -GP.RG * 2.5 && vn < 0) {
             var j = (1 + GP.E) * vn;
             g.vx -= j * sa; g.vy += j * ca;
             var push = GP.RG - dist;
             g.x += sa * push; g.y -= ca * push;
             g.bounced = true; g.spin = g.vx / 60; s.flash = 0.12;
           }
-          // lands on top of the crate
-          if (g.bounced && g.vy > 0 && prevY + GP.RG <= GP.CRATE_TOP && g.y + GP.RG > GP.CRATE_TOP && g.x > GP.CRATE_L && g.x < GP.CRATE_R) {
-            g.y = GP.CRATE_TOP - GP.RG; g.state = 'landed'; g.t = 0;
-            missed(g, g.x - 12, g.y - 40);
-            break;
-          }
         }
-        // within reach of a frog?
-        if (g.state === 'fly' && g.bounced && !g.spent && !g.lost) {
+        // within reach of a frog on the way up?
+        if (g.state === 'fly' && g.bounced && !g.spent) {
           var target = null;
           if (g.red) {
             var bd = 1e9;
             s.frogs.forEach(function (f) {
               if (f.tongue) return;
+              if (s.state === 'tutorial' && tut.only >= 0 && f.c !== tut.only) return;
               var d = Math.hypot(g.x - f.x, g.y - f.my);
               if (d < f.reach / 100 * GP.S && d < bd) { bd = d; target = f; }
             });
@@ -1003,9 +1072,9 @@
           g.dead = true;
           missed(g, clamp(g.x, 30, 680), 680);
         }
-      } else if (g.state === 'landed') {
+      } else if (g.state === 'vanish') {
         g.t += dt;
-        if (g.t > GP.LAND_FADE) g.dead = true;
+        if (g.t > GP.VANISH) g.dead = true;
       }
     }
 
@@ -1018,16 +1087,15 @@
           tg.tx = f.x + (tg.sx - f.x) * u; tg.ty = f.my + (tg.sy - f.my) * u;
           if (tg.t >= GP.T_OUT) {
             if (tg.red) {
-              // the red gem snips the tongue back to its original length
+              // the sharp red gem cuts the tongue back to its original length
               var g = tg.gem;
               g.state = 'fly'; g.spent = true; g.vx *= 0.4; g.vy = Math.max(60, g.vy * 0.3);
-              tonguePiece(tg.tx, tg.ty, (tg.tx - f.x) * 1.5);
+              snipFx(tg.tx, tg.ty, (tg.tx - f.x) * 1.5);
               sfx.snip();
               f.tongue = null; f.hurt = 0.7;
               var lost = f.reach - s.baseReach;
               f.reach = s.baseReach; f.ups = 0;
-              floatText(f.x - 30, f.my - 70, lost > 0 ? 'SNIP! −' + lost + ' %' : 'SNIP!', '#ff6b80');
-              syncRings();
+              floatText(f.x - 30, f.my - 70, lost > 0 ? 'SNIP! −' + lost + ' %' : 'SNIP!', '#d0243f');
             } else { tg.phase = 'in'; tg.t = 0; }
           }
         } else {
@@ -1035,8 +1103,9 @@
           tg.tx = f.x + (tg.sx - f.x) * w; tg.ty = f.my + (tg.sy - f.my) * w;
           tg.gem.x = tg.tx; tg.gem.y = tg.ty;
           if (tg.t >= GP.T_IN) {
-            tg.gem.dead = true; f.tongue = null; f.gulp = GP.GULP; s.caughtL++;
-            floatText(f.x - 12, f.my - 70, '+1', '#b6f5c8');
+            tg.gem.dead = true; f.tongue = null; f.gulp = GP.GULP;
+            if (s.state === 'play') s.caughtL++;
+            floatText(f.x - 12, f.my - 70, '+1', '#15803d');
           }
         }
       }
@@ -1047,17 +1116,36 @@
     s.gems = s.gems.filter(function (g) { if (g.dead) g.el.remove(); return !g.dead; });
 
     // level over when every gem has been resolved
-    if (s.spawned >= GP.PER_LEVEL && !s.gems.some(function (g) { return g.state !== 'landed'; }) &&
+    if (s.state === 'play' && s.spawned >= GP.PER_LEVEL && !s.gems.some(function (g) { return g.state !== 'vanish'; }) &&
         s.frogs.every(function (f) { return !f.tongue; })) {
       s.endT += dt;
       if (s.endT > 1.0) endLevel();
     }
   }
 
+  // things that move in every state: thumbs, paddle, rings, tutorial script
+  function ambient(dt) {
+    s.clock += dt;
+    var demo = s.state === 'start' || (s.state === 'tutorial' && tut.step === 5);
+    if (demo) {
+      var w = Math.sin(s.clock * 1.5);
+      s.yL = 0.5 + 0.22 * w; s.yR = 0.5 - 0.22 * w;
+    } else if (s.state === 'tutorial') {
+      var k = Math.min(1, dt * 4);
+      s.yL += (tut.yL - s.yL) * k; s.yR += (tut.yR - s.yR) * k;
+    }
+    var diff = clamp((s.yR - s.yL) / 0.5, -1, 1);
+    s.angle += (GP.MAXA * diff - s.angle) * Math.min(1, dt * 18);
+    s.flash = Math.max(0, s.flash - dt);
+    s.bannerT = Math.max(0, s.bannerT - dt);
+    s.frogs.forEach(function (f) { f.shown += (f.reach - f.shown) * Math.min(1, dt * 5); });
+    if (s.state === 'tutorial') tutUpdate(dt);
+  }
+
   function stepFx(dt) {
     s.fx.forEach(function (p) {
       p.t += dt;
-      if (p.kind === 'piece') { p.vy += GP.G * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.rot += 8 * dt; }
+      if (p.kind === 'piece' || p.kind === 'drop') { p.vy += GP.G * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.rot += 8 * dt; }
       else p.y -= 40 * dt;
       if (p.t > p.life) p.dead = true;
     });
@@ -1067,6 +1155,10 @@
   // ---- Draw ----
   var shown = {};
   function setText(id, v) { if (shown[id] !== v) { shown[id] = v; $(id).textContent = v; } }
+  function ringsVisible() {
+    if (s.state === 'tutorial') return tut.step === 3 || tut.step === 4;
+    return s.state === 'play' || s.state === 'shop';
+  }
   function draw() {
     $('paddle').style.transform = 'rotate(' + s.angle.toFixed(2) + 'deg)';
     $('paddle').style.boxShadow = '0 0 ' + (s.flash / 0.12 * 18).toFixed(1) + 'px #fff2c4';
@@ -1084,51 +1176,57 @@
       var col = RIM_COLORS[c];
       m.rim.setAttribute('fill', k > 0.001 ? hexMix(m.base, col, k) : m.base);
       if (s.glow > 0 && k > 0.001) {
-        var R = (12 + s.glow * 0.6) * (0.6 + 0.4 * sc / 1.6);       // spread grows with the setting and the opening
+        var R = (12 + s.glow * 0.6) * (0.6 + 0.4 * sc / 1.6);
         m.glow.style.left = (m.x - R) + 'px'; m.glow.style.top = (GP.ANUS_Y - R) + 'px';
         m.glow.style.width = m.glow.style.height = (2 * R).toFixed(1) + 'px';
         m.glow.style.background = 'radial-gradient(circle, ' + col + 'cc 0%, ' + col + '66 30%, ' + col + '00 70%)';
         m.glow.style.opacity = (k * (0.85 + 0.15 * Math.sin(Date.now() / 60))).toFixed(3);
       } else m.glow.style.opacity = '0';
     });
-    s.frogs.forEach(function (f) {
+    var rings = ringsVisible(), swing = s.state === 'tutorial' && tut.step === 3;
+    s.frogs.forEach(function (f, i) {
+      var R = f.shown / 100 * GP.S;
+      f.ring.style.display = rings ? 'block' : 'none';
+      f.ring.style.left = (f.x - R).toFixed(1) + 'px'; f.ring.style.top = (f.my - R).toFixed(1) + 'px';
+      f.ring.style.width = f.ring.style.height = (2 * R).toFixed(1) + 'px';
       var best = null, bd = 1e9;
       s.gems.forEach(function (g) {
-        if (g.c !== f.c || g.state === 'landed' || g.state === 'emerging') return;
+        if (g.c !== f.c || g.state === 'vanish' || g.state === 'emerging') return;
         var d = Math.hypot(g.x - f.x, g.y - f.my);
         if (d < bd) { bd = d; best = g; }
       });
       var ex = 0, ey = 0;
       if (best && bd > 1) { ex = (best.x - f.x) / bd * 2.4; ey = (best.y - f.my) / bd * 2.4; }
+      var tg = f.tongue, ang = 0, len = 0;
+      if (tg) { var dx = tg.tx - f.x, dy = tg.ty - f.my; len = Math.hypot(dx, dy); ang = Math.atan2(dy, dx); }
+      else if (swing) { ang = -Math.PI / 2 + 0.95 * Math.sin(s.clock * 2.2 + i * 1.3); len = R; ex = Math.cos(ang) * 2.4; ey = Math.sin(ang) * 2.4; }
       f.pp.setAttribute('transform', 'translate(' + ex.toFixed(2) + ' ' + ey.toFixed(2) + ')');
       var gl = f.gulp > 0 ? Math.sin((f.gulp / GP.GULP) * Math.PI) : 0;
       var shake = f.hurt > 0 ? Math.sin(f.hurt * 70) * 4 * (f.hurt / 0.7) : 0;
       f.el.style.transform = 'translateX(' + shake.toFixed(2) + 'px) scale(' + (1 + 0.1 * gl).toFixed(3) + ',' + (1 - 0.12 * gl).toFixed(3) + ')';
-      var tg = f.tongue;
-      f.mo.setAttribute('opacity', (tg || f.hurt > 0) ? 1 : 0);
-      if (tg) {
-        var dx = tg.tx - f.x, dy = tg.ty - f.my;
+      f.mo.setAttribute('opacity', (tg || swing || f.hurt > 0) ? 1 : 0);
+      if (tg || swing) {
         f.tEl.style.display = 'block';
-        f.tEl.style.width = Math.hypot(dx, dy).toFixed(1) + 'px';
-        f.tEl.style.transform = 'rotate(' + Math.atan2(dy, dx).toFixed(4) + 'rad)';
+        f.tEl.style.width = len.toFixed(1) + 'px';
+        f.tEl.style.transform = 'rotate(' + ang.toFixed(4) + 'rad)';
       } else f.tEl.style.display = 'none';
     });
     s.gems.forEach(function (g) {
-      var o = 1, sc = 1, sink = 0, x = g.x, y = g.y, rot = g.rot;
+      var o = 1, sc = 1, x = g.x, y = g.y, rot = g.rot;
       if (g.state === 'emerging') {
         // can just be glimpsed in the anus, then pushes out over one second
         var e = g.t / GP.PUSH;
         sc = 0.25 + 0.4 * e * e; o = 0.5 + 0.5 * e;
         rot = Math.sin(g.t * 9) * 0.15 * e;
         x = g.m.x; y = GP.ANUS_Y;
-      } else if (g.state === 'landed') {
-        var k = Math.min(1, g.t / GP.LAND_FADE); o = 1 - k; sc = 1 - 0.3 * k; sink = 8 * k;
+      } else if (g.state === 'vanish') {
+        var k = Math.min(1, g.t / GP.VANISH);
+        sc = 1 - k; o = 1 - 0.5 * k;
       } else {
         sc = Math.min(1, 0.6 + (g.age / 0.12) * 0.4);
-        if (g.lost) o = 0.7;   // a lost gem dims a little
       }
       g.el.style.opacity = o.toFixed(3);
-      g.el.style.transform = 'translate(' + (x - 15).toFixed(1) + 'px,' + (y - 15 + sink).toFixed(1) + 'px) rotate(' + rot.toFixed(3) + 'rad) scale(' + sc.toFixed(3) + ')';
+      g.el.style.transform = 'translate(' + (x - 15).toFixed(1) + 'px,' + (y - 15).toFixed(1) + 'px) rotate(' + rot.toFixed(3) + 'rad) scale(' + Math.max(0, sc).toFixed(3) + ')';
     });
     s.fx.forEach(function (p) {
       var o = 1 - Math.pow(p.t / p.life, 2);
@@ -1137,11 +1235,14 @@
     });
     var bo = s.state === 'play' ? Math.min(1, s.bannerT / 0.4) : 0;
     $('banner').style.opacity = bo.toFixed(3);
+    var demoThumbs = s.state === 'start' || s.state === 'tutorial';
     ['L', 'R'].forEach(function (side) {
-      var y = s['y' + side] * 720, op = s['a' + side] ? 0.95 : 0.4;
-      var line = $('line' + side), ring = $('ring' + side);
+      var y = s['y' + side] * 720, op = demoThumbs ? 0 : (s['a' + side] ? 0.95 : 0.4);
+      var line = $('line' + side), ring = $('ring' + side), th = $('thumb' + side);
       line.style.top = (y - 1) + 'px'; ring.style.top = (y - 36) + 'px';
       line.style.opacity = ring.style.opacity = op;
+      th.style.display = demoThumbs ? 'block' : 'none';
+      th.style.top = (y - 50).toFixed(1) + 'px';
     });
     setText('score', String(s.score));
     setText('level', String(s.level));
@@ -1157,14 +1258,14 @@
     var dt = Math.min(0.05, (ts - last) / 1000);
     last = ts;
     if (!s.paused && !document.hidden) {
-      if (s.state === 'play') step(dt);
+      ambient(dt);
+      if (s.state === 'play' || s.state === 'tutorial') step(dt);
       stepFx(dt);
     }
     draw();
   }
   document.addEventListener('visibilitychange', function () { last = null; });
 
-  syncSettings();
   renderStart();
   requestAnimationFrame(loop);
 })();

@@ -21,40 +21,42 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 ## Så spelar du
 
 - All text i spelet är på engelska.
+- Startskärmen har två knappar, **Tutorial** och **Start**. Medan den visas rör sig två genomskinliga
+  tummar upp och ner i sidopanelerna, så att paddeln hela tiden vinklas fram och tillbaka.
 - Lägg en tumme på varje fingeravtrycksyta. Paddeln lutar efter hur högt tummarna ligger
   i förhållande till varandra. Håller du vänster tumme högre lyfts paddelns vänstra ände.
 - En ädelsten anas först i en apas anus och pressas sedan fram under en sekund innan den ploppar ut.
   Under tiden får anus kant stenens färg och sprider ett svagt ljus i samma färg.
 - Stenarna faller allt snabbare, studsar mot paddeln och bromsar in på vägen upp i en parabel.
 - Kommer en sten inom räckhåll för grodan med samma färg på väg upp skjuter grodan ut tungan och sväljer den.
-- När en sten har nått sin högsta punkt efter studsen är den förlorad. Den bleknar lite, grodorna tar den inte
-  och paddeln studsar den inte igen. Den landar på lådan, eller faller ner i det svarta om den aldrig kom över lådans kant.
-- Stenar som landar på lådan tonar långsamt bort. Både de och stenar som faller förbi
-  paddeln räknas som missade.
-- Färgerna har olika slipform (blå romb, gul rund, grön smaragdslipning, röd trekant) så att
-  de går att skilja åt även för den som är färgblind.
+- När en sten har nått sin högsta punkt efter studsen är den förlorad. Den krymper och försvinner där.
+- Färgerna har olika slipform (blå romb, gul rund, grön smaragdslipning, röd trekant).
 
-## Nivåer, poäng och butik
+## Tutorial
 
+1. Målet: en blå sten ploppar ut ur den tredje apan och studsar till den blå grodan, som fångar den.
+2. En grön sten ur samma apa studsar till den gula grodan, som låter bli den ("Frogs are kind …").
+3. De streckade räckviddsringarna växer i steg medan grodornas tungor pendlar ut till ringen.
+4. Ringarna står på 14 %. En röd sten från den andra apan tas av den gröna grodan. Tungan klipps av
+   och faller ner med några bloddroppar, och ringen krymper.
+5. Du börjar med 5 credits och förlorar när de går under noll.
+
+## Nivåer, credits och butik
+
+- Du börjar med 5 credits.
 - Varje nivå har 30 ädelstenar. Nivå 1 ger 0,4 stenar per sekund, och varje ny nivå lägger till 0,1 (högst 3,5).
-- Efter varje nivå dras de missade stenarna av från de fångade, och resultatet läggs till poängen.
-- Hamnar poängen under noll är spelet slut.
-- Mellan nivåerna kan poäng köpa längre tunga, en procent i taget och för varje groda för sig.
-  Varje ny procent blir dyrare: 3, 4, 6, 8, 12, 16, 23 … poäng (högst 40 %).
+- Efter varje nivå dras de missade stenarna av från de fångade, och resultatet läggs till dina credits.
+- Hamnar dina credits under noll är spelet slut.
+- Mellan nivåerna kan du köpa längre tunga för credits, en procent i taget och för varje groda för sig.
+  Varje ny procent blir dyrare: 3, 4, 6, 8, 12, 16, 23 … credits (högst 40 %). Tungorna börjar på 8 %.
 - Från nivå 4 kommer ibland röda ädelstenar. Fångar en groda en röd sten klipps tungan av
-  till ursprungslängden, och de köpta procenten försvinner. Röda stenar räknas aldrig som missade.
+  till 8 %, och de köpta procenten försvinner. Röda stenar räknas aldrig som missade.
 - Andelen röda stenar ökar för varje nivå: 8 % på nivå 4, sedan 5 procentenheter mer per nivå (högst 45 %).
-- Bästa poäng och bästa nivå sparas i telefonen.
+- Bästa resultat sparas i telefonen.
 
 ## Inställningar (kugghjulet)
 
-- **Starting gem rate:** stenar per sekund på nivå 1 (0,2–2, standard 0,4).
-- **Base tongue reach:** tungornas ursprungslängd i procent av spelplanens bredd (4–20, standard 8). Det är hit de röda stenarna klipper tillbaka tungan.
-- **Show tongue reach:** en streckad ring runt varje groda.
-- **Rim glow spread:** hur långt det färgade ljuset sprids från anus kant när en sten pressas fram (0 = av, standard 50 %).
-- **Sound effects:** ljud av eller på.
-
-Ändringar av takt och räckvidd gäller från nästa nytt spel.
+- **Sound effects:** ljud av eller på. Det är den enda inställningen.
 
 ## Ljud
 
@@ -63,6 +65,8 @@ Ljuden räknas fram i spelet med Web Audio, så det finns inga ljudfiler:
 - ett fladdrande, blött prutt när en ädelsten ploppar ut
 - ett sliskigt slurp och en klunk när en groda fångar en sten
 - ett dubbelt saxklipp när en röd sten klipper av en tunga
+
+(Egna inspelade ljud kommer att ersätta dessa.)
 
 ## Teknik
 
