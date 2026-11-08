@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.webkit.JavascriptInterface
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -70,7 +71,18 @@ class MainActivity : AppCompatActivity() {
         web.isVerticalScrollBarEnabled = false
         web.isHorizontalScrollBarEnabled = false
 
+        // "Save & exit" i spelet sparar och stänger sedan appen via GemPoopApp.exit()
+        web.addJavascriptInterface(AppBridge(), "GemPoopApp")
+
         web.loadUrl("https://appassets.androidplatform.net/assets/index.html")
+    }
+
+    /** Det enda spelet får anropa från JavaScript: stäng appen. */
+    inner class AppBridge {
+        @JavascriptInterface
+        fun exit() {
+            runOnUiThread { finish() }
+        }
     }
 
     /** Döljer Androids navigeringsknappar medan spelet körs. Statusfältet lämnas kvar. */

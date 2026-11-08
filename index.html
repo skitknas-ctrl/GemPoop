@@ -55,6 +55,7 @@
   .overlay.clear { background: transparent; }
   .panel.bare { width: auto; background: transparent; box-shadow: none; padding: 0; overflow: visible; }
   .startBtns { display: flex; gap: 24px; margin-top: 120px; }
+  .btn.big small { display: block; font-size: 15px; font-weight: 700; opacity: 0.85; margin-top: 2px; }
   .btn.big { min-height: 76px; min-width: 210px; font-size: 28px; border-radius: 18px; border-width: 3px; background: #f6eedc;
     box-shadow: 0 6px 0 #3b2213; }
   .btn.big.primary { background: #6b3f1d; color: #fff; }
@@ -744,11 +745,42 @@ window.GEMPOOP_SOUNDS = {"fart": ["T2dnUwACAAAAAAAAAAAmRAAAAAAAALC32aQBHgF2b3Jia
   }
   function hideScreen() { screen.classList.remove('open'); }
 
+  // ---- Saved game (Save & exit / Continue) ----
+  function loadGame() {
+    try { var g = JSON.parse(localStorage.getItem('gempoop-save') || 'null'); return (g && g.level) ? g : null; } catch (e) { return null; }
+  }
+  function saveGame() {
+    try {
+      localStorage.setItem('gempoop-save', JSON.stringify({ level: s.level + 1, score: s.score,
+        frogs: s.frogs.map(function (f) { return { reach: f.reach, ups: f.ups }; }) }));
+    } catch (e) {}
+  }
+  function clearGame() { try { localStorage.removeItem('gempoop-save'); } catch (e) {} }
+
   function renderStart() {
     endTutorial(); clearField(); resetFrogs();
     s.state = 'start'; s.level = 1; s.score = GP.START_CREDITS; s.caughtL = 0; s.missedL = 0; s.spawned = 0;
+    var sv = loadGame();
     showScreen('<div class="startBtns"><button class="btn big" data-act="tutorial">Tutorial</button>' +
-      '<button class="btn big primary" data-act="play">Start</button></div>', true);
+      '<button class="btn big' + (sv ? '' : ' primary') + '" data-act="play">' + (sv ? 'New game' : 'Start') + '</button>' +
+      (sv ? '<button class="btn big primary" data-act="continue">Continue<small>Level ' + sv.level + ' · ' + sv.score + ' credits</small></button>' : '') +
+      '</div>', true);
+  }
+  function continueGame() {
+    var sv = loadGame(); if (!sv) { newGame(); return; }
+    clearGame();
+    endTutorial(); clearField();
+    s.level = sv.level; s.score = sv.score; s.yL = s.yR = 0.5;
+    s.frogs.forEach(function (f, i) {
+      var fr = (sv.frogs || [])[i] || {};
+      f.reach = f.shown = clamp(+fr.reach || s.baseReach, s.baseReach, GP.MAX_REACH); f.ups = +fr.ups || 0;
+    });
+    startLevel();
+  }
+  function saveAndExit() {
+    saveGame();
+    if (window.GemPoopApp && window.GemPoopApp.exit) { renderStart(); window.GemPoopApp.exit(); }   // Android app: close
+    else renderStart();                                                                              // browser: back to the start screen
   }
 
   function renderShop(net) {
@@ -774,7 +806,7 @@ window.GEMPOOP_SOUNDS = {"fart": ["T2dnUwACAAAAAAAAAAAmRAAAAAAAALC32aQBHgF2b3Jia
       '</div>' +
       '<p><b>Tongue shop.</b> Buy reach for each frog separately. Every extra percent costs more than the last.</p>' +
       '<div class="shop">' + cards + '</div>' + redNote +
-      '<div class="btns" style="justify-content: space-between"><button class="btn" data-act="menu">Quit</button>' +
+      '<div class="btns" style="justify-content: space-between"><button class="btn" data-act="saveexit">Save &amp; exit</button>' +
       '<button class="btn primary" data-act="next">Start level ' + next + ' · ' + fmt1(rateFor(next)) + ' gems/s</button></div>');
     panel.classList.add('wide');
   }
@@ -806,6 +838,8 @@ window.GEMPOOP_SOUNDS = {"fart": ["T2dnUwACAAAAAAAAAAAmRAAAAAAAALC32aQBHgF2b3Jia
     else if (act === 'next') { s.level++; startLevel(); }
     else if (act === 'tutorial') startTutorial();
     else if (act === 'menu') renderStart();
+    else if (act === 'saveexit') saveAndExit();
+    else if (act === 'continue') continueGame();
   });
 
   function clearField() {

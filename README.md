@@ -54,6 +54,9 @@ paddeln i botten så att varje sten studsar upp till grodan med samma färg.
 - Från nivå 4 kommer ibland röda ädelstenar. Fångar en groda en röd sten klipps tungan av
   till 8 %, och de köpta procenten försvinner. Röda stenar räknas aldrig som missade.
 - Andelen röda stenar ökar för varje nivå: 8 % på nivå 4, sedan 5 procentenheter mer per nivå (högst 45 %).
+- Rutan efter en klarad nivå har knappen **Save & exit**. Den sparar nivå, credits och tunglängder och stänger
+  appen (i webbläsaren går den tillbaka till startskärmen). Startskärmen visar då **Continue** med nivå och credits,
+  och **Start** heter **New game**. Sparningen förbrukas när man fortsätter.
 - Bästa resultat sparas i telefonen.
 
 ## Inställningar (kugghjulet)
