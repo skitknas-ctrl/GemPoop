@@ -42,7 +42,7 @@
     pointer-events: none; display: none; }
   .tongue i { position: absolute; right: -7px; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: #f27c9a; }
   .drop { position: absolute; left: 0; top: 0; width: 7px; height: 10px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; background: #c4102c; pointer-events: none; }
-  .thumb { position: absolute; left: 0; top: 0; width: 100px; height: 270px; pointer-events: none; display: none; transform-origin: 50px 4px; }
+  .thumb { position: absolute; left: 0; top: 0; width: 220px; height: 1800px; pointer-events: none; display: none; transform-origin: 110px 8px; }
   #tutBoard { position: absolute; left: 84px; width: 552px; top: 205px; height: 330px; display: none; flex-direction: column;
     align-items: center; justify-content: center; gap: 10px; text-align: center; color: #ffffff; pointer-events: none; }
   #tutBoard .tstep { font-size: 16px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; opacity: 0.9;
@@ -112,7 +112,7 @@
   <!-- left thumb area -->
   <div class="side" id="sideL">
     <div class="zone" id="zoneL"><div id="printsL"></div>
-      <div class="thumb" id="thumbL"><svg aria-hidden="true" width="100" height="270" viewBox="0 0 100 270"><path d="M50 4 C76 4 92 22 92 54 C92 88 87 110 79 128 C73 142 73 160 75 182 C77 210 81 238 83 270 L17 270 C19 238 23 210 25 182 C27 160 25 140 17 120 C9 98 8 72 12 52 C17 24 30 4 50 4 Z" fill="#ffffff" fill-opacity="0.22" stroke="#ffffff" stroke-opacity="0.65" stroke-width="2.5"/><path d="M45 22 C61 17 78 18 82 27 C86 42 85 70 82 85 C78 93 58 94 44 91 C36 89 33 81 33 67 C33 47 36 27 45 22 Z" fill="#ffffff" fill-opacity="0.18" stroke="#ffffff" stroke-opacity="0.7" stroke-width="3.5"/><path d="M30 156 q20 7 40 0 M33 166 q17 5 34 0" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div>
+      <div class="thumb" id="thumbL"><svg aria-hidden="true" width="220" height="1800" viewBox="0 0 110 900"><path d="M55 4 C87 4 105 24 105 58 C105 94 99 117 91 135 C85 149 85 167 87 189 C90 232 94 320 98 900 L12 900 C16 320 20 232 23 189 C25 167 23 147 15 127 C6 105 5 77 9 56 C15 26 31 4 55 4 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.6"/><path d="M50 22 C67 17 87 18 92 28 C96 44 95 74 92 90 C88 99 65 100 49 97 C40 95 37 86 37 71 C37 50 40 28 50 22 Z" fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-opacity="0.7" stroke-width="2.2"/><path d="M32 164 q23 7 46 0 M35 175 q20 5 40 0" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg></div>
       <div class="mline" id="lineL"></div>
       <div class="mring" id="ringL"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
     </div>
@@ -135,7 +135,7 @@
   <!-- right thumb area -->
   <div class="side" id="sideR">
     <div class="zone" id="zoneR"><div id="printsR"></div>
-      <div class="thumb" id="thumbR"><div style="transform: scaleX(-1); width: 100px; height: 270px"><svg aria-hidden="true" width="100" height="270" viewBox="0 0 100 270"><path d="M50 4 C76 4 92 22 92 54 C92 88 87 110 79 128 C73 142 73 160 75 182 C77 210 81 238 83 270 L17 270 C19 238 23 210 25 182 C27 160 25 140 17 120 C9 98 8 72 12 52 C17 24 30 4 50 4 Z" fill="#ffffff" fill-opacity="0.22" stroke="#ffffff" stroke-opacity="0.65" stroke-width="2.5"/><path d="M45 22 C61 17 78 18 82 27 C86 42 85 70 82 85 C78 93 58 94 44 91 C36 89 33 81 33 67 C33 47 36 27 45 22 Z" fill="#ffffff" fill-opacity="0.18" stroke="#ffffff" stroke-opacity="0.7" stroke-width="3.5"/><path d="M30 156 q20 7 40 0 M33 166 q17 5 34 0" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div></div>
+      <div class="thumb" id="thumbR"><div style="transform: scaleX(-1); width: 220px; height: 1800px"><svg aria-hidden="true" width="220" height="1800" viewBox="0 0 110 900"><path d="M55 4 C87 4 105 24 105 58 C105 94 99 117 91 135 C85 149 85 167 87 189 C90 232 94 320 98 900 L12 900 C16 320 20 232 23 189 C25 167 23 147 15 127 C6 105 5 77 9 56 C15 26 31 4 55 4 Z" fill="#ffffff" fill-opacity="0.2" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.6"/><path d="M50 22 C67 17 87 18 92 28 C96 44 95 74 92 90 C88 99 65 100 49 97 C40 95 37 86 37 71 C37 50 40 28 50 22 Z" fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-opacity="0.7" stroke-width="2.2"/><path d="M32 164 q23 7 46 0 M35 175 q20 5 40 0" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg></div></div>
       <div class="mline" id="lineR"></div>
       <div class="mring" id="ringR"><svg aria-hidden="true" width="26" height="34" viewBox="0 0 26 34" fill="none" stroke="#f5e6c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 L13 3 L21 11 M5 23 L13 31 L21 23"/></svg></div>
     </div>
@@ -1278,7 +1278,7 @@ window.GEMPOOP_SOUNDS = {"fart": ["T2dnUwACAAAAAAAAAAAmRAAAAAAAALC32aQBHgF2b3Jia
       var tipX = side === 'L' ? lastSide * 0.58 : lastSide * 0.42;
       var tx = side === 'L' ? lastSide + 360 : -360;
       var deg = Math.atan2(tx - tipX, y + 400) * 180 / Math.PI;   // aim a bit above the top edge so they stay slanted, like thumbs holding a phone
-      th.style.transform = 'translate(' + (tipX - 50).toFixed(1) + 'px,' + (y - 4).toFixed(1) + 'px) rotate(' + deg.toFixed(1) + 'deg)';
+      th.style.transform = 'translate(' + (tipX - 110).toFixed(1) + 'px,' + (y - 8).toFixed(1) + 'px) rotate(' + deg.toFixed(1) + 'deg)';
     });
     setText('score', String(s.score));
     setText('level', String(s.level));
